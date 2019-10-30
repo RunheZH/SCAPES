@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QFileSystemModel>
+#include <QDebug>
 //#include <QtCore>
 //#include <QtGui>
 #include <QString>
@@ -10,6 +11,7 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QTextStream>
+#include <tabchildwidget.h>
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +26,19 @@ public:
     void compileText(QString text);
     ~MainWindow();
 
+private:
+    Ui::MainWindow *ui;
+    QString currentFile = "";
+    QFileSystemModel *dirmodel;
+    void dirView();
+    void openFile();
+    void openFile(const QModelIndex &index);
+    void saveFile();
+    void showErrorMessage(QString errorText);
+    void tabView();
+    void tabAdd();
+    int tabIsExist(QString fileDir);
+
 private slots:
     void on_actionAbout_SCAPES_triggered();
     void on_actionQuit_triggered();
@@ -35,14 +50,10 @@ private slots:
 
     void on_actionCompile_triggered();
 
-private:
-    Ui::MainWindow *ui;
-    QString currentFile = "";
-    QFileSystemModel *dirmodel;
-    void dirView();
-    void openFile();
-    void openFile(const QModelIndex &index);
-    void saveFile();
+    void on_actionRun_triggered();
+
+    void on_tabWidget_tabCloseRequested(int index);
+    void on_tabWidget_tabBarClicked(int index);
 };
 
 #endif // MAINWINDOW_H
