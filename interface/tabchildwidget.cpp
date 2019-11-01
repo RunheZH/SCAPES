@@ -1,5 +1,6 @@
 #include "tabchildwidget.h"
 #include "ui_tabchildwidget.h"
+#include "QDebug"
 
 tabchildwidget::tabchildwidget(QWidget *parent) :
     QWidget(parent),
@@ -22,6 +23,7 @@ QString tabchildwidget::getText(){
 }
 
 bool tabchildwidget::isEmpty(){
+    qDebug()<<ui->textEdit->document();
     if(ui->textEdit->document()->isEmpty()){
         return true;
     }else{

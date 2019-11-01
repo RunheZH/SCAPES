@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -67,15 +68,21 @@ void MainWindow::openFile(){
     QTextStream in(&file);
     QString text = in.readAll();
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    //open the file already show in the tab
+    qDebug()<<"open file dir - " <<fileDir;
+    //open the file already shown in the tab
     int tabIndex = tabIsExist(fileDir);
+//    qDebug()<<"file tab index at - " <<tabIndex;
     if(tabIndex!=-1){
         ui->tabWidget->setCurrentIndex(tabIndex);
         ui->dirView->setCurrentIndex(dirmodel->index(fileDir));
         return;
     }
     //else file not show in the tab
-    if(!ft->isEmpty()){
+
+    if((ui->tabWidget->count())==0){    //check if there are no tab
+        tabAdd();
+        ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    }else if(!ft->isEmpty()){           //check if there is at least one tab and if it is empty
         tabAdd();
         ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     }
@@ -102,7 +109,11 @@ void MainWindow::openFile(const QModelIndex &index){
             ui->dirView->setCurrentIndex(index);
             return;
         }
-        if(!ft->isEmpty()){
+
+        if((ui->tabWidget->count())==0){    //check if there are no tab
+            tabAdd();
+            ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+        }else if(!ft->isEmpty()){           //check if there is at least one tab and if it is empty
             tabAdd();
             ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
         }
@@ -195,7 +206,9 @@ void MainWindow::on_actionRun_triggered()
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
+    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     ui->tabWidget->removeTab(index);
+
 }
 
 void MainWindow::on_tabWidget_tabBarClicked(int index)
