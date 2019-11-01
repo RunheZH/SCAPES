@@ -47,3 +47,16 @@ QString tabchildwidget::getFileName(){
     QString fileName = fileDir.section("/",-1,-1);
     return fileName;
 }
+
+void tabchildwidget::on_textEdit_textChanged()
+{
+    changed = true;
+}
+
+bool tabchildwidget::isChanged(){
+    return changed;
+}
+
+void tabchildwidget::setChanged(bool changed){
+    this->changed = changed;
+}
