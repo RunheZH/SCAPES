@@ -207,8 +207,11 @@ void MainWindow::on_actionRun_triggered()
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    ui->tabWidget->removeTab(index);
+//    if(ft->isChanged()){
 
+//    }
+    ui->tabWidget->removeTab(index);
+    ft->~tabchildwidget();
 }
 
 void MainWindow::on_tabWidget_tabBarClicked(int index)
