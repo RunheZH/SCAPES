@@ -59,6 +59,7 @@ void MainWindow::openFile(){
     QString fileDir = QFileDialog::getOpenFileName(this,
             tr("Open the file"), "/home/student/Desktop",
             tr("SCAPES file (*.scp);;All Files (*)"));
+    if(fileDir == ""){ return; }
     QFile file(fileDir);
     if(!file.open(QIODevice::ReadOnly | QFile::Text)){
         QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
@@ -206,7 +207,7 @@ void MainWindow::on_actionRun_triggered()
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
-    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
 //    if(ft->isChanged()){
 
 //    }
