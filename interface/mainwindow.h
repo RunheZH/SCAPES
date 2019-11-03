@@ -11,7 +11,10 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QTextStream>
+#include <QPair>
+#include <QVector>
 #include <tabchildwidget.h>
+//#include <../control/inc/compileControl.h>
 
 namespace Ui {
 class MainWindow;
@@ -24,6 +27,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     void compileText(QString text);
+    QVector<QPair <QString, QString>> programList;
     ~MainWindow();
 
 private:

@@ -25,11 +25,54 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+#        ../control/src/compileControl.cpp \
+#        ../control/src/runControl.cpp \
+#        ../control/src/saveControl.cpp \
+#        ../entity/src/identifier.cpp \
+#        ../entity/src/label.cpp \
+#        ../entity/src/operand.cpp \
+#        ../entity/src/program.cpp \
+#        ../entity/src/statement.cpp \
+#        ../entity/src/variable.cpp \
+#        ../entity/stmts/src/addStmt.cpp \
+#        ../entity/stmts/src/compStmt.cpp \
+#        ../entity/stmts/src/declArrStmt.cpp \
+#        ../entity/stmts/src/declIntStmt.cpp \
+#        ../entity/stmts/src/endStmt.cpp \
+#        ../entity/stmts/src/jEqStmt.cpp \
+#        ../entity/stmts/src/jLessStmt.cpp \
+#        ../entity/stmts/src/jMoreStmt.cpp \
+#        ../entity/stmts/src/jumpStmt.cpp \
+#        ../entity/stmts/src/movStmt.cpp \
+#        ../entity/stmts/src/printStmt.cpp \
+#        ../entity/stmts/src/readStmt.cpp \
         main.cpp \
         mainwindow.cpp \
         tabchildwidget.cpp
 
 HEADERS += \
+#        ../control/inc/compileControl.h \
+#        ../control/inc/runControl.h \
+#        ../control/inc/saveControl.h \
+#        ../entity/inc/common_lib.h \
+#        ../entity/inc/identifier.h \
+#        ../entity/inc/label.h \
+#        ../entity/inc/operand.h \
+#        ../entity/inc/program.h \
+#        ../entity/inc/statement.h \
+#        ../entity/inc/variable.h \
+#        ../entity/stmts/inc/addStmt.h \
+#        ../entity/stmts/inc/compStmt.h \
+#        ../entity/stmts/inc/declArrStmt.h \
+#        ../entity/stmts/inc/declIntStmt.h \
+#        ../entity/stmts/inc/endStmt.h \
+#        ../entity/stmts/inc/jEqStmt.h \
+#        ../entity/stmts/inc/jLessStmt.h \
+#        ../entity/stmts/inc/jMoreStmt.h \
+#        ../entity/stmts/inc/jumpStmt.h \
+#        ../entity/stmts/inc/movStmt.h \
+#        ../entity/stmts/inc/printStmt.h \
+#        ../entity/stmts/inc/readStmt.h \
         mainwindow.h \
         tabchildwidget.h
 
