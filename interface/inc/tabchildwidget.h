@@ -31,7 +31,7 @@ private slots:
 private:
     Ui::tabchildwidget *ui;
     QString fileDir;
-    bool changed;
+    bool changed = false;
 };
 
 #endif // FILETEXT_H

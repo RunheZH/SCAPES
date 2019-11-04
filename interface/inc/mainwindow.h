@@ -38,7 +38,7 @@ private:
     void dirView();
     void openFile();
     void openFile(const QModelIndex &index);
-    void saveFile();
+    void saveAsFile();
     void showErrorMessage(QString errorText);
     void tabView();
     void tabAdd();
@@ -59,6 +59,7 @@ private slots:
 
     void on_tabWidget_tabCloseRequested(int index);
     void on_tabWidget_tabBarClicked(int index);
+    void on_actionSave_As_triggered();
 };
 
 #endif // MAINWINDOW_H

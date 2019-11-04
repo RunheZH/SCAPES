@@ -87,6 +87,7 @@ void MainWindow::openFile(){
         ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     }
     ft->setText(text);
+    ft->setChanged(false);
     ft->storeFileDir(fileDir);
 //    setWindowTitle(ft->getFileName());
     file.close();
@@ -118,6 +119,7 @@ void MainWindow::openFile(const QModelIndex &index){
             ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
         }
         ft->setText(text);
+        ft->setChanged(false);
         ft->storeFileDir(dirmodel->filePath(index));
         ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
         file.close();
@@ -125,7 +127,7 @@ void MainWindow::openFile(const QModelIndex &index){
 }
 
 //SAVE FILE FUNCTION
-void MainWindow::saveFile(){
+void MainWindow::saveAsFile(){
     QString fileDir = QFileDialog::getSaveFileName(this,
             tr("Save SCAPES file"), "/home/student/Desktop/new file.scp",
             tr("SCAPES file (*.scp);;All Files (*)"));
@@ -139,6 +141,7 @@ void MainWindow::saveFile(){
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QString text = ft->getText();
     ft->storeFileDir(fileDir);
+    ft->setChanged(false);
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
     out<<text;
     file.close();
@@ -170,7 +173,7 @@ void MainWindow::on_actionAbout_SCAPES_triggered()
 //SAVE FILE TRIGGER
 void MainWindow::on_actionSave_triggered()
 {
-    saveFile();
+//    saveFile();
 }
 
 //OPEN FILE TRIGGER
@@ -210,15 +213,62 @@ void MainWindow::on_actionRun_triggered()
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
-//    if(ft->isChanged()){
-
-//    }
-    ui->tabWidget->removeTab(index);
-    ft->~tabchildwidget();
+    QMessageBox msgBox;
+    msgBox.setText("The file has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Save);
+    qDebug()<<"ischanged "<<ft->isChanged();
+    int ret;
+    if(ft->isChanged()){
+        ret = msgBox.exec();
+        qDebug()<<ret;
+    }else {
+        ret = 8388608;  //discard
+    }
+    switch (ret) {
+        case QMessageBox::Save:
+        // Save was clicked
+            saveAsFile();
+            ui->tabWidget->removeTab(index);
+            ft->~tabchildwidget();
+            if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
+                ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+//                    qDebug()<<"getfiledir "<<ft->getFileDir();
+                ui->dirView->setCurrentIndex(dirmodel->index(ft->getFileDir()));    //update file explorer
+            }else{
+                ui->dirView->selectionModel()->clearSelection();
+            }
+            break;
+        case QMessageBox::Discard:
+        // Don't Save was clicked
+            ui->tabWidget->removeTab(index);
+            ft->~tabchildwidget();
+            if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
+                ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+//                    qDebug()<<"getfiledir "<<ft->getFileDir();
+                ui->dirView->setCurrentIndex(dirmodel->index(ft->getFileDir()));    //update file explorer
+            }else{
+                ui->dirView->selectionModel()->clearSelection();
+            }
+            break;
+        case QMessageBox::Cancel:
+        // Cancel was clicked
+            break;
+        default:
+        // should never be reached
+            QMessageBox::warning(this, "Error", "Cannot Close Tab");
+            break;
+    }
 }
 
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
     ui->dirView->setCurrentIndex(dirmodel->index(ft->getFileDir()));
+}
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    saveAsFile();
 }
