@@ -1,17 +1,16 @@
 #ifndef CMP_STMT_H
 #define CMP_STMT_H
 
-#include <string>
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
 
 class CompStmt : public Statement
 {
 public:
-    CompStmt(string programName, string statement);
+    CompStmt(QString programName, QString statement, Label* label);
     ~CompStmt();
-    ResultState compile(string stmt);
-    ResultState run(string stmt);
+    ResultState compile();
+    ResultState run();
 
 private:
     // add helper functions

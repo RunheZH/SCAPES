@@ -1,6 +1,6 @@
 #include "../inc/variable.h"
 
-Variable::Variable(string name) : Identifier(name)
+Variable::Variable(QString name) : Identifier(name)
 {
 }
 
@@ -8,7 +8,7 @@ Variable::~Variable()
 {
 }
 
-string Variable::getName()
+QString Variable::getName()
 {
     return this->name;
 }

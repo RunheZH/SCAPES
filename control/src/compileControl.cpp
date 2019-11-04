@@ -1,13 +1,16 @@
 #include "../inc/compileControl.h"
 
-CompileControl::CompileControl()
+CompileControl::CompileControl(Program* program)
 {
+    this->program = program;
 }
 
 CompileControl::~CompileControl()
 {
 }
 
-ResultState CompileControl::compile(string pgmName, string pgmScript)
+ResultState CompileControl::compile()
 {
+    qDebug() << "Hello World";
+    program->compile();
 }

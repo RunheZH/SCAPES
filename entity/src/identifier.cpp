@@ -1,6 +1,6 @@
 #include "../inc/identifier.h"
 
-Identifier::Identifier(string name)
+Identifier::Identifier(QString name)
 {
     this->name = name;
 }

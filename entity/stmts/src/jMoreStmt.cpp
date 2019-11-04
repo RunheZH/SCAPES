@@ -1,6 +1,6 @@
 #include "../inc/jMoreStmt.h"
 
-JMoreStmt::JMoreStmt(string programName, string statement) : Statement(programName, statement)
+JMoreStmt::JMoreStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ JMoreStmt::~JMoreStmt()
 {
 }
 
-ResultState JMoreStmt::compile(string stmt)
+ResultState JMoreStmt::compile()
 {
 }
 
-ResultState JMoreStmt::run(string stmt)
+ResultState JMoreStmt::run()
 {
 }

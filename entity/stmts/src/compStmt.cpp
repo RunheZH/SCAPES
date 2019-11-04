@@ -1,6 +1,6 @@
 #include "../inc/compStmt.h"
 
-CompStmt::CompStmt(string programName, string statement) : Statement(programName, statement)
+CompStmt::CompStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ CompStmt::~CompStmt()
 {
 }
 
-ResultState CompStmt::compile(string stmt)
+ResultState CompStmt::compile()
 {
 }
 
-ResultState CompStmt::run(string stmt)
+ResultState CompStmt::run()
 {
 }

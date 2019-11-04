@@ -2,17 +2,17 @@
 #define RUN_CTL_H
 
 #include "../../entity/inc/common_lib.h"
+#include "../../entity/inc/program.h"
 
 class RunControl
 {
 public:
-    RunControl();
+    RunControl(Program*);
     ~RunControl();
-    ResultState run(string pgmName, string pgmScript);
+    ResultState run();
 
 private:
-    string pgmName;
-    string pgmScript;
+    Program* program;
 };
 
 #endif

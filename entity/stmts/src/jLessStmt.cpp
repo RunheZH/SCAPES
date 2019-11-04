@@ -1,6 +1,6 @@
 #include "../inc/jLessStmt.h"
 
-JLessStmt::JLessStmt(string programName, string statement) : Statement(programName, statement)
+JLessStmt::JLessStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ JLessStmt::~JLessStmt()
 {
 }
 
-ResultState JLessStmt::compile(string stmt)
+ResultState JLessStmt::compile()
 {
 }
 
-ResultState JLessStmt::run(string stmt)
+ResultState JLessStmt::run()
 {
 }

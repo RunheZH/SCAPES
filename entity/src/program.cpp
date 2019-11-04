@@ -1,9 +1,9 @@
 #include "../inc/program.h"
 
-Program::Program(string programName, string pgmScript)
+Program::Program(QString pgmName, QString pgmPath)
 {
-	this->programName = programName;
-	this->pgmScript = pgmScript;
+    this->pgmName = pgmName;
+    this->pgmPath = pgmPath;
 	/*
 	m_statementMap.insert(std::make_pair(StatementId::READ_STMT, Read::getInstance()));
 	m_statementMap.insert(std::make_pair(StatementId::PRINT_STMT, Print::getInstance()));
@@ -26,6 +26,7 @@ ResultState Program::save()
 
 ResultState Program::compile()
 {
+    qDebug() << "Hello there";
 	/*
 	ResultState aResultState;
 	for(;;){
@@ -43,7 +44,7 @@ ResultState Program::run()
 }
 
 /*
-ResultState Program::compileSingle(StatementId stmtID, string aStmt)
+ResultState Program::compileSingle(StatementId stmtID, QString aStmt)
 {
     auto it = find_if (programDatas.begin (), programDatas.end (),
         [aStatementId] (const std::map<StatementId, Statement*> &element) { return element.first == aStatementId;});

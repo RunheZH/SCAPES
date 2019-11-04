@@ -2,17 +2,17 @@
 #define COMPILE_CTL_H
 
 #include "../../entity/inc/common_lib.h"
+#include "../../entity/inc/program.h"
 
 class CompileControl
 {
 public:
-    CompileControl();
+    CompileControl(Program*);
     ~CompileControl();
-    ResultState compile(string pgmName, string pgmScript);
+    ResultState compile();
 
 private:
-    string pgmName;
-    string pgmScript;
+    Program* program;
 };
 
 #endif

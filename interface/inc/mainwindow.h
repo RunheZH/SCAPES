@@ -13,8 +13,9 @@
 #include <QTextStream>
 #include <QPair>
 #include <QVector>
-#include <tabchildwidget.h>
-//#include <../control/inc/compileControl.h>
+#include "tabchildwidget.h"
+#include "../../control/inc/compileControl.h"
+#include "../../entity/inc/program.h"
 
 namespace Ui {
 class MainWindow;

@@ -1,6 +1,6 @@
 #include "../inc/jumpStmt.h"
 
-JumpStmt::JumpStmt(string programName, string statement) : Statement(programName, statement)
+JumpStmt::JumpStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ JumpStmt::~JumpStmt()
 {
 }
 
-ResultState JumpStmt::compile(string stmt)
+ResultState JumpStmt::compile()
 {
 }
 
-ResultState JumpStmt::run(string stmt)
+ResultState JumpStmt::run()
 {
 }

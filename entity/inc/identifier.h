@@ -6,12 +6,12 @@
 class Identifier
 {
 public:
-    Identifier(string name);
+    Identifier(QString name);
     virtual ~Identifier();
-    virtual string getName() = 0;
+    virtual QString getName() = 0;
 
 protected:
-    string name;
+    QString name;
 };
 
 #endif

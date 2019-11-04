@@ -4,21 +4,20 @@
 #include "common_lib.h"
 #include "identifier.h"
 #include "statement.h"
-#include "../../control/inc/compileControl.h"
 
 class Program
 {
 public:
-	Program(string programName, string pgmScript);
+    Program(QString pgmName, QString pgmPath);
 	~Program();
 	ResultState save();
 	ResultState compile();
 	ResultState run();
-	//ResultState compileSingle(Identifier stmtID, string aStmt);
+    //ResultState compileSingle(Identifier stmtID, QString aStmt);
 
 private:
-	string programName;
-	string pgmScript;
+    QString pgmName;
+    QString pgmPath;
 	Identifier** ids;
 	Statement**  statements;
 	//std::map<StatementId, Statement*> m_statementMap;

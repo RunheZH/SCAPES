@@ -1,17 +1,16 @@
 #ifndef JLS_STMT_H
 #define JLS_STMT_H
 
-#include <string>
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
 
 class JLessStmt : public Statement
 {
 public:
-    JLessStmt(string programName, string statement);
+    JLessStmt(QString programName, QString statement, Label* label);
     ~JLessStmt();
-    ResultState compile(string stmt);
-    ResultState run(string stmt);
+    ResultState compile();
+    ResultState run();
 
 private:
     // add helper functions

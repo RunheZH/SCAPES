@@ -7,14 +7,14 @@
 class Variable : public Identifier
 {
 public:
-    Variable(string name);
+    Variable(QString name);
     ~Variable();
-    string getName();
+    QString getName();
     // and other getters, setters
 
 private:
     TypeE type;
-    string value; // use string for now, change it later
+    QString value; // use string for now, change it later
 };
 
 #endif
