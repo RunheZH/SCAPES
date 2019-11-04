@@ -8,16 +8,15 @@
 class Statement
 {
 public:
-	Statement(string programName, string statement);
+    Statement(QString, QString, Label* = nullptr);
 	virtual ~Statement();
-	virtual ResultState complie(string aStatement) = 0;
-	virtual ResultState run(string aStatement) = 0;
+    virtual ResultState compile() = 0;
+    virtual ResultState run() = 0;
 
 protected:
-	string programName;
-	string statement;
-	Operand operands[2];
-	Label  label;
+    QString programName;
+    QString statement;
+    Label*  label;
 };
 
 #endif

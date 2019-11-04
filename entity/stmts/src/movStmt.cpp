@@ -1,6 +1,6 @@
 #include "../inc/movStmt.h"
 
-MovStmt::MovStmt(string programName, string statement) : Statement(programName, statement)
+MovStmt::MovStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ MovStmt::~MovStmt()
 {
 }
 
-ResultState MovStmt::compile(string stmt)
+ResultState MovStmt::compile()
 {
 }
 
-ResultState MovStmt::run(string stmt)
+ResultState MovStmt::run()
 {
 }

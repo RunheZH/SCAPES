@@ -1,17 +1,16 @@
 #ifndef JEQ_STMT_H
 #define JEQ_STMT_H
 
-#include <string>
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
 
 class JEqStmt : public Statement
 {
 public:
-    JEqStmt(string programName, string statement);
+    JEqStmt(QString programName, QString statement, Label* label);
     ~JEqStmt();
-    ResultState compile(string stmt);
-    ResultState run(string stmt);
+    ResultState compile();
+    ResultState run();
 
 private:
     // add helper functions

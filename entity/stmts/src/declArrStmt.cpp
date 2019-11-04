@@ -1,6 +1,6 @@
 #include "../inc/declArrStmt.h"
 
-DeclArrStmt::DeclArrStmt(string programName, string statement) : Statement(programName, statement)
+DeclArrStmt::DeclArrStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ DeclArrStmt::~DeclArrStmt()
 {
 }
 
-ResultState DeclArrStmt::compile(string stmt)
+ResultState DeclArrStmt::compile()
 {
 }
 
-ResultState DeclArrStmt::run(string stmt)
+ResultState DeclArrStmt::run()
 {
 }

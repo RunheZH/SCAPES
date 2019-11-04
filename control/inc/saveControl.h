@@ -2,17 +2,18 @@
 #define SAVE_CTL_H
 
 #include "../../entity/inc/common_lib.h"
+#include "../../entity/inc/program.h"
 
 class SaveControl
 {
 public:
-    SaveControl();
+    SaveControl(QString, QString);
     ~SaveControl();
-    ResultState save(string pgmName, string pgmScript);
+    Program* save();
 
 private:
-    string pgmName;
-    string pgmScript;
+    QString pgmName;
+    QString pgmPath;
 };
 
 #endif

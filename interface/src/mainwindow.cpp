@@ -1,6 +1,5 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
-
+#include "../inc/mainwindow.h"
+#include "../ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -150,7 +149,10 @@ void MainWindow::saveFile(){
 //COMPILE TEXT FUNCTION
 void MainWindow::compileText(QString fileText){
     qDebug()<<fileText;
-    //RUNHE.compileProgram(fileText);
+    Program* pgm; // temp, for testing purpose only
+    CompileControl* compileControl = new CompileControl(pgm);
+    compileControl->compile();
+    delete(compileControl);
 }
 
 //showErrorMessage

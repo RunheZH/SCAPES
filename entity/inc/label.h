@@ -7,15 +7,15 @@
 class Label : public Identifier
 {
 public:
-    Label(string name);
+    Label(QString name);
     ~Label();
-    string getName();
+    QString getName();
     // and other getters, setters
 
 private:
-    string name;
+    QString name;
     TypeE type;
-    string value; // use string for now, change it later
+    QString value; // use string for now, change it later
 };
 
 #endif

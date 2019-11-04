@@ -1,13 +1,15 @@
 #include "../inc/runControl.h"
 
-RunControl::RunControl()
+RunControl::RunControl(Program* program)
 {
+    this->program = program;
 }
 
 RunControl::~RunControl()
 {
 }
 
-ResultState RunControl::run(string pgmName, string pgmScript)
+ResultState RunControl::run()
 {
+    program->run();
 }

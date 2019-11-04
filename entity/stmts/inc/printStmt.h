@@ -1,17 +1,16 @@
 #ifndef PRT_STMT_H
 #define PRT_STMT_H
 
-#include <string>
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
 
 class PrintStmt : public Statement
 {
 public:
-    PrintStmt(string programName, string statement);
+    PrintStmt(QString programName, QString statement, Label* label);
     ~PrintStmt();
-    ResultState compile(string stmt);
-    ResultState run(string stmt);
+    ResultState compile();
+    ResultState run();
 
 private:
     // add helper functions

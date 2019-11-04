@@ -1,6 +1,6 @@
-#include "../inc/addStmt.h"
+#include "../inc/declIntStmt.h"
 
-DeclIntStmt::DeclIntStmt(string programName, string statement) : Statement(programName, statement)
+DeclIntStmt::DeclIntStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ DeclIntStmt::~DeclIntStmt()
 {
 }
 
-ResultState DeclIntStmt::compile(string stmt)
+ResultState DeclIntStmt::compile()
 {
 }
 
-ResultState DeclIntStmt::run(string stmt)
+ResultState DeclIntStmt::run()
 {
 }

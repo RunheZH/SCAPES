@@ -1,6 +1,6 @@
 #include "../inc/endStmt.h"
 
-EndStmt::EndStmt(string programName, string statement) : Statement(programName, statement)
+EndStmt::EndStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ EndStmt::~EndStmt()
 {
 }
 
-ResultState EndStmt::compile(string stmt)
+ResultState EndStmt::compile()
 {
 }
 
-ResultState EndStmt::run(string stmt)
+ResultState EndStmt::run()
 {
 }

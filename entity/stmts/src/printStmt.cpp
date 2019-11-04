@@ -1,6 +1,6 @@
 #include "../inc/printStmt.h"
 
-PrintStmt::PrintStmt(string programName, string statement) : Statement(programName, statement)
+PrintStmt::PrintStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
 }
 
@@ -8,10 +8,10 @@ PrintStmt::~PrintStmt()
 {
 }
 
-ResultState PrintStmt::compile(string stmt)
+ResultState PrintStmt::compile()
 {
 }
 
-ResultState PrintStmt::run(string stmt)
+ResultState PrintStmt::run()
 {
 }

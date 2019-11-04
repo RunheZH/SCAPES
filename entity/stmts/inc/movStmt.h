@@ -1,17 +1,16 @@
 #ifndef MOV_STMT_H
 #define MOV_STMT_H
 
-#include <string>
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
 
 class MovStmt : public Statement
 {
 public:
-    MovStmt(string programName, string statement);
+    MovStmt(QString programName, QString statement, Label* label);
     ~MovStmt();
-    ResultState compile(string stmt);
-    ResultState run(string stmt);
+    ResultState compile();
+    ResultState run();
 
 private:
     // add helper functions

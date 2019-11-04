@@ -1,8 +1,10 @@
 #ifndef COMMON_LIB_H
 #define COMMON_LIB_H
 
-#include <string>
-using namespace std;
+#include <QtDebug>
+#include <QString>
+#include <QStringList>
+#include <QRegExp>
 
 enum StatementId
 {
