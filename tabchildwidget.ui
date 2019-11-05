@@ -6,28 +6,30 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>569</width>
-    <height>339</height>
+    <width>579</width>
+    <height>380</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <widget class="QWidget" name="verticalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>571</width>
-     <height>341</height>
-    </rect>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="leftMargin">
+    <number>0</number>
    </property>
-   <layout class="QVBoxLayout" name="verticalLayout">
-    <item>
-     <widget class="QTextEdit" name="textEdit"/>
-    </item>
-   </layout>
-  </widget>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QTextEdit" name="textEdit"/>
+   </item>
+  </layout>
  </widget>
  <resources/>
  <connections/>

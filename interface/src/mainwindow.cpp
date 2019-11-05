@@ -147,6 +147,23 @@ void MainWindow::saveAsFile(){
     file.close();
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
     ui->dirView->setCurrentIndex(dirmodel->index(fileDir));    //update file explorer
+
+    //save control part
+    SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFileDir());
+    Program * pgm = sc->save();
+    for(int i=0; i<programList.size(); i++){
+        qDebug()<<"loop";
+        if(programList[i].first==fileDir){
+            programList[i].second = pgm;
+            qDebug()<<"pgm matched save list";
+            break;
+        }else if (i==programList.size()) {
+            programList.push_back({fileDir,pgm});
+            qDebug()<<"new pgm push back list";
+        }
+    }
+
+
     QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
 }
 

@@ -15,6 +15,7 @@
 #include <QVector>
 #include "tabchildwidget.h"
 #include "../../control/inc/compileControl.h"
+#include "../../control/inc/saveControl.h"
 #include "../../entity/inc/program.h"
 
 namespace Ui {
@@ -28,7 +29,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     void compileText(QString text);
-    QVector<QPair<QString , Program*>> programLists;
+    QVector<QPair<QString , Program*>> programList;    //vector<pair<String fileName, Program* pgm>> programList
     ~MainWindow();
 
 private:

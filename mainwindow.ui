@@ -14,74 +14,59 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>0</y>
-      <width>571</width>
-      <height>341</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QTabWidget" name="tabWidget">
-       <property name="tabShape">
-        <enum>QTabWidget::Triangular</enum>
-       </property>
-       <property name="currentIndex">
-        <number>-1</number>
-       </property>
-       <property name="tabsClosable">
-        <bool>true</bool>
-       </property>
-       <property name="movable">
-        <bool>true</bool>
-       </property>
-       <property name="tabBarAutoHide">
-        <bool>false</bool>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_2">
-    <property name="geometry">
-     <rect>
-      <x>250</x>
-      <y>340</y>
-      <width>571</width>
-      <height>151</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_2">
-     <item>
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>Console Output</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QTextEdit" name="textEdit"/>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget_3">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>0</y>
-      <width>251</width>
-      <height>491</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout_3">
-     <item>
-      <widget class="QTreeView" name="dirView"/>
-     </item>
-    </layout>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <widget class="QTabWidget" name="tabWidget">
+        <property name="tabShape">
+         <enum>QTabWidget::Triangular</enum>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+        <property name="tabsClosable">
+         <bool>true</bool>
+        </property>
+        <property name="movable">
+         <bool>true</bool>
+        </property>
+        <property name="tabBarAutoHide">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <item>
+       <widget class="QLabel" name="label">
+        <property name="text">
+         <string>Console Output</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTextEdit" name="textEdit"/>
+      </item>
+     </layout>
+    </item>
+    <item row="0" column="0" rowspan="2">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QTreeView" name="dirView">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
