@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     void compileText(QString text);
-    QVector<QPair <QString, QString>> programList;
+    QVector<QPair<QString , Program*>> programLists;
     ~MainWindow();
 
 private:
@@ -39,6 +39,7 @@ private:
     void openFile();
     void openFile(const QModelIndex &index);
     void saveAsFile();
+    void saveFile();
     void showErrorMessage(QString errorText);
     void tabView();
     void tabAdd();

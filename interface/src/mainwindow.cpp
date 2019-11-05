@@ -132,6 +132,7 @@ void MainWindow::saveAsFile(){
             tr("Save SCAPES file"), "/home/student/Desktop/new file.scp",
             tr("SCAPES file (*.scp);;All Files (*)"));
     QFile file(fileDir);
+    if(fileDir == ""){ return; }
     if(!file.open(QFile::WriteOnly | QFile::Text)){
         QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
         return;
@@ -142,16 +143,42 @@ void MainWindow::saveAsFile(){
     QString text = ft->getText();
     ft->storeFileDir(fileDir);
     ft->setChanged(false);
-    ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
     out<<text;
     file.close();
+    ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
     ui->dirView->setCurrentIndex(dirmodel->index(fileDir));    //update file explorer
     QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
 }
 
+void MainWindow::saveFile(){
+    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    QString fileDir = ft->getFileDir();
+//    qDebug()<<"fileDir: "<<fileDir;
+    if(fileDir==""){    //  it is new file
+        saveAsFile();
+    }else { //already existed file
+        QFile file(fileDir);
+        if(!file.open(QFile::WriteOnly | QFile::Text)){
+            QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
+            return;
+        }
+        currentFile = fileDir;
+        QTextStream out(&file);
+        tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+        QString text = ft->getText();
+        ft->storeFileDir(fileDir);
+        ft->setChanged(false);
+        ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
+        out<<text;
+        file.close();
+        ui->dirView->setCurrentIndex(dirmodel->index(fileDir));    //update file explorer
+        QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
+    }
+}
+
 //COMPILE TEXT FUNCTION
 void MainWindow::compileText(QString fileText){
-    qDebug()<<fileText;
+//    qDebug()<<fileText;
     Program* pgm; // temp, for testing purpose only
     CompileControl* compileControl = new CompileControl(pgm);
     compileControl->compile();
@@ -173,7 +200,7 @@ void MainWindow::on_actionAbout_SCAPES_triggered()
 //SAVE FILE TRIGGER
 void MainWindow::on_actionSave_triggered()
 {
-//    saveFile();
+    saveFile();
 }
 
 //OPEN FILE TRIGGER
@@ -218,11 +245,11 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     msgBox.setInformativeText("Do you want to save your changes?");
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Save);
-    qDebug()<<"ischanged "<<ft->isChanged();
+//    qDebug()<<"ischanged "<<ft->isChanged();
     int ret;
     if(ft->isChanged()){
         ret = msgBox.exec();
-        qDebug()<<ret;
+//        qDebug()<<ret;
     }else {
         ret = 8388608;  //discard
     }
