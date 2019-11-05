@@ -150,19 +150,24 @@ void MainWindow::saveAsFile(){
 
     //save control part
     SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFileDir());
-    Program * pgm = sc->save();
-    for(int i=0; i<programList.size(); i++){
-        qDebug()<<"loop";
-        if(programList[i].first==fileDir){
-            programList[i].second = pgm;
-            qDebug()<<"pgm matched save list";
-            break;
-        }else if (i==programList.size()) {
-            programList.push_back({fileDir,pgm});
-            qDebug()<<"new pgm push back list";
+    Program* pgm = sc->save();
+//    qDebug()<<"fileDir save as: "<<fileDir;
+    if(programList.size()==0){
+        programList.push_back({fileDir,pgm});
+        qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+    }else {
+        for(int i=0; i<programList.size(); i++){
+            if(programList[i].first==fileDir){
+                programList[i].second = pgm;
+                qDebug()<<"programList replace existed: {"<<fileDir<<","<<pgm<<"}";
+                break;
+            }else if (i==programList.size()-1) {
+                programList.push_back({fileDir,pgm});
+                qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+                break;
+            }
         }
     }
-
 
     QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
 }
@@ -189,6 +194,27 @@ void MainWindow::saveFile(){
         out<<text;
         file.close();
         ui->dirView->setCurrentIndex(dirmodel->index(fileDir));    //update file explorer
+
+        //save control part
+        SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFileDir());
+        Program* pgm = sc->save();
+//        qDebug()<<"fileDir save as: "<<fileDir;
+        if(programList.size()==0){
+            programList.push_back({fileDir,pgm});
+            qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+        }else {
+            for(int i=0; i<programList.size(); i++){
+                if(programList[i].first==fileDir){
+                    programList[i].second = pgm;
+                    qDebug()<<"programList replace existed: {"<<fileDir<<","<<pgm<<"}";
+                    break;
+                }else if (i==programList.size()-1) {
+                    programList.push_back({fileDir,pgm});
+                    qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+                    break;
+                }
+            }
+        }
         QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
     }
 }
@@ -224,12 +250,6 @@ void MainWindow::on_actionSave_triggered()
 void MainWindow::on_actionOpen_triggered()
 {
     openFile();
-}
-
-//QUIT PROGRAM TRIGGER
-void MainWindow::on_actionQuit_triggered()
-{
-    qApp->exit();
 }
 
 void MainWindow::on_dirView_doubleClicked(const QModelIndex &index)
@@ -315,4 +335,14 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 void MainWindow::on_actionSave_As_triggered()
 {
     saveAsFile();
+}
+
+//QUIT PROGRAM TRIGGER
+void MainWindow::on_actionQuit_triggered()
+{
+//    for(int i=0; i<programList.size();i++){
+//        Program* pgm = programList[i].second;
+//        delete pgm;
+//    }
+    qApp->exit();
 }
