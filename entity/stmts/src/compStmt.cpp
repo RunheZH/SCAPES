@@ -29,28 +29,29 @@ ResultState CompStmt::compile()
     QString operand1 = args[1];
     QString operand2 = args[2];
 
-    // Variable 1 found
-    if (JsonHandler::findVariable(operand1, INT)){
-        // Variable 2 found
-        if (JsonHandler::findVariable(operand2, INT)){
-            return NO_ERROR;
-        }
-        // Variable 2 NOT found
-        else {
-            return VARIABLE_TWO_NOT_FOUND_ERROR;
-        }
-    }
-    // Variable 1 NOT found
-    else{
-        // Variable 2 found
-        if (JsonHandler::findVariable(operand2, INT)){
-            return VARIABLE_ONE_NOT_FOUND_ERROR;
-        }
-        // Variable 2 NOT found
-        else {
-            return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
-        }
-    }
+//    // Variable 1 found
+//    if (JsonHandler::findVariable(operand1, INT)){
+//        // Variable 2 found
+//        if (JsonHandler::findVariable(operand2, INT)){
+//            return NO_ERROR;
+//        }
+//        // Variable 2 NOT found
+//        else {
+//            return VARIABLE_TWO_NOT_FOUND_ERROR;
+//        }
+//    }
+//    // Variable 1 NOT found
+//    else{
+//        // Variable 2 found
+//        if (JsonHandler::findVariable(operand2, INT)){
+//            return VARIABLE_ONE_NOT_FOUND_ERROR;
+//        }
+//        // Variable 2 NOT found
+//        else {
+//            return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
+//        }
+//    }
+    return NO_ERROR;
 }
 
 ResultState CompStmt::run()

@@ -1,5 +1,8 @@
 #include "../inc/declIntStmt.h"
+#include "../../inc/jsonHandler.h"
 
+#include<QApplication>
+#include<QDebug>
 
 DeclIntStmt::DeclIntStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
@@ -11,6 +14,7 @@ DeclIntStmt::~DeclIntStmt()
 
 ResultState DeclIntStmt::compile()
 {
+
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){
@@ -24,6 +28,11 @@ ResultState DeclIntStmt::compile()
 
     QString instruction = args[0];
     QString operand1 = args[1];
+
+    JsonHandler aJson(QCoreApplication::applicationDirPath()+this->programName);
+    QJsonObject aQJsonObject = aJson.getJsonFromStr("{\"name\":\"operand1\", \"type\":0}");
+    aJson.addElement(operand1, aQJsonObject);
+
     return NO_ERROR;
 }
 

@@ -1,5 +1,9 @@
 #include "../inc/printStmt.h"
-#include "../../src/jsonHandler.cpp"
+#include "../../inc/jsonHandler.h"
+
+#include<QApplication>
+#include<QDebug>
+
 
 PrintStmt::PrintStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
@@ -25,14 +29,18 @@ ResultState PrintStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    // Variable 1 found
-    if (JsonHandler::findVariable(operand1, INT)){
-        return NO_ERROR;
-    }
+    JsonHandler aJson(QCoreApplication::applicationDirPath()+"/a.json");
+    QJsonObject tQJsonObject = aJson.findVariable(operand1, TypeE::INT);
+
     // Variable 1 not found
-    else{
+    if(tQJsonObject == aJson.getJsonFromStr("{}")){
         return VARIABLE_ONE_NOT_FOUND_ERROR;
     }
+    // Variable 1 found
+    else {
+        return NO_ERROR;
+    }
+
 }
 
 ResultState PrintStmt::run()

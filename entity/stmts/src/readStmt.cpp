@@ -1,5 +1,8 @@
 #include "../inc/readStmt.h"
-#include "../../src/jsonHandler.cpp"
+#include "../../inc/jsonHandler.h"
+
+#include<QApplication>
+#include<QDebug>
 
 ReadStmt::ReadStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
@@ -25,13 +28,16 @@ ResultState ReadStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    // Variable 1 found
-    if (JsonHandler::findVariable(operand1, INT)){
-        return NO_ERROR;
-    }
-    // Variable 1 Not found
-    else{
+    JsonHandler aJson(QCoreApplication::applicationDirPath()+this->programName);
+    QJsonObject aQJsonObject = aJson.findVariable(operand1, TypeE::INT);
+
+    // Variable 1 not found
+    if(aQJsonObject == aJson.getJsonFromStr("{}")){
         return VARIABLE_ONE_NOT_FOUND_ERROR;
+    }
+    // Variable 1 found
+    else {
+        return NO_ERROR;
     }
 }
 
