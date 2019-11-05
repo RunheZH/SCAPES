@@ -14,6 +14,7 @@ Program::~Program()
     for (qint16 i=0; i<this->numStmt; i++)
     {
         delete(this->statements[i]);
+        this->numStmt--;
     }
 }
 
@@ -21,16 +22,22 @@ ResultState Program::save()
 {
     qDebug() << "RUNHE: Program::save()";
     QFile file(this->pgmPath + this->pgmName + ".scp");
+    qint16 lineNum = 0;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
         return FILE_OPEN_ERROR;
 
+    // read the file line by line
     while (!file.atEnd()) {
         QString line = file.readLine();
+        lineNum++;
+        // ignore comments
+        if (line.startsWith("#"))
+            continue;
         ResultState res = addStmt(line);
         // TODO: error recovery
         if (res != NO_ERROR)
-            qDebug() << res << "at line" << this->numStmt;
+            qDebug() << res << "at line " << lineNum;
     }
 
     file.close();

@@ -26,8 +26,7 @@ public:
 	~Program();
 	ResultState save();
 	ResultState compile();
-	ResultState run();
-    //ResultState compileSingle(Identifier stmtID, QString aStmt);
+    ResultState run();
 
 private:
     QString pgmName;
