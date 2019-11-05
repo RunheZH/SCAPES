@@ -24,7 +24,8 @@ enum StatementId
 
 enum ResultState
 {
-	NO_ERROR
+    NO_ERROR,
+    FILE_OPEN_ERROR
 };
 
 enum TypeE
