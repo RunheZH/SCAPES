@@ -18,8 +18,8 @@ public:
     QString getText();
     bool isEmpty();
     void clearText();
-    void storeFileDir(QString dir);
-    QString getFileDir();
+    void storeFilePath(QString dir);
+    QString getFilePath();
     QString getFileName();
     void setChanged(bool changed);
     bool isChanged();
@@ -30,8 +30,9 @@ private slots:
 
 private:
     Ui::tabchildwidget *ui;
-    QString fileDir;
-    bool changed;
+    QString filePath;
+    QString fileName;
+    bool changed = false;
 };
 
 #endif // FILETEXT_H
