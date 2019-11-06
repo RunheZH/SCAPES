@@ -427,7 +427,7 @@ void MainWindow::on_actionQuit_triggered()
 {
 //    for(int i=0; i<programList.size();i++){
 //        Program* pgm = programList[i].second;
-//        delete pgm;
+//        delete (pgm);
 //    }
     qApp->exit();
 }
