@@ -34,7 +34,7 @@ void MainWindow::dirUpdate(QString filePath){
     }
     if(ui->tabWidget->count()>0){   //there is at least one tab opened, and switch to that tab file path in file explorer
         tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-                    qDebug()<<"getfilepath "<<ft->getFilePath();
+//                    qDebug()<<"getfilepath "<<ft->getFilePath();
         if(ft->getFilePath()==""){  //new file situation
             ui->dirView->selectionModel()->clearSelection();
             return;
@@ -168,8 +168,8 @@ int MainWindow::saveAsFile(){
     dirUpdate(filePath);
 
     //save control part
-    SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFilePath());
-    Program* pgm = sc->save();
+    SaveControl* savecontrol = new SaveControl(ft->getFileName(),ft->getFilePath());
+    Program* pgm = savecontrol->save();
 //    qDebug()<<"fileDir save as: "<<fileDir;
     if(programList.size()==0){
         programList.push_back({filePath,pgm});
@@ -187,6 +187,7 @@ int MainWindow::saveAsFile(){
             }
         }
     }
+    delete(savecontrol);
     //QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
     return 0;
 }
@@ -198,7 +199,6 @@ void MainWindow::saveFile(){
     if(filePath==""){    //  it is new file
         saveAsFile();
     }else { //already existed file
-        qDebug()<<"already exist file";
         QFile file(filePath);
         if(!file.open(QFile::WriteOnly | QFile::Text)){
             QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
@@ -240,9 +240,17 @@ void MainWindow::saveFile(){
 }
 
 //COMPILE TEXT FUNCTION
-void MainWindow::compileText(QString fileText){
-//    qDebug()<<fileText;
-    Program* pgm; // temp, for testing purpose only
+void MainWindow::compileText(QString filePath){
+    Program* pgm = nullptr;
+    for(int i=0; i<programList.size();i++){
+        if(programList[i].first==filePath){
+            pgm = programList[i].second;
+        }
+    }
+    if(pgm == nullptr){
+        QMessageBox::warning(this,"ERROR","You must save before compile");
+        return;
+    }
     CompileControl* compileControl = new CompileControl(pgm);
     compileControl->compile();
     delete(compileControl);
@@ -284,9 +292,33 @@ void MainWindow::on_actionNew_triggered()
 
 void MainWindow::on_actionCompile_triggered()
 {
+    QMessageBox msgBox;
+    msgBox.setText("The file has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes before compile?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Ignore | QMessageBox::Cancel);
+    msgBox.setButtonText(QMessageBox::Save, "Save and compile");
+    msgBox.setButtonText(QMessageBox::Ignore, "Compile the last save");
+    msgBox.setDefaultButton(QMessageBox::Save);
+
+    int ret = msgBox.exec();
+    switch (ret) {
+        case QMessageBox::Save:
+            saveFile();
+            break;
+        case QMessageBox::Ignore:
+            break;
+        case QMessageBox::Cancel:
+        // Cancel was clicked
+            return;
+        default:
+        // should never be reached
+            QMessageBox::warning(this, "Error", "Cannot save before compile");
+            break;
+    }
+
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    QString fileText = ft->getText();
-    compileText(fileText);
+    QString filePath = ft->getFilePath();
+    compileText(filePath);
 }
 
 void MainWindow::on_actionRun_triggered()
@@ -346,7 +378,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
             ft->~tabchildwidget();
 //            if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
 //                ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-////                    qDebug()<<"getfiledir "<<ft->getFileDir();
+//                    qDebug()<<"getfiledir "<<ft->getFileDir();
 //                ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));    //update file explorer
 //            }else{
 //                ui->dirView->selectionModel()->clearSelection();
