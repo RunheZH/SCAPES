@@ -34,16 +34,16 @@ void tabchildwidget::clearText(){
     ui->textEdit->clear();
 }
 
-void tabchildwidget::storeFileDir(QString fileDir){
-    this->fileDir = fileDir;
+void tabchildwidget::storeFilePath(QString filePath){
+    this->filePath = filePath;
 }
 
-QString tabchildwidget::getFileDir(){
-    return fileDir;
+QString tabchildwidget::getFilePath(){
+    return filePath;
 }
 
 QString tabchildwidget::getFileName(){
-    QString fileName = fileDir.section("/",-1,-1);
+    fileName = filePath.section("/",-1,-1);
     return fileName;
 }
 

@@ -13,8 +13,10 @@
 #include <QTextStream>
 #include <QPair>
 #include <QVector>
+#include <QDir>
 #include "tabchildwidget.h"
 #include "../../control/inc/compileControl.h"
+#include "../../control/inc/saveControl.h"
 #include "../../entity/inc/program.h"
 
 namespace Ui {
@@ -28,7 +30,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     void compileText(QString text);
-    QVector<QPair <QString, QString>> programList;
+    QVector<QPair<QString , Program*>> programList;    //vector<pair<String fileName, Program* pgm>> programList
     ~MainWindow();
 
 private:
@@ -36,8 +38,10 @@ private:
     QString currentFile = "";
     QFileSystemModel *dirmodel;
     void dirView();
+    void dirUpdate(QString filePath);
     void openFile();
     void openFile(const QModelIndex &index);
+    int saveAsFile();
     void saveFile();
     void showErrorMessage(QString errorText);
     void tabView();
@@ -59,6 +63,7 @@ private slots:
 
     void on_tabWidget_tabCloseRequested(int index);
     void on_tabWidget_tabBarClicked(int index);
+    void on_actionSave_As_triggered();
 };
 
 #endif // MAINWINDOW_H
