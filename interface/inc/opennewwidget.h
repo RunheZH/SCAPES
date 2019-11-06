@@ -18,9 +18,14 @@ public:
 private slots:
     void on_newFile_clicked();
     void on_openFile_clicked();
+    void startSelectionRemove();
 
 private:
     Ui::OpenNewWidget *ui;
+
+signals:
+    void newFileClick();
+    void openFileClick();
 };
 
 #endif // OPENNEWWIDGET_H

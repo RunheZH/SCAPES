@@ -40,7 +40,7 @@ private:
     void startSelectionView();
     void dirView();
     void dirUpdate(QString filePath);
-    void openFile();
+    int openFile();
     void openFile(const QModelIndex &index);
     int saveAsFile();
     void saveFile();
@@ -51,6 +51,8 @@ private:
     int tabIsExist(QString fileDir);
 
 private slots:
+    void startNewView();
+    void startOpenView();
     void on_actionAbout_SCAPES_triggered();
     void on_actionQuit_triggered();
     void on_actionSave_triggered();
@@ -66,6 +68,9 @@ private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void on_tabWidget_tabBarClicked(int index);
     void on_actionSave_As_triggered();
+
+ signals:
+    void startSelectionRemove();
 };
 
 #endif // MAINWINDOW_H

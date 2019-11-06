@@ -15,10 +15,15 @@ OpenNewWidget::~OpenNewWidget()
 
 void OpenNewWidget::on_newFile_clicked()
 {
-
+    emit newFileClick();
+//    delete (this);
 }
 
 void OpenNewWidget::on_openFile_clicked()
 {
+    emit openFileClick();
+}
 
+void OpenNewWidget::startSelectionRemove(){
+    delete(this);
 }
