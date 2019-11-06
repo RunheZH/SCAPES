@@ -43,7 +43,7 @@ QString tabchildwidget::getFilePath(){
 }
 
 QString tabchildwidget::getFileName(){
-    QString fileName = filePath.section("/",-1,-1);
+    fileName = filePath.section("/",-1,-1);
     return fileName;
 }
 

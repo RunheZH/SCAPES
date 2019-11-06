@@ -31,6 +31,7 @@ private slots:
 private:
     Ui::tabchildwidget *ui;
     QString filePath;
+    QString fileName;
     bool changed = false;
 };
 
