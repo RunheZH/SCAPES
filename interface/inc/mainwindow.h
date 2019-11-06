@@ -13,6 +13,7 @@
 #include <QTextStream>
 #include <QPair>
 #include <QVector>
+#include <QDir>
 #include "tabchildwidget.h"
 #include "../../control/inc/compileControl.h"
 #include "../../control/inc/saveControl.h"

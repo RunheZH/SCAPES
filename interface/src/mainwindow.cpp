@@ -17,11 +17,11 @@ MainWindow::~MainWindow()
 
 //DIRECTORY VIEW
 void MainWindow::dirView(){
-    QString sPath = "/home";
+    QString sPath = "/";
     dirmodel = new QFileSystemModel(this);
     dirmodel->setRootPath(sPath);
     ui->dirView->setModel(dirmodel);
-    ui->dirView->setRootIndex(dirmodel->setRootPath("/home"));
+    ui->dirView->setRootIndex(dirmodel->setRootPath("/"));
     ui->dirView->hideColumn(1);
     ui->dirView->hideColumn(2);
     ui->dirView->hideColumn(3);
@@ -75,7 +75,7 @@ int MainWindow::tabIsExist(QString filePath){
 //OPEN FILE FUNCTION-from tool bar
 void MainWindow::openFile(){
     QString filePath = QFileDialog::getOpenFileName(this,
-            tr("Open the file"), "/home/student/Desktop",
+            tr("Open the file"), QCoreApplication::applicationDirPath(),
             tr("SCAPES file (*.scp);;All Files (*)"));
     if(filePath == ""){ return; }
     QFile file(filePath);
@@ -187,7 +187,7 @@ int MainWindow::saveAsFile(){
             }
         }
     }
-    QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
+    //QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
     return 0;
 }
 
