@@ -49,7 +49,8 @@ SOURCES += \
         entity/stmts/src/readStmt.cpp \
         interface/src/main.cpp \
         interface/src/mainwindow.cpp \
-        interface/src/tabchildwidget.cpp
+        interface/src/opennewwidget.cpp \
+        interface/src/tabchildwidget.cpp \
 
 HEADERS += \
         control/inc/compileControl.h \
@@ -76,10 +77,12 @@ HEADERS += \
         entity/stmts/inc/printStmt.h \
         entity/stmts/inc/readStmt.h \
         interface/inc/mainwindow.h \
-        interface/inc/tabchildwidget.h
+        interface/inc/opennewwidget.h \
+        interface/inc/tabchildwidget.h \
 
 FORMS += \
         mainwindow.ui \
+        opennewwidget.ui \
         tabchildwidget.ui
 
 # Default rules for deployment.

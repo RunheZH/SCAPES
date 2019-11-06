@@ -7,13 +7,25 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     dirView();
-    tabView();
+//    tabView();
+
+//    ui->verticalLayout->removeWidget(ui->tabWidget);
+//    ui->verticalLayout->addWidget(new OpenNewWidget());
+    startSelectionView();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+//OPEN OR NEW START SELECTION
+void MainWindow::startSelectionView(){
+    ui->tabWidget->setVisible(false);
+    OpenNewWidget* onw = new OpenNewWidget();
+    ui->verticalLayout->addWidget(onw);
+}
+
 
 //DIRECTORY VIEW
 void MainWindow::dirView(){
