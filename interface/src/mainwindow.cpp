@@ -27,6 +27,25 @@ void MainWindow::dirView(){
     ui->dirView->hideColumn(3);
 }
 
+void MainWindow::dirUpdate(QString filePath){
+    if(filePath!=""){
+        ui->dirView->setCurrentIndex(dirmodel->index(filePath));
+        return;
+    }
+    if(ui->tabWidget->count()>0){   //there is at least one tab opened, and switch to that tab file path in file explorer
+        tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+                    qDebug()<<"getfilepath "<<ft->getFilePath();
+        if(ft->getFilePath()==""){  //new file situation
+            ui->dirView->selectionModel()->clearSelection();
+            return;
+        }
+        ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));
+    }else{
+        ui->dirView->selectionModel()->clearSelection();    //there is no tab opened, clear file explorer selection
+    }
+
+}
+
 //INITIALIZE TAB WIDGET
 void MainWindow::tabView(){
     tabAdd();
@@ -41,11 +60,11 @@ void MainWindow::tabAdd(){
 }
 
 //CHECK IF OPEN TAB IS ALREADY SHOWN
-int MainWindow::tabIsExist(QString fileDir){
+int MainWindow::tabIsExist(QString filePath){
     for(int i=0; i<ui->tabWidget->count(); i++){
         tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(i));
-//        qDebug()<<fileDir+"  already: "+ft->getFileDir();
-        if(fileDir==ft->getFileDir()){
+//        qDebug()<<filePath+"  already: "+ft->getFilePath();
+        if(filePath==ft->getFilePath()){
             return i;       //if found tab exists file, return the tab index
         }
     }
@@ -55,26 +74,26 @@ int MainWindow::tabIsExist(QString fileDir){
 
 //OPEN FILE FUNCTION-from tool bar
 void MainWindow::openFile(){
-    QString fileDir = QFileDialog::getOpenFileName(this,
+    QString filePath = QFileDialog::getOpenFileName(this,
             tr("Open the file"), "/home/student/Desktop",
             tr("SCAPES file (*.scp);;All Files (*)"));
-    if(fileDir == ""){ return; }
-    QFile file(fileDir);
+    if(filePath == ""){ return; }
+    QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly | QFile::Text)){
         QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
         return;
     }
-    currentFile = fileDir;
+    currentFile = filePath;
     QTextStream in(&file);
     QString text = in.readAll();
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    qDebug()<<"open file dir - " <<fileDir;
+    qDebug()<<"open file dir - " <<filePath;
     //open the file already shown in the tab
-    int tabIndex = tabIsExist(fileDir);
+    int tabIndex = tabIsExist(filePath);
 //    qDebug()<<"file tab index at - " <<tabIndex;
     if(tabIndex!=-1){
         ui->tabWidget->setCurrentIndex(tabIndex);
-        ui->dirView->setCurrentIndex(dirmodel->index(fileDir));
+        dirUpdate(filePath);
         return;
     }
     //else file not show in the tab
@@ -88,11 +107,11 @@ void MainWindow::openFile(){
     }
     ft->setText(text);
     ft->setChanged(false);
-    ft->storeFileDir(fileDir);
+    ft->storeFilePath(filePath);
 //    setWindowTitle(ft->getFileName());
     file.close();
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
-    ui->dirView->setCurrentIndex(dirmodel->index(fileDir));    //update file explorer
+    dirUpdate(filePath);
 //    QMessageBox::information(this, "Open Complete", "Open file: " + file.fileName());
 }
 
@@ -120,97 +139,98 @@ void MainWindow::openFile(const QModelIndex &index){
         }
         ft->setText(text);
         ft->setChanged(false);
-        ft->storeFileDir(dirmodel->filePath(index));
+        ft->storeFilePath(dirmodel->filePath(index));
         ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
         file.close();
     }
 }
 
 //SAVE FILE FUNCTION
-void MainWindow::saveAsFile(){
-    QString fileDir = QFileDialog::getSaveFileName(this,
+int MainWindow::saveAsFile(){
+    QString filePath = QFileDialog::getSaveFileName(this,
             tr("Save SCAPES file"), "/home/student/Desktop/new file.scp",
             tr("SCAPES file (*.scp);;All Files (*)"));
-    QFile file(fileDir);
-    if(fileDir == ""){ return; }
+    QFile file(filePath);
+    if(filePath == ""){ return -1; }
     if(!file.open(QFile::WriteOnly | QFile::Text)){
         QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
-        return;
+        return -2;
     }
-    currentFile = fileDir;
+    currentFile = filePath;
     QTextStream out(&file);
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QString text = ft->getText();
-    ft->storeFileDir(fileDir);
+    ft->storeFilePath(filePath);
     ft->setChanged(false);
     out<<text;
     file.close();
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
-    ui->dirView->setCurrentIndex(dirmodel->index(fileDir));    //update file explorer
+    dirUpdate(filePath);
 
     //save control part
-    SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFileDir());
+    SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFilePath());
     Program* pgm = sc->save();
 //    qDebug()<<"fileDir save as: "<<fileDir;
     if(programList.size()==0){
-        programList.push_back({fileDir,pgm});
-        qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+        programList.push_back({filePath,pgm});
+        qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
     }else {
         for(int i=0; i<programList.size(); i++){
-            if(programList[i].first==fileDir){
+            if(programList[i].first==filePath){
                 programList[i].second = pgm;
-                qDebug()<<"programList replace existed: {"<<fileDir<<","<<pgm<<"}";
+                qDebug()<<"programList replace existed: {"<<filePath<<","<<pgm<<"}";
                 break;
             }else if (i==programList.size()-1) {
-                programList.push_back({fileDir,pgm});
-                qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+                programList.push_back({filePath,pgm});
+                qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
                 break;
             }
         }
     }
-
     QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
+    return 0;
 }
 
 void MainWindow::saveFile(){
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    QString fileDir = ft->getFileDir();
+    QString filePath = ft->getFilePath();
 //    qDebug()<<"fileDir: "<<fileDir;
-    if(fileDir==""){    //  it is new file
+    if(filePath==""){    //  it is new file
         saveAsFile();
     }else { //already existed file
-        QFile file(fileDir);
+        qDebug()<<"already exist file";
+        QFile file(filePath);
         if(!file.open(QFile::WriteOnly | QFile::Text)){
             QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
             return;
         }
-        currentFile = fileDir;
+        currentFile = filePath;
         QTextStream out(&file);
         tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
         QString text = ft->getText();
-        ft->storeFileDir(fileDir);
+        ft->storeFilePath(filePath);
         ft->setChanged(false);
         ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
         out<<text;
         file.close();
-        ui->dirView->setCurrentIndex(dirmodel->index(fileDir));    //update file explorer
+        dirUpdate(filePath);
 
         //save control part
-        SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFileDir());
+        SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFilePath());
         Program* pgm = sc->save();
 //        qDebug()<<"fileDir save as: "<<fileDir;
         if(programList.size()==0){
-            programList.push_back({fileDir,pgm});
-            qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+            programList.push_back({filePath,pgm});
+            qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
         }else {
             for(int i=0; i<programList.size(); i++){
-                if(programList[i].first==fileDir){
+                if(programList[i].first==filePath){
                     programList[i].second = pgm;
-                    qDebug()<<"programList replace existed: {"<<fileDir<<","<<pgm<<"}";
+                    qDebug()<<"programList replace existed: {"<<filePath<<","<<pgm<<"}";
                     break;
                 }else if (i==programList.size()-1) {
-                    programList.push_back({fileDir,pgm});
-                    qDebug()<<"programList add new: {"<<fileDir<<","<<pgm<<"}";
+                    programList.push_back({filePath,pgm});
+                    qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
                     break;
                 }
             }
@@ -293,28 +313,45 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     switch (ret) {
         case QMessageBox::Save:
         // Save was clicked
-            saveAsFile();
-            ui->tabWidget->removeTab(index);
-            ft->~tabchildwidget();
-            if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
-                ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-//                    qDebug()<<"getfiledir "<<ft->getFileDir();
-                ui->dirView->setCurrentIndex(dirmodel->index(ft->getFileDir()));    //update file explorer
-            }else{
-                ui->dirView->selectionModel()->clearSelection();
+            if(ft->getFilePath()!=""){
+                //save to existed file
+                saveFile();
+                ui->tabWidget->removeTab(index);
+                ft->~tabchildwidget();
+//                if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
+//                    ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+//    //                    qDebug()<<"getfiledir "<<ft->getFileDir();
+//                    ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));    //update file explorer
+//                }else{
+//                    ui->dirView->selectionModel()->clearSelection();
+//                }
+                dirUpdate("");
+                break;
+            }
+            if(saveAsFile()!=-1){
+                ui->tabWidget->removeTab(index);
+                ft->~tabchildwidget();
+                if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
+                    ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    //                    qDebug()<<"getfiledir "<<ft->getFileDir();
+                    ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));    //update file explorer
+                }else{
+                    ui->dirView->selectionModel()->clearSelection();
+                }
             }
             break;
         case QMessageBox::Discard:
         // Don't Save was clicked
             ui->tabWidget->removeTab(index);
             ft->~tabchildwidget();
-            if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
-                ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-//                    qDebug()<<"getfiledir "<<ft->getFileDir();
-                ui->dirView->setCurrentIndex(dirmodel->index(ft->getFileDir()));    //update file explorer
-            }else{
-                ui->dirView->selectionModel()->clearSelection();
-            }
+//            if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
+//                ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+////                    qDebug()<<"getfiledir "<<ft->getFileDir();
+//                ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));    //update file explorer
+//            }else{
+//                ui->dirView->selectionModel()->clearSelection();
+//            }
+            dirUpdate("");
             break;
         case QMessageBox::Cancel:
         // Cancel was clicked
@@ -329,7 +366,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
-    ui->dirView->setCurrentIndex(dirmodel->index(ft->getFileDir()));
+    dirUpdate(ft->getFilePath());
 }
 
 void MainWindow::on_actionSave_As_triggered()

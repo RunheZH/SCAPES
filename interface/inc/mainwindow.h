@@ -37,9 +37,10 @@ private:
     QString currentFile = "";
     QFileSystemModel *dirmodel;
     void dirView();
+    void dirUpdate(QString filePath);
     void openFile();
     void openFile(const QModelIndex &index);
-    void saveAsFile();
+    int saveAsFile();
     void saveFile();
     void showErrorMessage(QString errorText);
     void tabView();
