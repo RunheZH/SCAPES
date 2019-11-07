@@ -14,9 +14,10 @@
 #include <QPair>
 #include <QVector>
 #include <QDir>
+#include <QCloseEvent>
 #include "tabchildwidget.h"
 #include "opennewwidget.h"
-//#include "outputtabchildwidget.h"
+#include "outputtabwidget.h"
 #include "../../control/inc/compileControl.h"
 #include "../../control/inc/saveControl.h"
 #include "../../entity/inc/program.h"
@@ -32,7 +33,10 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     QVector<QPair<QString , Program*>> programList;    //vector<pair<String fileName, Program* pgm>> programList
-    ~MainWindow();
+    ~MainWindow()  override;
+
+protected:
+    void closeEvent(QCloseEvent*) override;
 
 private:
     Ui::MainWindow *ui;

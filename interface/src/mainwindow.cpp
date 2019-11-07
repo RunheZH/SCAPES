@@ -6,8 +6,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //initialization
     dirView();
-//    tabView();
+    outputView();
     startSelectionView();
 }
 
@@ -43,11 +45,10 @@ void MainWindow::startOpenView(){   //click open file button
 
 //OUTPUT TAB VIEW
 void MainWindow::outputView(){
-//    OutputTabChildWidget* consoleTab = new OutputTabChildWidget();
-//    OutputTabChildWidget* errorTab = new OutputTabChildWidget();
-//    ui->outputWidget->addTab(consoleTab, "console");
-//    ui->outputWidget->addTab(errorTab, "error");
-
+    OutputTabWidget* consoleTab = new OutputTabWidget();
+    OutputTabWidget* errorTab = new OutputTabWidget();
+    ui->outputWidget->addTab(consoleTab, "console");
+    ui->outputWidget->addTab(errorTab, "error");
 }
 
 //DIRECTORY VIEW
@@ -339,8 +340,9 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionCompile_triggered()
 {
     if(ui->tabWidget->count()==0){ return; }
+    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QMessageBox msgBox;
-    msgBox.setText("The file has been modified.");
+    msgBox.setText("The file " + ft->getFileName() + " has been modified.");
     msgBox.setInformativeText("Do you want to save your changes before compile?");
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Ignore | QMessageBox::Cancel);
     msgBox.setButtonText(QMessageBox::Save, "Save and compile");
@@ -363,7 +365,7 @@ void MainWindow::on_actionCompile_triggered()
             break;
     }
 
-    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QString filePath = ft->getFilePath();
     compileText(filePath);
 }
@@ -378,7 +380,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
     QMessageBox msgBox;
-    msgBox.setText("The file has been modified.");
+    msgBox.setText("The file " + ft->getFileName() + " has been modified.");
     msgBox.setInformativeText("Do you want to save your changes?");
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Save);
@@ -440,4 +442,12 @@ void MainWindow::on_actionQuit_triggered()
 //        delete (pgm);
 //    }
     qApp->exit();
+}
+
+void MainWindow::closeEvent(QCloseEvent*){
+    //save before quit
+    for(int i=ui->tabWidget->count(); i>0; i--){
+       ui->tabWidget->setCurrentIndex(i);
+       on_tabWidget_tabCloseRequested(ui->tabWidget->currentIndex());
+    }
 }
