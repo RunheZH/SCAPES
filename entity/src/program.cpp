@@ -37,7 +37,7 @@ ResultState Program::save()
         ResultState res = addStmt(line);
         // TODO: error recovery
         if (res != NO_ERROR)
-            qDebug() << res << "at line " << lineNum;
+            qDebug() << res << " at line " << lineNum;
     }
 
     file.close();
@@ -47,8 +47,14 @@ ResultState Program::save()
 ResultState Program::compile()
 {
     qDebug() << "RUNHE: Program::compile()";
-    // TODO: calling compile()
-    // TODO: error recovery
+
+    ResultState res;
+    for(qint16 i = 0; i < this->numStmt; i++){
+        res = this->statements[i]->compile();
+        // TODO: error recovery
+        if (res != NO_ERROR)
+            qDebug() << res << " statement " << i;
+    }
     return NO_ERROR;
 }
 
