@@ -16,6 +16,7 @@
 #include <QDir>
 #include "tabchildwidget.h"
 #include "opennewwidget.h"
+//#include "outputtabchildwidget.h"
 #include "../../control/inc/compileControl.h"
 #include "../../control/inc/saveControl.h"
 #include "../../entity/inc/program.h"
@@ -38,6 +39,7 @@ private:
     QString currentFile = "";
     QFileSystemModel *dirmodel;
     void startSelectionView();
+    void outputView();
     void dirView();
     void dirUpdate(QString filePath);
     int openFile();

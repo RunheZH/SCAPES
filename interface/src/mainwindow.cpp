@@ -41,6 +41,15 @@ void MainWindow::startOpenView(){   //click open file button
 }
 
 
+//OUTPUT TAB VIEW
+void MainWindow::outputView(){
+//    OutputTabChildWidget* consoleTab = new OutputTabChildWidget();
+//    OutputTabChildWidget* errorTab = new OutputTabChildWidget();
+//    ui->outputWidget->addTab(consoleTab, "console");
+//    ui->outputWidget->addTab(errorTab, "error");
+
+}
+
 //DIRECTORY VIEW
 void MainWindow::dirView(){
     QString sPath = "/";
@@ -361,7 +370,8 @@ void MainWindow::on_actionCompile_triggered()
 
 void MainWindow::on_actionRun_triggered()
 {
-    qDebug()<<ui->tabWidget->count();
+//    qDebug()<<ui->tabWidget->count();
+    QMessageBox::warning(this, "Sorry", "not yet implemented");
 }
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
