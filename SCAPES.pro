@@ -29,6 +29,7 @@ SOURCES += \
         control/src/runControl.cpp \
         control/src/saveControl.cpp \
         entity/src/identifier.cpp \
+        entity/src/jsonHandler.cpp \
         entity/src/label.cpp \
         entity/src/operand.cpp \
         entity/src/program.cpp \
@@ -56,6 +57,7 @@ HEADERS += \
         control/inc/saveControl.h \
         entity/inc/common_lib.h \
         entity/inc/identifier.h \
+        entity/inc/jsonHandler.h \
         entity/inc/label.h \
         entity/inc/operand.h \
         entity/inc/program.h \
