@@ -19,8 +19,8 @@ public:
 
 private:
     JsonHandler(const JsonHandler&);
-    void readData();
-    void writeData();
+    ResultState readData();
+    ResultState writeData();
 
     QString m_currentFile;
     ResultState m_currentResultState;

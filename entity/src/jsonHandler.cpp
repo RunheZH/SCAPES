@@ -80,34 +80,34 @@ ResultState JsonHandler::addElement(QString elementName, QJsonObject aQJsonObjec
     return m_currentResultState;
 }
 
-void JsonHandler::readData()
+ResultState JsonHandler::readData()
 {
     QString source;
     QFile file;
     file.setFileName(m_currentFile);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         m_currentResultState = ResultState::FILE_OPEN_ERROR;
-        return;
+        return m_currentResultState;
     }
     source = file.readAll();
     file.close();
     QJsonDocument data = QJsonDocument::fromJson(source.toUtf8());
     m_currentJsonObject = data.object();
-    return;
+    return m_currentResultState;
 }
 
-void JsonHandler::writeData()
+ResultState JsonHandler::writeData()
 {
     QString source;
     QFile file;
     file.setFileName(m_currentFile);
     if (!file.open(QFile::WriteOnly | QFile::Truncate)) {
         m_currentResultState = ResultState::FILE_OPEN_ERROR;
-        return;
+        return m_currentResultState;
     }
     QJsonDocument aQJsonDocument;
     aQJsonDocument.setObject(m_currentJsonObject);
     file.write(aQJsonDocument.toJson());
     file.close();
-    return;
+    return m_currentResultState;
 }
