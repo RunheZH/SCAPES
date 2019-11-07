@@ -11,7 +11,7 @@ Program::Program(QString pgmName, QString pgmPath)
 
 Program::~Program()
 {
-    for (qint16 i=0; i<this->numStmt; i++)
+    for (qint16 i = 0; i < this->numStmt; i++)
     {
         delete(this->statements[i]);
         this->numStmt--;
@@ -21,14 +21,17 @@ Program::~Program()
 ResultState Program::save()
 {
     qDebug() << "RUNHE: Program::save()";
-    QFile file(this->pgmPath + this->pgmName + ".scp");
+    QFile file(this->pgmPath);
     qint16 lineNum = 0;
 
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "File_open_error";
         return FILE_OPEN_ERROR;
+    }
 
     // read the file line by line
     while (!file.atEnd()) {
+        // TODO: need to get rid of '\n'
         QString line = file.readLine();
         lineNum++;
         // ignore comments
@@ -70,44 +73,55 @@ ResultState Program::run()
 ResultState Program::addStmt(QString stmt)
 {
     QStringList args = stmt.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-    Statement* newStmt;
+    Statement* newStmt = nullptr;
+    Label* newLabel = nullptr;
+    QString instruction = args[0];
+
     // TODO: check label
-    switch (this->getStmtId(args[0])) {
+    if (args[0].startsWith("L")){
+        qDebug() << "RUNHE: detected label";
+        newLabel = new Label(args[0]);
+        // TODO: get rid of the leading spaces
+        stmt = stmt.mid(args[0].length() + 1);
+        instruction = args[1];
+    }
+
+    switch (this->getStmtId(instruction)) {
     case ADD_STMT:
-        newStmt = new AddStmt(this->pgmName, stmt, nullptr);
+        newStmt = new AddStmt(this->pgmName, stmt, newLabel);
         break;
     case CMP_STMT:
-        newStmt = new CompStmt(this->pgmName, stmt, nullptr);
+        newStmt = new CompStmt(this->pgmName, stmt, newLabel);
         break;
     case DCA_STMT:
-        newStmt = new DeclArrStmt(this->pgmName, stmt, nullptr);
+        newStmt = new DeclArrStmt(this->pgmName, stmt, newLabel);
         break;
     case DCI_STMT:
-        newStmt = new DeclIntStmt(this->pgmName, stmt, nullptr);
+        newStmt = new DeclIntStmt(this->pgmName, stmt, newLabel);
         break;
     case END_STMT:
-        newStmt = new EndStmt(this->pgmName, stmt, nullptr);
+        newStmt = new EndStmt(this->pgmName, stmt, newLabel);
         break;
     case JEQ_STMT:
-        newStmt = new JEqStmt(this->pgmName, stmt, nullptr);
+        newStmt = new JEqStmt(this->pgmName, stmt, newLabel);
         break;
     case JLS_STMT:
-        newStmt = new JLessStmt(this->pgmName, stmt, nullptr);
+        newStmt = new JLessStmt(this->pgmName, stmt, newLabel);
         break;
     case JMR_STMT:
-        newStmt = new JMoreStmt(this->pgmName, stmt, nullptr);
+        newStmt = new JMoreStmt(this->pgmName, stmt, newLabel);
         break;
     case JMP_STMT:
-        newStmt = new JumpStmt(this->pgmName, stmt, nullptr);
+        newStmt = new JumpStmt(this->pgmName, stmt, newLabel);
         break;
     case MOV_STMT:
-        newStmt = new MovStmt(this->pgmName, stmt, nullptr);
+        newStmt = new MovStmt(this->pgmName, stmt, newLabel);
         break;
     case PRT_STMT:
-        newStmt = new PrintStmt(this->pgmName, stmt, nullptr);
+        newStmt = new PrintStmt(this->pgmName, stmt, newLabel);
         break;
     case RDI_STMT:
-        newStmt = new ReadStmt(this->pgmName, stmt, nullptr);
+        newStmt = new ReadStmt(this->pgmName, stmt, newLabel);
         break;
     case INVALID_STMT:
         return INVALID_STATEMENT;
@@ -115,6 +129,7 @@ ResultState Program::addStmt(QString stmt)
 
     this->statements[this->numStmt] = newStmt;
     this->numStmt++;
+    qDebug() << "added " << stmt;
     return NO_ERROR;
 }
 

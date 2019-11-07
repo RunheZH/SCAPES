@@ -5,6 +5,7 @@
 #include <QString>
 #include <QStringList>
 #include <QRegExp>
+#define MAX_VALUE_16 32767
 
 enum StatementId
 {

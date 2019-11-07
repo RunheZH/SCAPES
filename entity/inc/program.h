@@ -23,22 +23,21 @@ class Program
 {
 public:
     Program(QString, QString);
-	~Program();
-	ResultState save();
-	ResultState compile();
+    ~Program();
+    ResultState save();
+    ResultState compile();
     ResultState run();
 
 private:
     QString pgmName;
     QString pgmPath;
     qint16  numStmt;
-	Identifier** ids;
-	Statement**  statements;
+    Identifier* ids;
+    Statement*  statements[MAX_VALUE_16];
 
     // helper functions
     ResultState addStmt(QString);
     StatementId getStmtId(QString);
-	//std::map<StatementId, Statement*> m_statementMap;
 };
 
 #endif
