@@ -4,14 +4,27 @@
 
 #include "../inc/jsonHandler.h"
 
-JsonHandler::JsonHandler(QString fileName)
+JsonHandler::JsonHandler()
 {
-    m_currentFile = fileName;
-    m_currentJsonObject = JsonObjectFromString("{}");
+    m_currentFile = "";
+    m_currentJsonObject = getJsonFromStr("{}");
     m_currentResultState = ResultState::NO_ERROR;
 }
 
-QJsonObject JsonHandler::JsonObjectFromString(QString jsonString){
+JsonHandler::JsonHandler(QString fileName)
+{
+    m_currentFile = fileName;
+    m_currentJsonObject = getJsonFromStr("{}");
+    m_currentResultState = ResultState::NO_ERROR;
+}
+
+void JsonHandler::setFileName(QString fileName)
+{
+    m_currentFile = fileName;
+}
+
+QJsonObject JsonHandler::getJsonFromStr(QString jsonString)
+{
     QJsonDocument jsonDocument = QJsonDocument::fromJson(jsonString.toUtf8());
     QJsonObject jsonObject = jsonDocument.object();
     return jsonObject;
@@ -31,7 +44,7 @@ QJsonObject JsonHandler::findLabel(QString labelName)
             }
         }
     }
-    return JsonObjectFromString("{}");
+    return getJsonFromStr("{}");
 }
 
 QJsonObject JsonHandler::findVariable(QString variableName, TypeE type)
@@ -48,7 +61,7 @@ QJsonObject JsonHandler::findVariable(QString variableName, TypeE type)
             }
         }
     }
-    return JsonObjectFromString("{}");
+    return getJsonFromStr("{}");
 }
 
 ResultState JsonHandler::addElement(QString elementName, QJsonObject aQJsonObject)
