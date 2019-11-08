@@ -30,8 +30,9 @@ enum ResultState
 
 enum TypeE
 {
-	INT,
-	ARRAY
+    INT,
+    ARRAY,
+    LABEL
 };
 
 #endif

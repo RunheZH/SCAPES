@@ -7,13 +7,12 @@
 class Variable : public Identifier
 {
 public:
-    Variable(QString name);
-    ~Variable();
-    QString getName();
+    Variable(QString aName, TypeE aType):Identifier(aName, aType){}
+    virtual QJsonObject toJSon() override;
+
     // and other getters, setters
 
 private:
-    TypeE type;
     QString value; // use string for now, change it later
 };
 

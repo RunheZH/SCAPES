@@ -7,14 +7,11 @@
 class Label : public Identifier
 {
 public:
-    Label(QString name);
-    ~Label();
-    QString getName();
+    Label(QString aName, TypeE aType):Identifier(aName, aType){}
+    virtual QJsonObject toJSon() override;
     // and other getters, setters
 
 private:
-    QString name;
-    TypeE type;
     QString value; // use string for now, change it later
 };
 

@@ -1,17 +1,21 @@
 #ifndef IDENTIFIER_H
 #define IDENTIFIER_H
 
+#include <QJsonObject>
 #include "common_lib.h"
 
 class Identifier
 {
 public:
-    Identifier(QString name);
-    virtual ~Identifier();
-    virtual QString getName() = 0;
+    explicit Identifier(QString aName, TypeE aType): name(aName), type(aType){}
+    QString getName() const {return name;}
+    TypeE getType() const {return type;}
+    virtual QJsonObject toJSon() = 0;
+    virtual ~Identifier() = default;
 
 protected:
     QString name;
+    TypeE type;
 };
 
 #endif

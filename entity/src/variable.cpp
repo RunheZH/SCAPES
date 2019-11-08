@@ -1,14 +1,10 @@
 #include "../inc/variable.h"
+#include "../inc/jsonHandler.h"
 
-Variable::Variable(QString name) : Identifier(name)
+QJsonObject Variable::toJSon()
 {
+    QString jsonString = "{\"name\":\"" + name + "\", \"type\":" + QString::number(static_cast<int>(type)) + "}";
+    JsonHandler aJsonHandler;
+    return aJsonHandler.getJsonFromStr(jsonString);
 }
 
-Variable::~Variable()
-{
-}
-
-QString Variable::getName()
-{
-    return this->name;
-}
