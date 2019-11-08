@@ -13,12 +13,69 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qlineargradient(spread:pad, x1:0.502538, y1:0.034, x2:0.517766, y2:0.983, stop:0 rgba(145, 145, 145, 255), stop:1 rgba(198, 198, 198, 255));</string>
+  </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="1">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="styleSheet">
+         <string notr="true">QTabWidget::pane {
+    border-top: 2px solid rgb(196, 196, 196);
+}
+
+QTabWidget::tab-bar {
+    left: 5px;
+}
+
+QTabBar::tab {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(244, 81, 30, 255), stop:1 rgba(249, 168, 142, 255));
+    border: 2px solid rgb(246,110,67);
+    border-bottom-color: rgb(246,110,67);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 13ex;
+    padding: 3px;
+	font: 75 11pt &quot;Source Code Pro&quot;;
+}
+
+QTabBar::tab:hover {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(249, 168, 142, 255), stop:1 rgba(244, 81, 30, 255));
+}
+
+QTabBar::tab:selected {
+	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(224,62,11,255), stop:1 rgba(248,139,105,255));
+    border-color: rgb(243,67,12);
+    border-bottom-color: rgb(243,67,12);
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px;
+}
+
+QTabBar::tab:selected {
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+
+</string>
+        </property>
         <property name="tabShape">
          <enum>QTabWidget::Triangular</enum>
         </property>
@@ -48,6 +105,36 @@
           <verstretch>0</verstretch>
          </sizepolicy>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QTreeView {
+    background-color: rgb(196, 196, 196);
+}
+
+QTreeView {
+    show-decoration-selected: 1;
+}
+
+QTreeView::item {
+    border: 1px solid rgb(142, 141, 141);
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+QTreeView::item:hover {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(244, 81, 30, 255), stop:1 rgba(249, 168, 142, 255));
+    border: 1px solid rgb(243, 67, 12);
+}
+
+QTreeView::item:selected {
+    border: 1px solid rgba(243, 67, 12, 179);
+}
+
+QTreeView::item:selected:active{
+    background: rgb(243, 67, 12);
+	border: 1px solid rgb(243, 67, 12);
+}
+QTreeView{selection-background-color: rgba(243, 67, 12, 0);}</string>
+        </property>
        </widget>
       </item>
      </layout>
@@ -72,7 +159,58 @@
          </size>
         </property>
         <property name="styleSheet">
-         <string notr="true">QTabBar::tab{height:20px; width:150px; font:12pt}</string>
+         <string notr="true">QTabWidget::pane {
+    border-top: 2px solid rgb(196, 196, 196);
+}
+
+QTabWidget::tab-bar {
+    left: 5px;
+}
+
+QTabBar::tab {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(244, 81, 30, 255), stop:1 rgba(249, 168, 142, 255));
+    border: 2px solid rgb(246,110,67);
+    border-bottom-color: rgb(246,110,67);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 20ex;
+    padding: 3px;
+	font: 75 12pt &quot;Source Code Pro&quot;;
+}
+
+QTabBar::tab:hover {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(249, 168, 142, 255), stop:1 rgba(244, 81, 30, 255));
+}
+
+QTabBar::tab:selected {
+	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(224,62,11,255), stop:1 rgba(248,139,105,255));
+    border-color: rgb(243,67,12);
+    border-bottom-color: rgb(243,67,12);
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px;
+}
+
+QTabBar::tab:selected {
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+
+</string>
         </property>
         <property name="tabShape">
          <enum>QTabWidget::Triangular</enum>
@@ -139,6 +277,12 @@
    <addaction name="menuSettings"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(244, 81, 30);</string>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>

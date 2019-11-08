@@ -30,9 +30,29 @@
      </property>
      <property name="font">
       <font>
-       <family>DejaVu Sans</family>
-       <pointsize>22</pointsize>
+       <family>Source Code Pro</family>
+       <pointsize>20</pointsize>
+       <weight>9</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-radius: 4px;
+  	background-color: #f4511e;
+	color: #FFFFFF;
+  	font: 75 20pt &quot;Source Code Pro&quot;;
+ 	margin: 5px;
+}
+
+QPushButton:hover{
+        background: #f6734a;
+}
+
+QPushButton:pressed {
+        background: #db481b;
+}</string>
      </property>
      <property name="text">
       <string>New File</string>
@@ -49,9 +69,29 @@
      </property>
      <property name="font">
       <font>
-       <family>DejaVu Sans</family>
-       <pointsize>22</pointsize>
+       <family>Source Code Pro</family>
+       <pointsize>20</pointsize>
+       <weight>9</weight>
+       <italic>false</italic>
+       <bold>false</bold>
       </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-radius: 4px;
+  	background-color: #f4511e;
+	color: #FFFFFF;
+  	font: 75 20pt &quot;Source Code Pro&quot;;
+ 	margin: 5px;
+}
+
+QPushButton:hover{
+        background: #f6734a;
+}
+
+QPushButton:pressed {
+        background: #db481b;
+}</string>
      </property>
      <property name="text">
       <string>Open File</string>

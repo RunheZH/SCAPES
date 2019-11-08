@@ -47,8 +47,8 @@ void MainWindow::startOpenView(){   //click open file button
 void MainWindow::outputView(){
     OutputTabWidget* consoleTab = new OutputTabWidget();
     OutputTabWidget* errorTab = new OutputTabWidget();
-    ui->outputWidget->addTab(consoleTab, "console");
-    ui->outputWidget->addTab(errorTab, "error");
+    ui->outputWidget->addTab(consoleTab, "Console");
+    ui->outputWidget->addTab(errorTab, "Error");
 }
 
 //DIRECTORY VIEW
