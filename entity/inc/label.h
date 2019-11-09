@@ -7,7 +7,7 @@
 class Label : public Identifier
 {
 public:
-    Label(QString aName, TypeE aType):Identifier(aName, aType){}
+    Label(QString aName):Identifier(aName){}
     ~Label() override=default;
     virtual QJsonObject toJSon() override;
 

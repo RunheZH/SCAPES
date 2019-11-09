@@ -8,3 +8,8 @@ QJsonObject Variable::toJSon()
     return aJsonHandler.getJsonFromStr(jsonString);
 }
 
+TypeE Variable::getType() const
+{
+    return type;
+}
+
