@@ -5,27 +5,30 @@
 #include <QString>
 #include <QStringList>
 #include <QRegExp>
+#define MAX_VALUE_16 32767
 
 enum StatementId
 {
-	READ_STMT,
-	PRINT_STMT,
-	DECLINT_STMT,
-	DECLARR_STMT,
-	MOV_STMT,
-	ADD_STMT,
-	COMP_STMT,
-	JLESS_STMT,
-	JMORE_STMT,
-	JEQ_STMT,
-	JUMP_STMT,
-	END_STMT
+    ADD_STMT,
+    CMP_STMT,
+    DCA_STMT,
+    DCI_STMT,
+    END_STMT,
+    JEQ_STMT,
+    JLS_STMT,
+    JMR_STMT,
+    JMP_STMT,
+    MOV_STMT,
+    PRT_STMT,
+    RDI_STMT,
+    INVALID_STMT
 };
 
 enum ResultState
 {
     NO_ERROR,
-    FILE_OPEN_ERROR
+    FILE_OPEN_ERROR,
+    INVALID_STATEMENT
 };
 
 enum TypeE
