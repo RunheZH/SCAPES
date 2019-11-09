@@ -32,24 +32,24 @@ QTabWidget::tab-bar {
 }
 
 QTabBar::tab {
-    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(244, 81, 30, 255), stop:1 rgba(249, 168, 142, 255));
-    border: 2px solid rgb(246,110,67);
-    border-bottom-color: rgb(246,110,67);
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(90, 131, 174, 255), stop:1 rgba(117, 176, 238, 255));
+    border: 2px solid rgb(90, 131, 174);
+    border-bottom-color: rgb(90, 131, 174);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     min-width: 13ex;
     padding: 3px;
-	font: 75 11pt &quot;Source Code Pro&quot;;
+	font: 75 11pt &quot;Source Code Pro&quot; white;
 }
 
 QTabBar::tab:hover {
-    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(249, 168, 142, 255), stop:1 rgba(244, 81, 30, 255));
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(114, 159, 207, 255), stop:1 rgba(52, 101, 164, 255));
 }
 
 QTabBar::tab:selected {
-	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(224,62,11,255), stop:1 rgba(248,139,105,255));
-    border-color: rgb(243,67,12);
-    border-bottom-color: rgb(243,67,12);
+	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(52, 101, 164, 255), stop:1 rgba(114, 159, 207, 255));
+    border-color: rgb(52, 101, 164);
+    border-bottom-color: rgb(52, 101, 164);
 }
 
 QTabBar::tab:!selected {
@@ -121,17 +121,17 @@ QTreeView::item {
 }
 
 QTreeView::item:hover {
-    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(244, 81, 30, 255), stop:1 rgba(249, 168, 142, 255));
-    border: 1px solid rgb(243, 67, 12);
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(114, 159, 207, 255), stop:1 rgba(52, 101, 164, 255));
+    border: 1px solid rgb(114, 159, 207);
 }
 
 QTreeView::item:selected {
-    border: 1px solid rgba(243, 67, 12, 179);
+    border: 1px solid qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(52, 101, 164, 255), stop:1 rgba(114, 159, 207, 255));
 }
 
 QTreeView::item:selected:active{
-    background: rgb(243, 67, 12);
-	border: 1px solid rgb(243, 67, 12);
+    background: rgb(52, 101, 164);
+	border: 1px solid rgb(52, 101, 164);
 }
 QTreeView{selection-background-color: rgba(243, 67, 12, 0);}</string>
         </property>
@@ -168,9 +168,9 @@ QTabWidget::tab-bar {
 }
 
 QTabBar::tab {
-    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(244, 81, 30, 255), stop:1 rgba(249, 168, 142, 255));
-    border: 2px solid rgb(246,110,67);
-    border-bottom-color: rgb(246,110,67);
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(90, 131, 174, 255), stop:1 rgba(117, 176, 238, 255));
+    border: 2px solid rgb(90, 131, 174);
+    border-bottom-color: rgb(90, 131, 174);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
     min-width: 20ex;
@@ -179,13 +179,13 @@ QTabBar::tab {
 }
 
 QTabBar::tab:hover {
-    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(249, 168, 142, 255), stop:1 rgba(244, 81, 30, 255));
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(114, 159, 207, 255), stop:1 rgba(52, 101, 164, 255));
 }
 
 QTabBar::tab:selected {
-	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(224,62,11,255), stop:1 rgba(248,139,105,255));
-    border-color: rgb(243,67,12);
-    border-bottom-color: rgb(243,67,12);
+	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(52, 101, 164, 255), stop:1 rgba(114, 159, 207, 255));
+    border-color: rgb(52, 101, 164);
+    border-bottom-color: rgb(52, 101, 164);
 }
 
 QTabBar::tab:!selected {
@@ -281,7 +281,7 @@ QTabBar::tab:only-one {
     <bool>false</bool>
    </property>
    <property name="styleSheet">
-    <string notr="true">background-color: rgb(244, 81, 30);</string>
+    <string notr="true">background-color: rgb(114, 159, 207)</string>
    </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>

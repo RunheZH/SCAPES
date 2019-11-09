@@ -40,18 +40,18 @@
      <property name="styleSheet">
       <string notr="true">QPushButton {
 	border-radius: 4px;
-  	background-color: #f4511e;
+  	background-color: rgb(114, 159, 207);
 	color: #FFFFFF;
   	font: 75 20pt &quot;Source Code Pro&quot;;
  	margin: 5px;
 }
 
 QPushButton:hover{
-        background: #f6734a;
+        background: rgb(102, 144, 189);
 }
 
 QPushButton:pressed {
-        background: #db481b;
+        background: rgb(102, 144, 189);
 }</string>
      </property>
      <property name="text">
@@ -79,18 +79,18 @@ QPushButton:pressed {
      <property name="styleSheet">
       <string notr="true">QPushButton {
 	border-radius: 4px;
-  	background-color: #f4511e;
+  	background-color: rgb(114, 159, 207);
 	color: #FFFFFF;
   	font: 75 20pt &quot;Source Code Pro&quot;;
  	margin: 5px;
 }
 
 QPushButton:hover{
-        background: #f6734a;
+        background: rgb(102, 144, 189);
 }
 
 QPushButton:pressed {
-        background: #db481b;
+        background: rgb(102, 144, 189);
 }</string>
      </property>
      <property name="text">
