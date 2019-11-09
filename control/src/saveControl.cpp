@@ -15,4 +15,5 @@ Program* SaveControl::save()
 {
     Program* pgm = new Program(pgmName, pgmPath);
     pgm->save();
+    return pgm;
 }

@@ -11,5 +11,6 @@ RunControl::~RunControl()
 
 ResultState RunControl::run()
 {
-    program->run();
+    ResultState res = program->run();
+    return res;
 }

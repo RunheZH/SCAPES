@@ -12,5 +12,6 @@ CompileControl::~CompileControl()
 ResultState CompileControl::compile()
 {
     qDebug() << "Hello World";
-    program->compile();
+    ResultState res = program->compile();
+    return res;
 }
