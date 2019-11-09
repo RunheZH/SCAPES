@@ -8,9 +8,8 @@ class Variable : public Identifier
 {
 public:
     Variable(QString aName, TypeE aType):Identifier(aName, aType){}
+    ~Variable() override=default;
     virtual QJsonObject toJSon() override;
-
-    // and other getters, setters
 
 private:
     QString value; // use string for now, change it later

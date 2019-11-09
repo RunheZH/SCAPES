@@ -8,8 +8,8 @@ class Label : public Identifier
 {
 public:
     Label(QString aName, TypeE aType):Identifier(aName, aType){}
+    ~Label() override=default;
     virtual QJsonObject toJSon() override;
-    // and other getters, setters
 
 private:
     QString value; // use string for now, change it later

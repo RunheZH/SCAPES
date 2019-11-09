@@ -80,7 +80,7 @@ ResultState Program::addStmt(QString stmt)
     // TODO: check label
     if (args[0].startsWith("L")){
         qDebug() << "RUNHE: detected label";
-        newLabel = new Label(args[0]);
+        newLabel = new Label(args[0], TypeE::LABEL);
         // TODO: get rid of the leading spaces
         stmt = stmt.mid(args[0].length() + 1);
         instruction = args[1];
