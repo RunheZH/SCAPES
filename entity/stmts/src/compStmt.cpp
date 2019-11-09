@@ -1,5 +1,8 @@
 #include "../inc/compStmt.h"
-#include "../../src/jsonHandler.cpp"
+#include "../../inc/jsonHandler.h"
+
+#include<QApplication>
+#include<QDebug>
 
 CompStmt::CompStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
 {
@@ -29,29 +32,36 @@ ResultState CompStmt::compile()
     QString operand1 = args[1];
     QString operand2 = args[2];
 
-//    // Variable 1 found
-//    if (JsonHandler::findVariable(operand1, INT)){
-//        // Variable 2 found
-//        if (JsonHandler::findVariable(operand2, INT)){
-//            return NO_ERROR;
-//        }
-//        // Variable 2 NOT found
-//        else {
-//            return VARIABLE_TWO_NOT_FOUND_ERROR;
-//        }
-//    }
-//    // Variable 1 NOT found
-//    else{
-//        // Variable 2 found
-//        if (JsonHandler::findVariable(operand2, INT)){
-//            return VARIABLE_ONE_NOT_FOUND_ERROR;
-//        }
-//        // Variable 2 NOT found
-//        else {
-//            return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
-//        }
-//    }
-    return NO_ERROR;
+    JsonHandler* aJson = new JsonHandler(this->programName);
+    QJsonObject firstQJsonObject = aJson->findVariable(operand1, TypeE::INT);
+    QJsonObject secondQJsonObject = aJson->findVariable(operand2, TypeE::INT);
+
+    // Variable 1 found
+    if (firstQJsonObject != aJson->getJsonFromStr("{}")){
+        // Variable 2 found
+        if (secondQJsonObject != aJson->getJsonFromStr("{}")){
+            delete(aJson);
+            return NO_ERROR;
+        }
+        // Variable 2 NOT found
+        else {
+            delete(aJson);
+            return VARIABLE_TWO_NOT_FOUND_ERROR;
+        }
+    }
+    // Variable 1 NOT found
+    else{
+        // Variable 2 found
+        if (secondQJsonObject != aJson->getJsonFromStr("{}")){
+            delete(aJson);
+            return VARIABLE_ONE_NOT_FOUND_ERROR;
+        }
+        // Variable 2 NOT found
+        else {
+            delete(aJson);
+            return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
+        }
+    }
 }
 
 ResultState CompStmt::run()

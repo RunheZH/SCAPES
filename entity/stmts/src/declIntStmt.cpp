@@ -1,5 +1,4 @@
 #include "../inc/declIntStmt.h"
-#include "../../inc/jsonHandler.h"
 
 #include<QApplication>
 #include<QDebug>
@@ -29,9 +28,11 @@ ResultState DeclIntStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    JsonHandler aJson(QCoreApplication::applicationDirPath()+this->programName);
-    QJsonObject aQJsonObject = aJson.getJsonFromStr("{\"name\":\"operand1\", \"type\":0}");
-    aJson.addElement(operand1, aQJsonObject);
+    JsonHandler* aJson = new JsonHandler(this->programName);
+    QJsonObject aQJsonObject = aJson->getJsonFromStr("{\"name\":\"operand1\", \"type\":0}");
+    aJson->addElement("variable", aQJsonObject);
+
+    delete(aJson);
 
     return NO_ERROR;
 }

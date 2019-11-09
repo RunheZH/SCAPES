@@ -29,15 +29,17 @@ ResultState PrintStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    JsonHandler aJson(QCoreApplication::applicationDirPath()+"/a.json");
-    QJsonObject tQJsonObject = aJson.findVariable(operand1, TypeE::INT);
+    JsonHandler* aJson = new JsonHandler(this->programName);
+    QJsonObject aQJsonObject = aJson->findVariable(operand1, TypeE::INT);
 
     // Variable 1 not found
-    if(tQJsonObject == aJson.getJsonFromStr("{}")){
+    if(aQJsonObject == aJson->getJsonFromStr("{}")){
+        delete(aJson);
         return VARIABLE_ONE_NOT_FOUND_ERROR;
     }
     // Variable 1 found
     else {
+        delete(aJson);
         return NO_ERROR;
     }
 
