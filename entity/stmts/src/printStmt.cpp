@@ -5,16 +5,19 @@
 #include<QDebug>
 
 
-PrintStmt::PrintStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
+PrintStmt::PrintStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
 {
+    qDebug() << "PrintStmt()";
 }
 
 PrintStmt::~PrintStmt()
 {
+    qDebug() << "~PrintStmt()";
 }
 
 ResultState PrintStmt::compile()
 {
+    qDebug() << "PrintStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){
@@ -47,5 +50,6 @@ ResultState PrintStmt::compile()
 
 ResultState PrintStmt::run()
 {
-    //return NO_ERROR;
+    qDebug() << "PrintStmt.run()";
+    return NO_ERROR;
 }

@@ -8,7 +8,7 @@
 class Statement
 {
 public:
-    Statement(QString, QString, Label* = nullptr);
+    Statement(QString programName, QString statement, Label* label=nullptr);
 	virtual ~Statement();
     virtual ResultState compile() = 0;
     virtual ResultState run() = 0;

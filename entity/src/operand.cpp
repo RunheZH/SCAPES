@@ -17,4 +17,5 @@ QString Operand::getValue()
 ResultState Operand::setValue(QString value)
 {
     this->value = value;
+    return NO_ERROR;
 }

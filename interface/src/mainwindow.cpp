@@ -187,7 +187,7 @@ void MainWindow::openFile(const QModelIndex &index){
 //SAVE FILE FUNCTION
 int MainWindow::saveAsFile(){
     QString filePath = QFileDialog::getSaveFileName(this,
-            tr("Save SCAPES file"), "/home/student/Desktop/new file.scp",
+            tr("Save SCAPES file"), QStandardPaths::writableLocation(QStandardPaths::DesktopLocation) + "/new file.scp",
             tr("SCAPES file (*.scp);;All Files (*)"));
     QFile file(filePath);
     if(filePath == ""){ return -1; }
@@ -206,28 +206,29 @@ int MainWindow::saveAsFile(){
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
     dirUpdate(filePath);
 
-    //save control part
+    //calling save control
     SaveControl* savecontrol = new SaveControl(ft->getFileName(),ft->getFilePath());
     Program* pgm = savecontrol->save();
-//    qDebug()<<"fileDir save as: "<<fileDir;
+
+    qDebug() << "filePath save as: " << filePath;
     if(programList.size()==0){
         programList.push_back({filePath,pgm});
-        qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
+        qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
     }else {
         for(int i=0; i<programList.size(); i++){
             if(programList[i].first==filePath){
                 programList[i].second = pgm;
-                qDebug()<<"programList replace existed: {"<<filePath<<","<<pgm<<"}";
+                qDebug() << "programList replace existed: {" << filePath << "," << pgm << "}";
                 break;
             }else if (i==programList.size()-1) {
                 programList.push_back({filePath,pgm});
-                qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
+                qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
                 break;
             }
         }
     }
     delete(savecontrol);
-    //QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
+    //QMessageBox::information(this, "Save Complete", "Saved file: " + file.fileName());
     return 0;
 }
 
@@ -257,24 +258,25 @@ void MainWindow::saveFile(){
         //save control part
         SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFilePath());
         Program* pgm = sc->save();
-//        qDebug()<<"fileDir save as: "<<fileDir;
+        qDebug() << "filePath save as: " << filePath;
         if(programList.size()==0){
             programList.push_back({filePath,pgm});
-            qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
+            qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
         }else {
             for(int i=0; i<programList.size(); i++){
                 if(programList[i].first==filePath){
                     programList[i].second = pgm;
-                    qDebug()<<"programList replace existed: {"<<filePath<<","<<pgm<<"}";
+                    qDebug() << "programList replace existed: {" << filePath << "," << pgm << "}";
                     break;
                 }else if (i==programList.size()-1) {
                     programList.push_back({filePath,pgm});
-                    qDebug()<<"programList add new: {"<<filePath<<","<<pgm<<"}";
+                    qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
                     break;
                 }
             }
         }
-        QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
+        delete(sc);
+        QMessageBox::information(this, "Save Complete", "Saved file: " + file.fileName());
     }
 }
 

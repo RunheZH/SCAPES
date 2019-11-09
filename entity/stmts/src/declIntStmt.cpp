@@ -3,16 +3,19 @@
 #include<QApplication>
 #include<QDebug>
 
-DeclIntStmt::DeclIntStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
+DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
 {
+    qDebug() << "DeclIntStmt()";
 }
 
 DeclIntStmt::~DeclIntStmt()
 {
+    qDebug() << "~DeclIntStmt()";
 }
 
 ResultState DeclIntStmt::compile()
 {
+    qDebug() << "DeclIntStmt.compile()";
 
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
@@ -39,6 +42,7 @@ ResultState DeclIntStmt::compile()
 
 ResultState DeclIntStmt::run()
 {
-  return NO_ERROR;
+    qDebug() << "DeclIntStmt.run()";
+    return NO_ERROR;
 }
 

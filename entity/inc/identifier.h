@@ -7,10 +7,10 @@
 class Identifier
 {
 public:
-    explicit Identifier(QString aName): name(aName){}
-    QString getName() const {return name;}
-    virtual QJsonObject toJSon() = 0;
-    virtual ~Identifier() = default;
+    Identifier(QString identifierName);
+    virtual ~Identifier();
+    QString getName();
+    virtual QJsonObject toJSON() = 0;
 
 protected:
     QString name;

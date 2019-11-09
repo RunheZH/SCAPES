@@ -3,16 +3,19 @@
 #include<QApplication>
 #include<QDebug>
 
-ReadStmt::ReadStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
+ReadStmt::ReadStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
 {
+    qDebug() << "ReadStmt()";
 }
 
 ReadStmt::~ReadStmt()
 {
+    qDebug() << "~ReadStmt()";
 }
 
 ResultState ReadStmt::compile()
 {
+    qDebug() << "ReadStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){
@@ -44,5 +47,6 @@ ResultState ReadStmt::compile()
 
 ResultState ReadStmt::run()
 {
-    //return NO_ERROR;
+    qDebug() << "ReadStmt.run()";
+    return NO_ERROR;
 }

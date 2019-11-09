@@ -22,7 +22,7 @@
 class Program
 {
 public:
-    Program(QString, QString);
+    Program(QString programName, QString programPath);
     ~Program();
     ResultState save();
     ResultState compile();
@@ -32,7 +32,7 @@ private:
     QString pgmName;
     QString pgmPath;
     qint16  numStmt;
-    Identifier* ids;
+    //Identifier* ids;
     Statement*  statements[MAX_VALUE_16];
 
     // helper functions

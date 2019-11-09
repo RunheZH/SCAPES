@@ -1,15 +1,18 @@
 #include "../inc/jMoreStmt.h"
 
-JMoreStmt::JMoreStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
+JMoreStmt::JMoreStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
 {
+    qDebug() << "JMoreStmt()";
 }
 
 JMoreStmt::~JMoreStmt()
 {
+    qDebug() << "~JMoreStmt()";
 }
 
 ResultState JMoreStmt::compile()
 {
+    qDebug() << "JMoreStmt.compile()";
     {
         QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
@@ -30,5 +33,6 @@ ResultState JMoreStmt::compile()
 
 ResultState JMoreStmt::run()
 {
-    //return NO_ERROR;
+    qDebug() << "JMoreStmt.run()";
+    return NO_ERROR;
 }

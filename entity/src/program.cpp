@@ -23,6 +23,7 @@ ResultState Program::save()
     qDebug() << "RUNHE: Program::save()";
     QFile file(this->pgmPath);
     qint16 lineNum = 0;
+    this->numStmt = 0;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "File_open_error";
@@ -72,9 +73,13 @@ ResultState Program::run()
 
 ResultState Program::addStmt(QString stmt)
 {
+    qDebug() << stmt;
     QStringList args = stmt.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     Statement* newStmt = nullptr;
     Label* newLabel = nullptr;
+    // empty line
+    if (args.isEmpty()) return INVALID_STATEMENT;
+
     QString instruction = args[0];
 
     // TODO: check label

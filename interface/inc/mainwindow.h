@@ -15,6 +15,7 @@
 #include <QVector>
 #include <QDir>
 #include <QCloseEvent>
+#include <QStandardPaths>
 #include "tabchildwidget.h"
 #include "opennewwidget.h"
 #include "outputtabwidget.h"

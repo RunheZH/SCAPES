@@ -1,7 +1,11 @@
 #include "../inc/label.h"
 #include "../inc/jsonHandler.h"
 
-QJsonObject Label::toJSon()
+Label::Label(QString labelName) : Identifier(labelName){}
+
+Label::~Label(){}
+
+QJsonObject Label::toJSON()
 {
     QString jsonString = "{\"name\":\"" + name + "\"}";
     JsonHandler aJsonHandler;

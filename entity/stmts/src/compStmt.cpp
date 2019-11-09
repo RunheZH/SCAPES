@@ -4,16 +4,19 @@
 #include<QApplication>
 #include<QDebug>
 
-CompStmt::CompStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
+CompStmt::CompStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
 {
+    qDebug() << "CompStmt()";
 }
 
 CompStmt::~CompStmt()
 {
+    qDebug() << "~CompStmt()";
 }
 
 ResultState CompStmt::compile()
 {
+    qDebug() << "CompStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){
@@ -66,5 +69,6 @@ ResultState CompStmt::compile()
 
 ResultState CompStmt::run()
 {
-    //return NO_ERROR;
+    qDebug() << "CompStmt.run()";
+    return NO_ERROR;
 }

@@ -14,7 +14,7 @@ public:
 
 private:
     QString value; // use string for now, change it later
-    Identifier* id;
+    //Identifier* id;
 };
 
 #endif
