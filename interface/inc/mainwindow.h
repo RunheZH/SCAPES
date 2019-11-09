@@ -14,7 +14,10 @@
 #include <QPair>
 #include <QVector>
 #include <QDir>
+#include <QCloseEvent>
 #include "tabchildwidget.h"
+#include "opennewwidget.h"
+#include "outputtabwidget.h"
 #include "../../control/inc/compileControl.h"
 #include "../../control/inc/saveControl.h"
 #include "../../entity/inc/program.h"
@@ -29,26 +32,33 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
-    void compileText(QString text);
     QVector<QPair<QString , Program*>> programList;    //vector<pair<String fileName, Program* pgm>> programList
-    ~MainWindow();
+    ~MainWindow()  override;
+
+protected:
+    void closeEvent(QCloseEvent*) override;
 
 private:
     Ui::MainWindow *ui;
     QString currentFile = "";
     QFileSystemModel *dirmodel;
+    void startSelectionView();
+    void outputView();
     void dirView();
     void dirUpdate(QString filePath);
-    void openFile();
+    int openFile();
     void openFile(const QModelIndex &index);
     int saveAsFile();
     void saveFile();
+    void compileText(QString filePath);
     void showErrorMessage(QString errorText);
     void tabView();
     void tabAdd();
     int tabIsExist(QString fileDir);
 
 private slots:
+    void startNewView();
+    void startOpenView();
     void on_actionAbout_SCAPES_triggered();
     void on_actionQuit_triggered();
     void on_actionSave_triggered();
@@ -64,6 +74,9 @@ private slots:
     void on_tabWidget_tabCloseRequested(int index);
     void on_tabWidget_tabBarClicked(int index);
     void on_actionSave_As_triggered();
+
+ signals:
+    void startSelectionRemove();
 };
 
 #endif // MAINWINDOW_H

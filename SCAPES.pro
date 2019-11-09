@@ -48,6 +48,8 @@ SOURCES += \
         entity/stmts/src/readStmt.cpp \
         interface/src/main.cpp \
         interface/src/mainwindow.cpp \
+        interface/src/opennewwidget.cpp \
+        interface/src/outputtabwidget.cpp \
         interface/src/tabchildwidget.cpp
 
 HEADERS += \
@@ -75,13 +77,20 @@ HEADERS += \
         entity/stmts/inc/printStmt.h \
         entity/stmts/inc/readStmt.h \
         interface/inc/mainwindow.h \
+        interface/inc/opennewwidget.h \
+        interface/inc/outputtabwidget.h \
         interface/inc/tabchildwidget.h
 
 FORMS += \
         mainwindow.ui \
+        opennewwidget.ui \
+        outputtabwidget.ui \
         tabchildwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resource.qrc

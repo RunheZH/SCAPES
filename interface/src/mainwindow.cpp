@@ -6,13 +6,49 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    //initialization
     dirView();
-    tabView();
+    outputView();
+    startSelectionView();
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+//OPEN OR NEW START SELECTION
+void MainWindow::startSelectionView(){
+    ui->tabWidget->setVisible(false);
+    OpenNewWidget* onw = new OpenNewWidget();
+    ui->verticalLayout->addWidget(onw);
+    connect(onw,SIGNAL(newFileClick()),this,SLOT(startNewView()));
+    connect(onw,SIGNAL(openFileClick()),this,SLOT(startOpenView()));
+    connect(this, SIGNAL(startSelectionRemove()), onw, SLOT(startSelectionRemove()));
+}
+
+void MainWindow::startNewView(){    //click new file button
+    ui->tabWidget->setVisible(true);
+    startSelectionRemove();
+    tabView();
+}
+
+void MainWindow::startOpenView(){   //click open file button
+    if(openFile()==-1){
+        return;
+    }
+    ui->tabWidget->setVisible(true);
+    startSelectionRemove();
+}
+
+
+//OUTPUT TAB VIEW
+void MainWindow::outputView(){
+    OutputTabWidget* consoleTab = new OutputTabWidget();
+    OutputTabWidget* errorTab = new OutputTabWidget();
+    ui->outputWidget->addTab(consoleTab, "Console");
+    ui->outputWidget->addTab(errorTab, "Error");
 }
 
 //DIRECTORY VIEW
@@ -34,7 +70,7 @@ void MainWindow::dirUpdate(QString filePath){
     }
     if(ui->tabWidget->count()>0){   //there is at least one tab opened, and switch to that tab file path in file explorer
         tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-                    qDebug()<<"getfilepath "<<ft->getFilePath();
+//                    qDebug()<<"getfilepath "<<ft->getFilePath();
         if(ft->getFilePath()==""){  //new file situation
             ui->dirView->selectionModel()->clearSelection();
             return;
@@ -73,15 +109,15 @@ int MainWindow::tabIsExist(QString filePath){
 
 
 //OPEN FILE FUNCTION-from tool bar
-void MainWindow::openFile(){
+int MainWindow::openFile(){
     QString filePath = QFileDialog::getOpenFileName(this,
             tr("Open the file"), QCoreApplication::applicationDirPath(),
             tr("SCAPES file (*.scp);;All Files (*)"));
-    if(filePath == ""){ return; }
+    if(filePath == ""){ return -1; }
     QFile file(filePath);
     if(!file.open(QIODevice::ReadOnly | QFile::Text)){
         QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
-        return;
+        return -2;
     }
     currentFile = filePath;
     QTextStream in(&file);
@@ -94,12 +130,13 @@ void MainWindow::openFile(){
     if(tabIndex!=-1){
         ui->tabWidget->setCurrentIndex(tabIndex);
         dirUpdate(filePath);
-        return;
+        return 0;
     }
     //else file not show in the tab
 
     if((ui->tabWidget->count())==0){    //check if there are no tab
-        tabAdd();
+//        tabAdd();
+        startNewView();
         ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     }else if(!ft->isEmpty()){           //check if there is at least one tab and if it is empty
         tabAdd();
@@ -112,6 +149,7 @@ void MainWindow::openFile(){
     file.close();
     ui->tabWidget->setTabText(ui->tabWidget->currentIndex(), ft->getFileName());
     dirUpdate(filePath);
+    return 0;
 //    QMessageBox::information(this, "Open Complete", "Open file: " + file.fileName());
 }
 
@@ -131,10 +169,11 @@ void MainWindow::openFile(const QModelIndex &index){
         }
 
         if((ui->tabWidget->count())==0){    //check if there are no tab
-            tabAdd();
+            startNewView();
             ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
         }else if(!ft->isEmpty()){           //check if there is at least one tab and if it is empty
             tabAdd();
+//            startNewView();
             ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
         }
         ft->setText(text);
@@ -168,8 +207,8 @@ int MainWindow::saveAsFile(){
     dirUpdate(filePath);
 
     //save control part
-    SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFilePath());
-    Program* pgm = sc->save();
+    SaveControl* savecontrol = new SaveControl(ft->getFileName(),ft->getFilePath());
+    Program* pgm = savecontrol->save();
 //    qDebug()<<"fileDir save as: "<<fileDir;
     if(programList.size()==0){
         programList.push_back({filePath,pgm});
@@ -187,6 +226,7 @@ int MainWindow::saveAsFile(){
             }
         }
     }
+    delete(savecontrol);
     //QMessageBox::information(this, "Save Complete", "Save file: " + file.fileName());
     return 0;
 }
@@ -198,7 +238,6 @@ void MainWindow::saveFile(){
     if(filePath==""){    //  it is new file
         saveAsFile();
     }else { //already existed file
-        qDebug()<<"already exist file";
         QFile file(filePath);
         if(!file.open(QFile::WriteOnly | QFile::Text)){
             QMessageBox::warning(this, "Warning", "Cannot save file: " + file.errorString());
@@ -240,9 +279,17 @@ void MainWindow::saveFile(){
 }
 
 //COMPILE TEXT FUNCTION
-void MainWindow::compileText(QString fileText){
-//    qDebug()<<fileText;
-    Program* pgm; // temp, for testing purpose only
+void MainWindow::compileText(QString filePath){
+    Program* pgm = nullptr;
+    for(int i=0; i<programList.size();i++){
+        if(programList[i].first==filePath){
+            pgm = programList[i].second;
+        }
+    }
+    if(pgm == nullptr){
+        QMessageBox::warning(this,"ERROR","You must save before compile");
+        return;
+    }
     CompileControl* compileControl = new CompileControl(pgm);
     compileControl->compile();
     delete(compileControl);
@@ -263,7 +310,14 @@ void MainWindow::on_actionAbout_SCAPES_triggered()
 //SAVE FILE TRIGGER
 void MainWindow::on_actionSave_triggered()
 {
+    if(ui->tabWidget->count()==0){ return; }
     saveFile();
+}
+
+void MainWindow::on_actionSave_As_triggered()
+{
+    if(ui->tabWidget->count()==0){ return; }
+    saveAsFile();
 }
 
 //OPEN FILE TRIGGER
@@ -279,26 +333,54 @@ void MainWindow::on_dirView_doubleClicked(const QModelIndex &index)
 
 void MainWindow::on_actionNew_triggered()
 {
-    tabAdd();
+//    tabAdd();
+    startNewView();
 }
 
 void MainWindow::on_actionCompile_triggered()
 {
+    if(ui->tabWidget->count()==0){ return; }
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    QString fileText = ft->getText();
-    compileText(fileText);
+    QMessageBox msgBox;
+    msgBox.setText("The file " + ft->getFileName() + " has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes before compile?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Ignore | QMessageBox::Cancel);
+    msgBox.setButtonText(QMessageBox::Save, "Save and compile");
+    msgBox.setButtonText(QMessageBox::Ignore, "Compile the last save");
+    msgBox.setDefaultButton(QMessageBox::Save);
+
+    int ret = msgBox.exec();
+    switch (ret) {
+        case QMessageBox::Save:
+            saveFile();
+            break;
+        case QMessageBox::Ignore:
+            break;
+        case QMessageBox::Cancel:
+        // Cancel was clicked
+            return;
+        default:
+        // should never be reached
+            QMessageBox::warning(this, "Error", "Cannot save before compile");
+            break;
+    }
+
+    ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    QString filePath = ft->getFilePath();
+    compileText(filePath);
 }
 
 void MainWindow::on_actionRun_triggered()
 {
-    qDebug()<<ui->tabWidget->count();
+//    qDebug()<<ui->tabWidget->count();
+    QMessageBox::warning(this, "Sorry", "not yet implemented");
 }
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
     QMessageBox msgBox;
-    msgBox.setText("The file has been modified.");
+    msgBox.setText("The file " + ft->getFileName() + " has been modified.");
     msgBox.setInformativeText("Do you want to save your changes?");
     msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Discard | QMessageBox::Cancel);
     msgBox.setDefaultButton(QMessageBox::Save);
@@ -318,39 +400,19 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
                 saveFile();
                 ui->tabWidget->removeTab(index);
                 ft->~tabchildwidget();
-//                if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
-//                    ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-//    //                    qDebug()<<"getfiledir "<<ft->getFileDir();
-//                    ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));    //update file explorer
-//                }else{
-//                    ui->dirView->selectionModel()->clearSelection();
-//                }
                 dirUpdate("");
                 break;
             }
             if(saveAsFile()!=-1){
                 ui->tabWidget->removeTab(index);
                 ft->~tabchildwidget();
-                if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
-                    ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    //                    qDebug()<<"getfiledir "<<ft->getFileDir();
-                    ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));    //update file explorer
-                }else{
-                    ui->dirView->selectionModel()->clearSelection();
-                }
+                dirUpdate("");
             }
             break;
         case QMessageBox::Discard:
         // Don't Save was clicked
             ui->tabWidget->removeTab(index);
             ft->~tabchildwidget();
-//            if(ui->tabWidget->count()>0){   //only update file explorer when there is exist tab
-//                ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-////                    qDebug()<<"getfiledir "<<ft->getFileDir();
-//                ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));    //update file explorer
-//            }else{
-//                ui->dirView->selectionModel()->clearSelection();
-//            }
             dirUpdate("");
             break;
         case QMessageBox::Cancel:
@@ -361,6 +423,9 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
             QMessageBox::warning(this, "Error", "Cannot Close Tab");
             break;
     }
+    if(ui->tabWidget->count()<=0){
+        startSelectionView();
+    }
 }
 
 void MainWindow::on_tabWidget_tabBarClicked(int index)
@@ -369,17 +434,20 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
     dirUpdate(ft->getFilePath());
 }
 
-void MainWindow::on_actionSave_As_triggered()
-{
-    saveAsFile();
-}
-
 //QUIT PROGRAM TRIGGER
 void MainWindow::on_actionQuit_triggered()
 {
 //    for(int i=0; i<programList.size();i++){
 //        Program* pgm = programList[i].second;
-//        delete pgm;
+//        delete (pgm);
 //    }
     qApp->exit();
+}
+
+void MainWindow::closeEvent(QCloseEvent*){
+    //save before quit
+    for(int i=ui->tabWidget->count(); i>0; i--){
+       ui->tabWidget->setCurrentIndex(i);
+       on_tabWidget_tabCloseRequested(ui->tabWidget->currentIndex());
+    }
 }

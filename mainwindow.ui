@@ -6,12 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>825</width>
-    <height>572</height>
+    <width>892</width>
+    <height>655</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">background-color: qlineargradient(spread:pad, x1:0.502538, y1:0.034, x2:0.517766, y2:0.983, stop:0 rgba(145, 145, 145, 255), stop:1 rgba(198, 198, 198, 255));</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -19,6 +22,60 @@
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
        <widget class="QTabWidget" name="tabWidget">
+        <property name="styleSheet">
+         <string notr="true">QTabWidget::pane {
+    border-top: 2px solid rgb(196, 196, 196);
+}
+
+QTabWidget::tab-bar {
+    left: 5px;
+}
+
+QTabBar::tab {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(90, 131, 174, 255), stop:1 rgba(117, 176, 238, 255));
+    border: 2px solid rgb(90, 131, 174);
+    border-bottom-color: rgb(90, 131, 174);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 13ex;
+    padding: 3px;
+	font: 75 11pt &quot;Source Code Pro&quot; white;
+}
+
+QTabBar::tab:hover {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(114, 159, 207, 255), stop:1 rgba(52, 101, 164, 255));
+}
+
+QTabBar::tab:selected {
+	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(52, 101, 164, 255), stop:1 rgba(114, 159, 207, 255));
+    border-color: rgb(52, 101, 164);
+    border-bottom-color: rgb(52, 101, 164);
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px;
+}
+
+QTabBar::tab:selected {
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+
+</string>
+        </property>
         <property name="tabShape">
          <enum>QTabWidget::Triangular</enum>
         </property>
@@ -38,33 +95,6 @@
       </item>
      </layout>
     </item>
-    <item row="1" column="1">
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <widget class="QLabel" name="label">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>Console Output</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QTextEdit" name="consoleText">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </item>
     <item row="0" column="0" rowspan="2">
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
@@ -74,6 +104,128 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTreeView {
+    background-color: rgb(196, 196, 196);
+}
+
+QTreeView {
+    show-decoration-selected: 1;
+}
+
+QTreeView::item {
+    border: 1px solid rgb(142, 141, 141);
+    border-top-color: transparent;
+    border-bottom-color: transparent;
+}
+
+QTreeView::item:hover {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(114, 159, 207, 255), stop:1 rgba(52, 101, 164, 255));
+    border: 1px solid rgb(114, 159, 207);
+}
+
+QTreeView::item:selected {
+    border: 1px solid qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(52, 101, 164, 255), stop:1 rgba(114, 159, 207, 255));
+}
+
+QTreeView::item:selected:active{
+    background: rgb(52, 101, 164);
+	border: 1px solid rgb(52, 101, 164);
+}
+QTreeView{selection-background-color: rgba(243, 67, 12, 0);}</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item row="1" column="1">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="topMargin">
+       <number>2</number>
+      </property>
+      <item>
+       <widget class="QTabWidget" name="outputWidget">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>200</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QTabWidget::pane {
+    border-top: 2px solid rgb(196, 196, 196);
+}
+
+QTabWidget::tab-bar {
+    left: 5px;
+}
+
+QTabBar::tab {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(90, 131, 174, 255), stop:1 rgba(117, 176, 238, 255));
+    border: 2px solid rgb(90, 131, 174);
+    border-bottom-color: rgb(90, 131, 174);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    min-width: 20ex;
+    padding: 3px;
+	font: 75 12pt &quot;Source Code Pro&quot;;
+}
+
+QTabBar::tab:hover {
+    background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(114, 159, 207, 255), stop:1 rgba(52, 101, 164, 255));
+}
+
+QTabBar::tab:selected {
+	background: qlineargradient(spread:pad, x1:0.5, y1:0, x2:0.5, y2:1, stop:0 rgba(52, 101, 164, 255), stop:1 rgba(114, 159, 207, 255));
+    border-color: rgb(52, 101, 164);
+    border-bottom-color: rgb(52, 101, 164);
+}
+
+QTabBar::tab:!selected {
+    margin-top: 2px;
+}
+
+QTabBar::tab:selected {
+    margin-left: -4px;
+    margin-right: -4px;
+}
+
+QTabBar::tab:first:selected {
+    margin-left: 0; /* the first selected tab has nothing to overlap with on the left */
+}
+
+QTabBar::tab:last:selected {
+    margin-right: 0; /* the last selected tab has nothing to overlap with on the right */
+}
+
+QTabBar::tab:only-one {
+    margin: 0; /* if there is only one tab, we don't want overlapping margins */
+}
+
+
+</string>
+        </property>
+        <property name="tabShape">
+         <enum>QTabWidget::Triangular</enum>
+        </property>
+        <property name="currentIndex">
+         <number>-1</number>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>16</width>
+          <height>16</height>
+         </size>
+        </property>
+        <property name="elideMode">
+         <enum>Qt::ElideNone</enum>
         </property>
        </widget>
       </item>
@@ -86,7 +238,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>825</width>
+     <width>892</width>
      <height>22</height>
     </rect>
    </property>
@@ -125,6 +277,12 @@
    <addaction name="menuSettings"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
+   <property name="autoFillBackground">
+    <bool>false</bool>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background-color: rgb(114, 159, 207)</string>
+   </property>
    <attribute name="toolBarArea">
     <enum>TopToolBarArea</enum>
    </attribute>
@@ -134,57 +292,112 @@
    <addaction name="actionNew"/>
    <addaction name="actionOpen"/>
    <addaction name="actionSave"/>
+   <addaction name="separator"/>
    <addaction name="actionCompile"/>
    <addaction name="actionRun"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/imgs/interface/resource/new_icon.png</normaloff>:/imgs/interface/resource/new_icon.png</iconset>
+   </property>
    <property name="text">
     <string>New</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
   </action>
   <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/imgs/interface/resource/open_icon.png</normaloff>:/imgs/interface/resource/open_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Open</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
   </action>
   <action name="actionSave">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/imgs/interface/resource/save_icon.png</normaloff>:/imgs/interface/resource/save_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Save</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionAbout_SCAPES">
    <property name="text">
     <string>About SCAPES</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
   </action>
   <action name="actionInstruction_Book">
    <property name="text">
     <string>Instruction Book</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+I</string>
+   </property>
   </action>
   <action name="actionQuit">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/imgs/interface/resource/exit_icon.png</normaloff>:/imgs/interface/resource/exit_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Quit</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
   </action>
   <action name="actionCompile">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/imgs/interface/resource/compile_icon.png</normaloff>:/imgs/interface/resource/compile_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Compile</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+B</string>
+   </property>
   </action>
   <action name="actionRun">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/imgs/interface/resource/run_icon.png</normaloff>:/imgs/interface/resource/run_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Run</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
+   </property>
   </action>
   <action name="actionSave_As">
+   <property name="icon">
+    <iconset>
+     <normaloff>:/imgs/interface/resource/saveas_icon.png</normaloff>:/imgs/interface/resource/saveas_icon.png</iconset>
+   </property>
    <property name="text">
     <string>Save As</string>
    </property>
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>

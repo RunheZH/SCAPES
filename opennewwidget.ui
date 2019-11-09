@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>OpenNewWidget</class>
+ <widget class="QWidget" name="OpenNewWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>750</width>
+    <height>514</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QPushButton" name="newFile">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Source Code Pro</family>
+       <pointsize>20</pointsize>
+       <weight>9</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-radius: 4px;
+  	background-color: rgb(114, 159, 207);
+	color: #FFFFFF;
+  	font: 75 20pt &quot;Source Code Pro&quot;;
+ 	margin: 5px;
+}
+
+QPushButton:hover{
+        background: rgb(102, 144, 189);
+}
+
+QPushButton:pressed {
+        background: rgb(102, 144, 189);
+}</string>
+     </property>
+     <property name="text">
+      <string>New File</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QPushButton" name="openFile">
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="font">
+      <font>
+       <family>Source Code Pro</family>
+       <pointsize>20</pointsize>
+       <weight>9</weight>
+       <italic>false</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QPushButton {
+	border-radius: 4px;
+  	background-color: rgb(114, 159, 207);
+	color: #FFFFFF;
+  	font: 75 20pt &quot;Source Code Pro&quot;;
+ 	margin: 5px;
+}
+
+QPushButton:hover{
+        background: rgb(102, 144, 189);
+}
+
+QPushButton:pressed {
+        background: rgb(102, 144, 189);
+}</string>
+     </property>
+     <property name="text">
+      <string>Open File</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

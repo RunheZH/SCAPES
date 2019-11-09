@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>tabchildwidget</class>
- <widget class="QWidget" name="tabchildwidget">
+ <class>OutputTabWidget</class>
+ <widget class="QWidget" name="OutputTabWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>579</width>
-    <height>380</height>
+    <width>400</width>
+    <height>300</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QHBoxLayout" name="horizontalLayout">
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -26,10 +26,10 @@
    <property name="bottomMargin">
     <number>0</number>
    </property>
-   <item row="0" column="0">
+   <item>
     <widget class="QTextEdit" name="textEdit">
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(196, 196, 196);</string>
+      <string notr="true">background-color: 	rgb(196, 196, 196);</string>
      </property>
     </widget>
    </item>
