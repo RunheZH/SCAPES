@@ -1,8 +1,4 @@
 #include "../inc/compStmt.h"
-#include "../../inc/jsonHandler.h"
-
-#include<QApplication>
-#include<QDebug>
 
 CompStmt::CompStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
 {
@@ -34,37 +30,56 @@ ResultState CompStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
     QString operand2 = args[2];
+    ResultState res = NO_ERROR;
 
-    JsonHandler* aJson = new JsonHandler(this->programName);
-    QJsonObject firstQJsonObject = aJson->findVariable(operand1, TypeE::INT);
-    QJsonObject secondQJsonObject = aJson->findVariable(operand2, TypeE::INT);
+    JsonHandler* jsonHdl = new JsonHandler(this->programName);
+    // TODO: not necessary to be ints
+    QJsonObject firstQJsonObject = jsonHdl->findVariable(operand1);
+    QJsonObject secondQJsonObject = jsonHdl->findVariable(operand2);
 
+    /*
     // Variable 1 found
-    if (firstQJsonObject != aJson->getJsonFromStr("{}")){
+    if (firstQJsonObject != jsonHdl->getJsonFromStr("{}")){
         // Variable 2 found
-        if (secondQJsonObject != aJson->getJsonFromStr("{}")){
-            delete(aJson);
-            return NO_ERROR;
+        if (secondQJsonObject != jsonHdl->getJsonFromStr("{}")){
+            QFile file(this->programName + ".json");
+            if (file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
+                // We're going to streaming text to the file
+                QTextStream stream(&file);
+
+                stream << "Center Point: " << iter_result[0] << "  " << iter_result[1]
+                          << "  " << iter_result[2] << " Rotation: " << iter_result[3] <<'\n';
+
+                file.close();
+                qDebug() << "sucessfully wrote to file" << this->programName;
+                res = NO_ERROR;
+            }
+            else{
+                qDebug() << "File_open_error";
+                res = FILE_OPEN_ERROR;
+            }
+
         }
         // Variable 2 NOT found
         else {
-            delete(aJson);
-            return VARIABLE_TWO_NOT_FOUND_ERROR;
+            res = VARIABLE_TWO_NOT_FOUND_ERROR;
         }
     }
     // Variable 1 NOT found
     else{
         // Variable 2 found
-        if (secondQJsonObject != aJson->getJsonFromStr("{}")){
-            delete(aJson);
-            return VARIABLE_ONE_NOT_FOUND_ERROR;
+        if (secondQJsonObject != jsonHdl->getJsonFromStr("{}")){
+            res = VARIABLE_ONE_NOT_FOUND_ERROR;
         }
         // Variable 2 NOT found
         else {
-            delete(aJson);
-            return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
+            res = VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
         }
     }
+
+    */
+    delete(jsonHdl);
+    return res;
 }
 
 ResultState CompStmt::run()

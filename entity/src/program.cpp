@@ -2,9 +2,10 @@
 
 /*********************************** API ***************************************/
 
-Program::Program(QString pgmName, QString pgmPath)
+Program::Program(QString pgmPath)
 {
-    this->pgmName = pgmName;
+    QStringList fileName = pgmPath.split(QRegExp(".scp"), QString::SkipEmptyParts);
+    this->pgmName = fileName[0];
     this->pgmPath = pgmPath;
     this->numStmt = 0;
 }
@@ -52,12 +53,17 @@ ResultState Program::compile()
 {
     qDebug() << "RUNHE: Program::compile()";
 
+    QFile file(this->pgmName + ".json");
+    file.remove();
+
     ResultState res;
     for(qint16 i = 0; i < this->numStmt; i++){
         res = this->statements[i]->compile();
         // TODO: error recovery
         if (res != NO_ERROR)
             qDebug() << res << " statement " << i;
+        else
+            qDebug() << "compiled successfully";
     }
     return NO_ERROR;
 }
@@ -65,7 +71,7 @@ ResultState Program::compile()
 ResultState Program::run()
 {
     qDebug() << "RUNHE: Program::run()";
-    // TODO
+    // TODO: D2
     return NO_ERROR;
 }
 

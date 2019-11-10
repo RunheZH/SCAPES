@@ -16,13 +16,11 @@
 #include "../stmts/inc/movStmt.h"
 #include "../stmts/inc/printStmt.h"
 #include "../stmts/inc/readStmt.h"
-#include <QFile>
-#include <QRegExp>
 
 class Program
 {
 public:
-    Program(QString programName, QString programPath);
+    Program(QString programPath);
     ~Program();
     ResultState save();
     ResultState compile();

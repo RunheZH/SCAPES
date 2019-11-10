@@ -207,7 +207,7 @@ int MainWindow::saveAsFile(){
     dirUpdate(filePath);
 
     //calling save control
-    SaveControl* savecontrol = new SaveControl(ft->getFileName(),ft->getFilePath());
+    SaveControl* savecontrol = new SaveControl(ft->getFilePath());
     Program* pgm = savecontrol->save();
 
     qDebug() << "filePath save as: " << filePath;
@@ -256,11 +256,11 @@ void MainWindow::saveFile(){
         dirUpdate(filePath);
 
         //save control part
-        SaveControl* sc = new SaveControl(ft->getFileName(),ft->getFilePath());
+        SaveControl* sc = new SaveControl(ft->getFilePath());
         Program* pgm = sc->save();
         qDebug() << "filePath save as: " << filePath;
         if(programList.size()==0){
-            programList.push_back({filePath,pgm});
+            programList.push_back({filePath, pgm});
             qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
         }else {
             for(int i=0; i<programList.size(); i++){
@@ -269,7 +269,7 @@ void MainWindow::saveFile(){
                     qDebug() << "programList replace existed: {" << filePath << "," << pgm << "}";
                     break;
                 }else if (i==programList.size()-1) {
-                    programList.push_back({filePath,pgm});
+                    programList.push_back({filePath, pgm});
                     qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
                     break;
                 }

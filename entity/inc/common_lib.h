@@ -1,10 +1,13 @@
 #ifndef COMMON_LIB_H
 #define COMMON_LIB_H
 
+#include <QApplication>
+#include <QFile>
 #include <QtDebug>
 #include <QString>
 #include <QStringList>
 #include <QRegExp>
+
 #define MAX_VALUE_16 32767
 
 enum StatementId

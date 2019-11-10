@@ -33,7 +33,7 @@ ResultState PrintStmt::compile()
     QString operand1 = args[1];
 
     JsonHandler* aJson = new JsonHandler(this->programName);
-    QJsonObject aQJsonObject = aJson->findVariable(operand1, TypeE::INT);
+    QJsonObject aQJsonObject = aJson->findVariable(operand1);
 
     // Variable 1 not found
     if(aQJsonObject == aJson->getJsonFromStr("{}")){

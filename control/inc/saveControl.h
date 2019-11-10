@@ -7,7 +7,7 @@
 class SaveControl
 {
 public:
-    SaveControl(QString, QString);
+    SaveControl(QString programPath);
     ~SaveControl();
     Program* save();
 

@@ -1,10 +1,8 @@
 #include "../inc/saveControl.h"
 
-SaveControl::SaveControl(QString pgmName, QString pgmPath)
+SaveControl::SaveControl(QString pgmPath)
 {
-    this->pgmName = pgmName;
     this->pgmPath = pgmPath;
-
 }
 
 SaveControl::~SaveControl()
@@ -13,7 +11,7 @@ SaveControl::~SaveControl()
 
 Program* SaveControl::save()
 {
-    Program* pgm = new Program(pgmName, pgmPath);
+    Program* pgm = new Program(pgmPath);
     pgm->save();
     return pgm;
 }

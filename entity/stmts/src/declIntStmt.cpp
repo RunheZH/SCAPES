@@ -31,12 +31,11 @@ ResultState DeclIntStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    JsonHandler* aJson = new JsonHandler(this->programName);
-    QJsonObject aQJsonObject = aJson->getJsonFromStr("{\"name\":\"operand1\", \"type\":0}");
-    aJson->addElement("variable", aQJsonObject);
+    JsonHandler* jsonHdl = new JsonHandler(this->programName);
+    QJsonObject valueObj = jsonHdl->getJsonObj("type", "int");
+    jsonHdl->addElement("variable", operand1, valueObj);
 
-    delete(aJson);
-
+    delete(jsonHdl);
     return NO_ERROR;
 }
 
