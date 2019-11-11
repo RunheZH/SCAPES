@@ -20,6 +20,16 @@ ResultState EndStmt::compile()
         return OPERAND_NUMBER_EXCEED_ERROR;
     }
 
+    QString instruction = args[0];
+    JsonHandler jsonHdlr(this->programName);
+    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, END);
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
+
+    if (label)
+    {
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+    }
+
     return NO_ERROR;
 }
 

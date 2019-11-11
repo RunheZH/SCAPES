@@ -3,8 +3,6 @@
 
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
-#include "../../inc/jsonHandler.h"
-#include "../../inc/variable.h"
 
 class DeclIntStmt : public Statement
 {

@@ -33,17 +33,24 @@ ResultState PrintStmt::compile()
     QString operand1 = args[1];
     ResultState res = NO_ERROR;
 
-    JsonHandler* jsonHdlr = new JsonHandler(this->programName);
-    QJsonObject aQJsonObject = jsonHdlr->findVariable(operand1);
+    JsonHandler jsonHdlr(this->programName);
+    QJsonObject aQJsonObject = jsonHdlr.findVariable(operand1);
 
     // Variable 1 not found
-    if(aQJsonObject == jsonHdlr->getJsonFromStr("{}")){
+    if(aQJsonObject == jsonHdlr.getJsonFromStr("{}")){
         res = VARIABLE_ONE_NOT_FOUND_ERROR;
     }
 
-    delete(jsonHdlr);
-    return res;
+    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
+    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
+    if (label)
+    {
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+    }
+
+    return res;
 }
 
 ResultState PrintStmt::run()

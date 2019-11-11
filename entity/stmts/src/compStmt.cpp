@@ -32,31 +32,40 @@ ResultState CompStmt::compile()
     QString operand2 = args[2];
     ResultState res = NO_ERROR;
 
-    JsonHandler* jsonHdlr = new JsonHandler(this->programName);
+    JsonHandler jsonHdlr(this->programName);
     // TODO: not necessary to be ints
-    QJsonObject firstQJsonObject = jsonHdlr->findVariable(operand1);
-    QJsonObject secondQJsonObject = jsonHdlr->findVariable(operand2);
+    QJsonObject firstQJsonObject = jsonHdlr.findVariable(operand1);
+    QJsonObject secondQJsonObject = jsonHdlr.findVariable(operand2);
 
     // Variable 1 found
-    if (firstQJsonObject != jsonHdlr->getJsonFromStr("{}")){
+    if (firstQJsonObject != jsonHdlr.getJsonFromStr("{}")){
         // Variable 2 NOT found
-        if (secondQJsonObject == jsonHdlr->getJsonFromStr("{}")){
-            res = VARIABLE_TWO_NOT_FOUND_ERROR;
+        if (secondQJsonObject == jsonHdlr.getJsonFromStr("{}")){
+            return VARIABLE_TWO_NOT_FOUND_ERROR;
         }
     }
     // Variable 1 NOT found
     else{
         // Variable 2 found
-        if (secondQJsonObject != jsonHdlr->getJsonFromStr("{}")){
-            res = VARIABLE_ONE_NOT_FOUND_ERROR;
+        if (secondQJsonObject != jsonHdlr.getJsonFromStr("{}")){
+            return VARIABLE_ONE_NOT_FOUND_ERROR;
         }
         // Variable 2 NOT found
         else {
-            res = VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
+            return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
         }
     }
 
-    delete(jsonHdlr);
+    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
+    QJsonObject op2Obj = jsonHdlr.getJsonObj(OP_2, operand2);
+    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, jsonHdlr.appendToEnd(op1Obj, op2Obj));
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
+
+    if (label)
+    {
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+    }
+
     return res;
 }
 

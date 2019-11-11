@@ -32,19 +32,18 @@ ResultState DeclIntStmt::compile()
     QString instruction = args[0];
     this->op1 = new Variable(args[1], INT);
 
-    JsonHandler* jsonHdlr = new JsonHandler(this->programName);
-    jsonHdlr->addElement("variable", op1->getName(), op1->toJSON());
+    JsonHandler jsonHdlr(this->programName);
+    jsonHdlr.addElement(VAR, op1->getName(), op1->toJSON());
 
-    QJsonObject op1Obj = jsonHdlr->getJsonObj("op1", args[1]);
-    QJsonObject stmtObj = jsonHdlr->getJsonObj("dci", op1Obj);
-    jsonHdlr->addElement("statement", QString::number(lineNum), stmtObj);
+    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, args[1]);
+    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
     if (label)
     {
-        jsonHdlr->addElement("label", label->getName(), label->toJSON());
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
     }
 
-    delete (jsonHdlr);
     return NO_ERROR;
 }
 

@@ -4,6 +4,9 @@
 #include "common_lib.h"
 #include "operand.h"
 #include "label.h"
+#include "jsonHandler.h"
+#include "variable.h"
+
 
 class Statement
 {

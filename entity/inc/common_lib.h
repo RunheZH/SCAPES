@@ -9,6 +9,12 @@
 #include <QRegExp>
 
 #define MAX_VALUE_16 32767
+#define STMT  "statement"
+#define VAR   "variable"
+#define LABEL "label"
+#define OP_1  "op_1"
+#define OP_2  "op_2"
+#define END   "end"
 
 enum StatementId
 {
@@ -43,8 +49,7 @@ enum ResultState
 enum TypeE
 {
     INT,
-    ARRAY,
-    LABEL
+    ARRAY
 };
 
 #endif

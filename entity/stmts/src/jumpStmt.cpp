@@ -25,8 +25,19 @@ ResultState JumpStmt::compile()
         }
     }
 
+    JsonHandler jsonHdlr(this->programName);
     QString instruction = args[0];
-    QString label = args[1];
+    QString operand1 = args[1];
+
+    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
+    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
+
+    if (label)
+    {
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+    }
+
     return NO_ERROR;
 }
 
