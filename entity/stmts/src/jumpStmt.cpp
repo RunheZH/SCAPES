@@ -29,6 +29,13 @@ ResultState JumpStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
+    QJsonObject aQJsonObject = jsonHdlr.findLabel(operand1);
+
+    // Label 1 not found
+    if(aQJsonObject == jsonHdlr.getJsonFromStr("{}")){
+        return LABEL_NOT_FOUND_ERROR;
+    }
+
     QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
     QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);

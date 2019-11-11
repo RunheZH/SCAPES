@@ -34,6 +34,8 @@ private:
     Identifier* ids[MAX_VALUE_16];
     Statement*  statements[MAX_VALUE_16];
 
+    bool hasEnd;
+
     // helper functions
     ResultState addStmt(QString stmt, qint16 lineNum);
     StatementId getStmtId(QString ins);

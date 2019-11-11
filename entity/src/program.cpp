@@ -9,6 +9,7 @@ Program::Program(QString pgmPath)
     this->pgmPath = pgmPath;
     this->numStmt = 0;
     this->numLabel = 0;
+    this->hasEnd = false;
 }
 
 Program::~Program()
@@ -33,6 +34,7 @@ ResultState Program::save()
     qint16 lineNum = 0;
     this->numStmt = 0;
     this->numLabel = 0;
+    hasEnd = false;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "File_open_error";
@@ -73,6 +75,13 @@ ResultState Program::compile()
         else
             qDebug() << "compiled successfully";
     }
+
+    if (!hasEnd)
+    {
+        qDebug() << "missing 'end'";
+        return NO_END;
+    }
+
     return NO_ERROR;
 }
 
@@ -96,7 +105,7 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
 
     QString instruction = args[0];
 
-    if (args[0].startsWith("L")){
+    if (args[0].endsWith(":")){
         qDebug() << "RUNHE: detected label";
         newLabel = new Label(args[0], lineNum);
         ids[this->numLabel] = newLabel;
@@ -120,6 +129,7 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
         break;
     case END_STMT:
         newStmt = new EndStmt(this->pgmName, stmt, newLabel, lineNum);
+        hasEnd = true;
         break;
     case JEQ_STMT:
         newStmt = new JEqStmt(this->pgmName, stmt, newLabel, lineNum);
