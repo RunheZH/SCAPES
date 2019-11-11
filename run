@@ -1,0 +1,8 @@
+#!/bin/bash
+cd "$(dirname "$0")"
+/home/student/Qt/5.13.0/gcc_64/bin/qmake
+make
+./SCAPES
+make clean
+rm SCAPES
+rm .qmake.stash

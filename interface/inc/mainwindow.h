@@ -34,6 +34,8 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = nullptr);
     QVector<QPair<QString , Program*>> programList;    //vector<pair<String fileName, Program* pgm>> programList
+    void outToConsole(QString errorText);
+    void outToError(QString consoleText);
     ~MainWindow()  override;
 
 protected:
@@ -43,6 +45,8 @@ private:
     Ui::MainWindow *ui;
     QString currentFile = "";
     QFileSystemModel *dirmodel;
+    OutputTabWidget* consoleTab;
+    OutputTabWidget* errorTab;
     void startSelectionView();
     void outputView();
     void dirView();
@@ -52,7 +56,6 @@ private:
     int saveAsFile();
     void saveFile();
     void compileText(QString filePath);
-    void showErrorMessage(QString errorText);
     void tabView();
     void tabAdd();
     int tabIsExist(QString fileDir);
