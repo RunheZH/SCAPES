@@ -8,7 +8,7 @@
 class CompStmt : public Statement
 {
 public:
-    CompStmt(QString programName, QString statement, Label* label);
+    CompStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~CompStmt();
     ResultState compile();
     ResultState run();

@@ -3,13 +3,14 @@
 #include<QApplication>
 #include<QDebug>
 
-DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
+DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "DeclIntStmt()";
 }
 
 DeclIntStmt::~DeclIntStmt()
 {
+    delete (op1);
     qDebug() << "~DeclIntStmt()";
 }
 
@@ -29,13 +30,21 @@ ResultState DeclIntStmt::compile()
     }
 
     QString instruction = args[0];
-    QString operand1 = args[1];
+    this->op1 = new Variable(args[1], INT);
 
-    JsonHandler* jsonHdl = new JsonHandler(this->programName);
-    QJsonObject valueObj = jsonHdl->getJsonObj("type", "int");
-    jsonHdl->addElement("variable", operand1, valueObj);
+    JsonHandler* jsonHdlr = new JsonHandler(this->programName);
+    jsonHdlr->addElement("variable", op1->getName(), op1->toJSON());
 
-    delete(jsonHdl);
+    QJsonObject op1Obj = jsonHdlr->getJsonObj("op1", args[1]);
+    QJsonObject stmtObj = jsonHdlr->getJsonObj("dci", op1Obj);
+    jsonHdlr->addElement("statement", QString::number(lineNum), stmtObj);
+
+    if (label)
+    {
+        jsonHdlr->addElement("label", label->getName(), label->toJSON());
+    }
+
+    delete (jsonHdlr);
     return NO_ERROR;
 }
 

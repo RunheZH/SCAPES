@@ -15,6 +15,7 @@ public:
     QJsonObject getJsonFromStr(QString jsonString);
     QJsonObject getJsonObj(QString key, QString value);
     QJsonObject getJsonObj(QString key, QJsonObject value);
+    QJsonObject appendToEnd(QJsonObject first, QJsonObject second);
     QJsonObject findLabel(QString labelName);
     QJsonObject findVariable(QString variableName);
     ResultState addElement(QString elementType, QString key, QJsonObject valueObj);

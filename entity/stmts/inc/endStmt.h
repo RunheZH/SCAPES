@@ -7,7 +7,7 @@
 class EndStmt : public Statement
 {
 public:
-    EndStmt(QString programName, QString statement, Label* label);
+    EndStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~EndStmt();
     ResultState compile();
     ResultState run();

@@ -1,6 +1,6 @@
 #include "../inc/addStmt.h"
 
-AddStmt::AddStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
+AddStmt::AddStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "AddStmt()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);

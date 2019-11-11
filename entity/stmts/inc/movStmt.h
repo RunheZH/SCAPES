@@ -7,7 +7,7 @@
 class MovStmt : public Statement
 {
 public:
-    MovStmt(QString programName, QString statement, Label* label);
+    MovStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~MovStmt();
     ResultState compile();
     ResultState run();

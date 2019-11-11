@@ -3,7 +3,7 @@
 #include<QApplication>
 #include<QDebug>
 
-ReadStmt::ReadStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
+ReadStmt::ReadStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "ReadStmt()";
 }
@@ -29,20 +29,17 @@ ResultState ReadStmt::compile()
 
     QString instruction = args[0];
     QString operand1 = args[1];
+    ResultState res = NO_ERROR;
 
-    JsonHandler* aJson = new JsonHandler(this->programName);
-    QJsonObject aQJsonObject = aJson->findVariable(operand1);
+    JsonHandler* jsonHdlr = new JsonHandler(this->programName);
+    QJsonObject aQJsonObject = jsonHdlr->findVariable(operand1);
 
     // Variable 1 not found
-    if(aQJsonObject == aJson->getJsonFromStr("{}")){
-        delete(aJson);
-        return VARIABLE_ONE_NOT_FOUND_ERROR;
+    if(aQJsonObject == jsonHdlr->getJsonFromStr("{}")){
+        res = VARIABLE_ONE_NOT_FOUND_ERROR;
     }
-    // Variable 1 found
-    else {
-        delete(aJson);
-        return NO_ERROR;
-    }
+    delete(jsonHdlr);
+    return res;
 }
 
 ResultState ReadStmt::run()

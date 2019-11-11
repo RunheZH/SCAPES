@@ -8,7 +8,7 @@
 class PrintStmt : public Statement
 {
 public:
-    PrintStmt(QString programName, QString statement, Label* label);
+    PrintStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~PrintStmt();
     ResultState compile();
     ResultState run();

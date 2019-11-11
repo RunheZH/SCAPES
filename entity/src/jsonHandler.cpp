@@ -35,6 +35,14 @@ QJsonObject JsonHandler::getJsonObj(QString key, QJsonObject value)
     return jsonObject;
 }
 
+QJsonObject JsonHandler::appendToEnd(QJsonObject firstObj, QJsonObject secondObj)
+{
+    for (QJsonObject::iterator it = secondObj.begin(); it != secondObj.end(); it++)
+        firstObj.insert(it.key(), it.value());
+
+    return firstObj;
+}
+
 QJsonObject JsonHandler::findLabel(QString labelName)
 {
     ResultState res = readData();

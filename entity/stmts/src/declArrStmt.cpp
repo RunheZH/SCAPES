@@ -1,6 +1,6 @@
 #include "../inc/declArrStmt.h"
 
-DeclArrStmt::DeclArrStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
+DeclArrStmt::DeclArrStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "DeclArrStmt()";
 }

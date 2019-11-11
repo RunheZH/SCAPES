@@ -7,7 +7,7 @@
 class DeclArrStmt : public Statement
 {
 public:
-    DeclArrStmt(QString programName, QString statement, Label* label);
+    DeclArrStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~DeclArrStmt();
     ResultState compile();
     ResultState run();

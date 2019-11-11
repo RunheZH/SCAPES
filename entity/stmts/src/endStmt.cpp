@@ -1,6 +1,6 @@
 #include "../inc/endStmt.h"
 
-EndStmt::EndStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
+EndStmt::EndStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "EndStmt()";
 }
@@ -17,7 +17,7 @@ ResultState EndStmt::compile()
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 1){
-            return OPERAND_NUMBER_EXCEED_ERROR;
+        return OPERAND_NUMBER_EXCEED_ERROR;
     }
 
     return NO_ERROR;

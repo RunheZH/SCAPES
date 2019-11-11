@@ -1,6 +1,6 @@
 #include "../inc/jEqStmt.h"
 
-JEqStmt::JEqStmt(QString pgmName, QString stmt, Label* lbl) : Statement(pgmName, stmt, lbl)
+JEqStmt::JEqStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "JEqStmt()";
 }

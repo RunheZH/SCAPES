@@ -30,12 +30,13 @@ private:
     QString pgmName;
     QString pgmPath;
     qint16  numStmt;
-    //Identifier* ids;
+    qint16  numLabel;
+    Identifier* ids[MAX_VALUE_16];
     Statement*  statements[MAX_VALUE_16];
 
     // helper functions
-    ResultState addStmt(QString);
-    StatementId getStmtId(QString);
+    ResultState addStmt(QString stmt, qint16 lineNum);
+    StatementId getStmtId(QString ins);
 };
 
 #endif
