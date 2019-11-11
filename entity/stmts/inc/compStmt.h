@@ -3,11 +3,12 @@
 
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
+#include "../../inc/jsonHandler.h"
 
 class CompStmt : public Statement
 {
 public:
-    CompStmt(QString programName, QString statement, Label* label);
+    CompStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~CompStmt();
     ResultState compile();
     ResultState run();

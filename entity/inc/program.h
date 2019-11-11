@@ -16,13 +16,11 @@
 #include "../stmts/inc/movStmt.h"
 #include "../stmts/inc/printStmt.h"
 #include "../stmts/inc/readStmt.h"
-#include <QFile>
-#include <QRegExp>
 
 class Program
 {
 public:
-    Program(QString, QString);
+    Program(QString programPath);
     ~Program();
     ResultState save();
     ResultState compile();
@@ -32,12 +30,15 @@ private:
     QString pgmName;
     QString pgmPath;
     qint16  numStmt;
-    Identifier* ids;
+    qint16  numLabel;
+    Identifier* ids[MAX_VALUE_16];
     Statement*  statements[MAX_VALUE_16];
 
+    bool hasEnd;
+
     // helper functions
-    ResultState addStmt(QString);
-    StatementId getStmtId(QString);
+    ResultState addStmt(QString stmt, qint16 lineNum);
+    StatementId getStmtId(QString ins);
 };
 
 #endif

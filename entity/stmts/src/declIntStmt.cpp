@@ -3,16 +3,20 @@
 #include<QApplication>
 #include<QDebug>
 
-DeclIntStmt::DeclIntStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
+DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
+    qDebug() << "DeclIntStmt()";
 }
 
 DeclIntStmt::~DeclIntStmt()
 {
+    delete (op1);
+    qDebug() << "~DeclIntStmt()";
 }
 
 ResultState DeclIntStmt::compile()
 {
+    qDebug() << "DeclIntStmt.compile()";
 
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
@@ -26,19 +30,26 @@ ResultState DeclIntStmt::compile()
     }
 
     QString instruction = args[0];
-    QString operand1 = args[1];
+    this->op1 = new Variable(args[1], INT);
 
-    JsonHandler* aJson = new JsonHandler(this->programName);
-    QJsonObject aQJsonObject = aJson->getJsonFromStr("{\"name\":\"operand1\", \"type\":0}");
-    aJson->addElement("variable", aQJsonObject);
+    JsonHandler jsonHdlr(this->programName);
+    jsonHdlr.addElement(VAR, op1->getName(), op1->toJSON());
 
-    delete(aJson);
+    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, args[1]);
+    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
+
+    if (label)
+    {
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+    }
 
     return NO_ERROR;
 }
 
 ResultState DeclIntStmt::run()
 {
-  return NO_ERROR;
+    qDebug() << "DeclIntStmt.run()";
+    return NO_ERROR;
 }
 

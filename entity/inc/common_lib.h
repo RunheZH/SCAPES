@@ -1,11 +1,20 @@
 #ifndef COMMON_LIB_H
 #define COMMON_LIB_H
 
+#include <QApplication>
+#include <QFile>
 #include <QtDebug>
 #include <QString>
 #include <QStringList>
 #include <QRegExp>
+
 #define MAX_VALUE_16 32767
+#define STMT  "statement"
+#define VAR   "variable"
+#define LABEL "label"
+#define OP_1  "op_1"
+#define OP_2  "op_2"
+#define END   "end"
 
 enum StatementId
 {
@@ -34,14 +43,15 @@ enum ResultState
     OPERAND_NUMBER_EXCEED_ERROR,
     VARIABLE_ONE_NOT_FOUND_ERROR,
     VARIABLE_TWO_NOT_FOUND_ERROR,
-    VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR
+    VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR,
+    LABEL_NOT_FOUND_ERROR,
+    NO_END
 };
 
 enum TypeE
 {
     INT,
-    ARRAY,
-    LABEL
+    ARRAY
 };
 
 #endif

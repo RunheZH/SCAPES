@@ -28,6 +28,7 @@ SOURCES += \
         control/src/compileControl.cpp \
         control/src/runControl.cpp \
         control/src/saveControl.cpp \
+        entity/src/identifier.cpp \
         entity/src/jsonHandler.cpp \
         entity/src/label.cpp \
         entity/src/operand.cpp \

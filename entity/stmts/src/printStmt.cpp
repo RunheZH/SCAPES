@@ -5,16 +5,19 @@
 #include<QDebug>
 
 
-PrintStmt::PrintStmt(QString programName, QString statement, Label* label) : Statement(programName, statement, label)
+PrintStmt::PrintStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
+    qDebug() << "PrintStmt()";
 }
 
 PrintStmt::~PrintStmt()
 {
+    qDebug() << "~PrintStmt()";
 }
 
 ResultState PrintStmt::compile()
 {
+    qDebug() << "PrintStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){
@@ -28,24 +31,30 @@ ResultState PrintStmt::compile()
 
     QString instruction = args[0];
     QString operand1 = args[1];
+    ResultState res = NO_ERROR;
 
-    JsonHandler* aJson = new JsonHandler(this->programName);
-    QJsonObject aQJsonObject = aJson->findVariable(operand1, TypeE::INT);
+    JsonHandler jsonHdlr(this->programName);
+    QJsonObject aQJsonObject = jsonHdlr.findVariable(operand1);
 
     // Variable 1 not found
-    if(aQJsonObject == aJson->getJsonFromStr("{}")){
-        delete(aJson);
-        return VARIABLE_ONE_NOT_FOUND_ERROR;
-    }
-    // Variable 1 found
-    else {
-        delete(aJson);
-        return NO_ERROR;
+    if(aQJsonObject == jsonHdlr.getJsonFromStr("{}")){
+        res = VARIABLE_ONE_NOT_FOUND_ERROR;
     }
 
+    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
+    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
+
+    if (label)
+    {
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+    }
+
+    return res;
 }
 
 ResultState PrintStmt::run()
 {
-    //return NO_ERROR;
+    qDebug() << "PrintStmt.run()";
+    return NO_ERROR;
 }

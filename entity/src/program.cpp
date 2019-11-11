@@ -2,11 +2,14 @@
 
 /*********************************** API ***************************************/
 
-Program::Program(QString pgmName, QString pgmPath)
+Program::Program(QString pgmPath)
 {
-    this->pgmName = pgmName;
+    QStringList fileName = pgmPath.split(QRegExp(".scp"), QString::SkipEmptyParts);
+    this->pgmName = fileName[0];
     this->pgmPath = pgmPath;
     this->numStmt = 0;
+    this->numLabel = 0;
+    this->hasEnd = false;
 }
 
 Program::~Program()
@@ -16,6 +19,12 @@ Program::~Program()
         delete(this->statements[i]);
         this->numStmt--;
     }
+
+    for (qint16 i = 0; i < this->numLabel; i++)
+    {
+        delete(this->ids[i]);
+        this->numLabel--;
+    }
 }
 
 ResultState Program::save()
@@ -23,6 +32,9 @@ ResultState Program::save()
     qDebug() << "RUNHE: Program::save()";
     QFile file(this->pgmPath);
     qint16 lineNum = 0;
+    this->numStmt = 0;
+    this->numLabel = 0;
+    hasEnd = false;
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "File_open_error";
@@ -37,7 +49,7 @@ ResultState Program::save()
         // ignore comments
         if (line.startsWith("#"))
             continue;
-        ResultState res = addStmt(line);
+        ResultState res = addStmt(line, lineNum);
         // TODO: error recovery
         if (res != NO_ERROR)
             qDebug() << res << " at line " << lineNum;
@@ -51,36 +63,52 @@ ResultState Program::compile()
 {
     qDebug() << "RUNHE: Program::compile()";
 
+    QFile file(this->pgmName + ".json");
+    file.remove();
+
     ResultState res;
     for(qint16 i = 0; i < this->numStmt; i++){
         res = this->statements[i]->compile();
         // TODO: error recovery
         if (res != NO_ERROR)
             qDebug() << res << " statement " << i;
+        else
+            qDebug() << "compiled successfully";
     }
+
+    if (!hasEnd)
+    {
+        qDebug() << "missing 'end'";
+        return NO_END;
+    }
+
     return NO_ERROR;
 }
 
 ResultState Program::run()
 {
     qDebug() << "RUNHE: Program::run()";
-    // TODO
+    // TODO: D2
     return NO_ERROR;
 }
 
 /*********************************** private helper functions ***************************************/
 
-ResultState Program::addStmt(QString stmt)
+ResultState Program::addStmt(QString stmt, qint16 lineNum)
 {
+    qDebug() << stmt;
     QStringList args = stmt.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     Statement* newStmt = nullptr;
     Label* newLabel = nullptr;
+    // empty line
+    if (args.isEmpty()) return INVALID_STATEMENT;
+
     QString instruction = args[0];
 
-    // TODO: check label
-    if (args[0].startsWith("L")){
+    if (args[0].endsWith(":")){
         qDebug() << "RUNHE: detected label";
-        newLabel = new Label(args[0]);
+        newLabel = new Label(args[0], lineNum);
+        ids[this->numLabel] = newLabel;
         // TODO: get rid of the leading spaces
         stmt = stmt.mid(args[0].length() + 1);
         instruction = args[1];
@@ -88,40 +116,41 @@ ResultState Program::addStmt(QString stmt)
 
     switch (this->getStmtId(instruction)) {
     case ADD_STMT:
-        newStmt = new AddStmt(this->pgmName, stmt, newLabel);
+        newStmt = new AddStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case CMP_STMT:
-        newStmt = new CompStmt(this->pgmName, stmt, newLabel);
+        newStmt = new CompStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case DCA_STMT:
-        newStmt = new DeclArrStmt(this->pgmName, stmt, newLabel);
+        newStmt = new DeclArrStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case DCI_STMT:
-        newStmt = new DeclIntStmt(this->pgmName, stmt, newLabel);
+        newStmt = new DeclIntStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case END_STMT:
-        newStmt = new EndStmt(this->pgmName, stmt, newLabel);
+        newStmt = new EndStmt(this->pgmName, stmt, newLabel, lineNum);
+        hasEnd = true;
         break;
     case JEQ_STMT:
-        newStmt = new JEqStmt(this->pgmName, stmt, newLabel);
+        newStmt = new JEqStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case JLS_STMT:
-        newStmt = new JLessStmt(this->pgmName, stmt, newLabel);
+        newStmt = new JLessStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case JMR_STMT:
-        newStmt = new JMoreStmt(this->pgmName, stmt, newLabel);
+        newStmt = new JMoreStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case JMP_STMT:
-        newStmt = new JumpStmt(this->pgmName, stmt, newLabel);
+        newStmt = new JumpStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case MOV_STMT:
-        newStmt = new MovStmt(this->pgmName, stmt, newLabel);
+        newStmt = new MovStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case PRT_STMT:
-        newStmt = new PrintStmt(this->pgmName, stmt, newLabel);
+        newStmt = new PrintStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case RDI_STMT:
-        newStmt = new ReadStmt(this->pgmName, stmt, newLabel);
+        newStmt = new ReadStmt(this->pgmName, stmt, newLabel, lineNum);
         break;
     case INVALID_STMT:
         return INVALID_STATEMENT;

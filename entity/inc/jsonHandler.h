@@ -1,8 +1,8 @@
 #ifndef JSONHANDLER_H
 #define JSONHANDLER_H
 
-#include <QString>
 #include <QJsonArray>
+#include <QJsonDocument>
 #include <QJsonObject>
 #include "common_lib.h"
 
@@ -11,19 +11,20 @@ class JsonHandler
 public:
     JsonHandler();
     JsonHandler(QString fileName);
-    void setFileName(QString fileName);
+    ~JsonHandler();
     QJsonObject getJsonFromStr(QString jsonString);
+    QJsonObject getJsonObj(QString key, QString value);
+    QJsonObject getJsonObj(QString key, QJsonObject value);
+    QJsonObject appendToEnd(QJsonObject first, QJsonObject second);
     QJsonObject findLabel(QString labelName);
-    QJsonObject findVariable(QString variableName, TypeE type);
-    ResultState addElement(QString elementName, QJsonObject aQJsonObject);
+    QJsonObject findVariable(QString variableName);
+    ResultState addElement(QString elementType, QString key, QJsonObject valueObj);
 
 private:
-    JsonHandler(const JsonHandler&);
     ResultState readData();
-    ResultState writeData();
+    ResultState writeData(QJsonObject jsonObj);
 
-    QString m_currentFile;
-    ResultState m_currentResultState;
+    QString fileToHandle;
     QJsonObject m_currentJsonObject;
 };
 

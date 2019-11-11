@@ -7,7 +7,7 @@
 class JLessStmt : public Statement
 {
 public:
-    JLessStmt(QString programName, QString statement, Label* label);
+    JLessStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~JLessStmt();
     ResultState compile();
     ResultState run();

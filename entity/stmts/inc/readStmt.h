@@ -3,12 +3,11 @@
 
 #include "../../inc/common_lib.h"
 #include "../../inc/statement.h"
-#include "../../inc/jsonHandler.h"
 
 class ReadStmt : public Statement
 {
 public:
-    ReadStmt(QString programName, QString statement, Label* label);
+    ReadStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~ReadStmt();
     ResultState compile();
     ResultState run();
