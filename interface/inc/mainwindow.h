@@ -44,6 +44,7 @@ protected:
 private:
     Ui::MainWindow *ui;
     QString currentFile = "";
+    OpenNewWidget* onw;
     QFileSystemModel *dirmodel;
     OutputTabWidget* consoleTab;
     OutputTabWidget* errorTab;

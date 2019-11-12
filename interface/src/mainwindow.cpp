@@ -21,7 +21,7 @@ MainWindow::~MainWindow()
 //OPEN OR NEW START SELECTION
 void MainWindow::startSelectionView(){
     ui->tabWidget->setVisible(false);
-    OpenNewWidget* onw = new OpenNewWidget();
+    onw = new OpenNewWidget();
     ui->verticalLayout->addWidget(onw);
     connect(onw,SIGNAL(newFileClick()),this,SLOT(startNewView()));
     connect(onw,SIGNAL(openFileClick()),this,SLOT(startOpenView()));
@@ -76,6 +76,7 @@ void MainWindow::dirUpdate(QString filePath){
             return;
         }
         ui->dirView->setCurrentIndex(dirmodel->index(ft->getFilePath()));
+        delete(ft);
     }else{
         ui->dirView->selectionModel()->clearSelection();    //there is no tab opened, clear file explorer selection
     }
@@ -111,8 +112,10 @@ int MainWindow::tabIsExist(QString filePath){
         tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(i));
 //        qDebug()<<filePath+"  already: "+ft->getFilePath();
         if(filePath==ft->getFilePath()){
+            delete(ft);
             return i;       //if found tab exists file, return the tab index
         }
+        delete(ft);
     }
     return -1;//not found return -1
 }
@@ -237,6 +240,7 @@ int MainWindow::saveAsFile(){
             }
         }
     }
+    delete(ft);
     delete(savecontrol);
     //QMessageBox::information(this, "Save Complete", "Saved file: " + file.fileName());
     return 0;
@@ -285,6 +289,7 @@ void MainWindow::saveFile(){
                 }
             }
         }
+        delete(ft);
         delete(sc);
         QMessageBox::information(this, "Save Complete", "Saved file: " + file.fileName());
     }
@@ -320,12 +325,14 @@ void MainWindow::compileText(QString filePath){
                 break;
             case QMessageBox::Cancel:
             // Cancel was clicked
+                delete(ft);
                 return;
             default:
             // should never be reached
                 saveFile();
                 break;
         }
+        delete(ft);
     }
     CompileControl* compileControl = new CompileControl(pgm);
     compileControl->compile();
@@ -392,6 +399,7 @@ void MainWindow::on_actionCompile_triggered()
                 break;
             case QMessageBox::Cancel:
             // Cancel was clicked
+                delete(ft);
                 return;
             default:
             // should never be reached
@@ -402,6 +410,7 @@ void MainWindow::on_actionCompile_triggered()
     ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QString filePath = ft->getFilePath();
     compileText(filePath);
+    delete(ft);
 }
 
 void MainWindow::on_actionRun_triggered()
@@ -446,7 +455,6 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
         case QMessageBox::Discard:
         // Don't Save was clicked
             ui->tabWidget->removeTab(index);
-            ft->~tabchildwidget();
             dirUpdate("");
             break;
         case QMessageBox::Cancel:
@@ -460,6 +468,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
     if(ui->tabWidget->count()<=0){
         startSelectionView();
     }
+    delete(ft);
 }
 
 void MainWindow::on_tabWidget_tabBarClicked(int index)
@@ -478,10 +487,11 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 //QUIT PROGRAM TRIGGER
 void MainWindow::on_actionQuit_triggered()
 {
-//    for(int i=0; i<programList.size();i++){
-//        Program* pgm = programList[i].second;
-//        delete (pgm);
-//    }
+    for(int i=0; i<programList.size();i++){
+        Program* pgm = programList[i].second;
+        delete (pgm);
+    }
+    delete(onw);
     qApp->exit();
 }
 
