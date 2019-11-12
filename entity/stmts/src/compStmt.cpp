@@ -7,6 +7,8 @@ CompStmt::CompStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : St
 
 CompStmt::~CompStmt()
 {
+    delete (op1);
+    delete (op2);
     qDebug() << "~CompStmt()";
 }
 
@@ -30,24 +32,23 @@ ResultState CompStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
     QString operand2 = args[2];
-    ResultState res = NO_ERROR;
 
     JsonHandler jsonHdlr(this->programName);
     // TODO: not necessary to be ints
-    QJsonObject firstQJsonObject = jsonHdlr.findVariable(operand1);
-    QJsonObject secondQJsonObject = jsonHdlr.findVariable(operand2);
+    op1 = new Operand(jsonHdlr.findVariable(operand1));
+    op2 = new Operand(jsonHdlr.findVariable(operand2));
 
     // Variable 1 found
-    if (firstQJsonObject != jsonHdlr.getJsonFromStr("{}")){
+    if (op1->getIdentifier() != nullptr){
         // Variable 2 NOT found
-        if (secondQJsonObject == jsonHdlr.getJsonFromStr("{}")){
+        if (op2->getIdentifier() == nullptr){
             return VARIABLE_TWO_NOT_FOUND_ERROR;
         }
     }
     // Variable 1 NOT found
     else{
         // Variable 2 found
-        if (secondQJsonObject != jsonHdlr.getJsonFromStr("{}")){
+        if (op2->getIdentifier() != nullptr){
             return VARIABLE_ONE_NOT_FOUND_ERROR;
         }
         // Variable 2 NOT found
@@ -66,7 +67,7 @@ ResultState CompStmt::compile()
         jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
     }
 
-    return res;
+    return NO_ERROR;
 }
 
 ResultState CompStmt::run()

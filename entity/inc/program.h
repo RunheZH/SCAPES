@@ -32,6 +32,7 @@ private:
     ErrorControl* errorControl;
 
     QString pgmName;
+    QString tempFileName;
     QString pgmPath;
     qint16  numStmt;
     qint16  numLabel;
@@ -41,6 +42,7 @@ private:
     Statement*  jumpStmts[MAX_VALUE_16];
 
     bool hasEnd;
+    bool hasError;
 
     // helper functions
     ResultState addStmt(QString stmt, qint16 lineNum);

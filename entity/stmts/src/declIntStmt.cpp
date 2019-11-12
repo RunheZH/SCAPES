@@ -1,8 +1,5 @@
 #include "../inc/declIntStmt.h"
 
-#include<QApplication>
-#include<QDebug>
-
 DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "DeclIntStmt()";
@@ -30,10 +27,10 @@ ResultState DeclIntStmt::compile()
     }
 
     QString instruction = args[0];
-    this->op1 = new Variable(args[1], INT);
+    this->op1 = new Operand(new Variable(args[1], INT));
 
     JsonHandler jsonHdlr(this->programName);
-    jsonHdlr.addElement(VAR, op1->getName(), op1->toJSON());
+    jsonHdlr.addElement(VAR, op1->getIdentifier()->getName(), op1->getIdentifier()->toJSON());
 
     QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, args[1]);
     QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);

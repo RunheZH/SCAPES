@@ -14,7 +14,7 @@ public:
 
 private:
     // add helper functions
-    Variable* op1;
+    Operand* op1;
 };
 
 #endif

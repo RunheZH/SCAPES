@@ -3,7 +3,6 @@
 
 #include "common_lib.h"
 #include "identifier.h"
-#include "../inc/jsonHandler.h"
 
 class Variable : public Identifier
 {
@@ -11,7 +10,9 @@ public:
     Variable(QString variableName, TypeE variableType);
     ~Variable();
     QJsonObject toJSON();
-    void setValue(QString value, TypeE type);
+    void setValue(QString value);
+    void setType(TypeE type);
+    QString getValue();
     TypeE getType();
 
 private:
