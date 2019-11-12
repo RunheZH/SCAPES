@@ -1,5 +1,5 @@
 #include "../inc/outputtabwidget.h"
-#include "ui_outputtabwidget.h"
+#include "./ui_outputtabwidget.h"
 
 OutputTabWidget::OutputTabWidget(QWidget *parent) :
     QWidget(parent),
