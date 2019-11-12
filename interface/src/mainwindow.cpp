@@ -45,8 +45,8 @@ void MainWindow::startOpenView(){   //click open file button
 
 //OUTPUT TAB VIEW
 void MainWindow::outputView(){
-    OutputTabWidget* consoleTab = new OutputTabWidget();
-    OutputTabWidget* errorTab = new OutputTabWidget();
+    consoleTab = new OutputTabWidget();
+    errorTab = new OutputTabWidget();
     ui->outputWidget->addTab(consoleTab, "Console");
     ui->outputWidget->addTab(errorTab, "Error");
 }
@@ -80,6 +80,16 @@ void MainWindow::dirUpdate(QString filePath){
         ui->dirView->selectionModel()->clearSelection();    //there is no tab opened, clear file explorer selection
     }
 
+}
+
+//showErrorMessage
+void MainWindow::outToError(QString errorText){
+    errorTab->addText(errorText);
+}
+
+//showConsoleMessage
+void MainWindow::outToConsole(QString consoleText){
+    consoleTab->addText(consoleText);
 }
 
 //INITIALIZE TAB WIDGET
@@ -322,11 +332,6 @@ void MainWindow::compileText(QString filePath){
     delete(compileControl);
 }
 
-//showErrorMessage
-void MainWindow::showErrorMessage(QString errorText){
-    QMessageBox::warning(this, "Error", errorText);
-}
-
 //ACTION BUTTON TRIGGER
 //ABOUT TRIGGER
 void MainWindow::on_actionAbout_SCAPES_triggered()
@@ -367,6 +372,8 @@ void MainWindow::on_actionNew_triggered()
 void MainWindow::on_actionCompile_triggered()
 {
     if(ui->tabWidget->count()==0){ return; }
+    consoleTab->clearText();
+    errorTab->clearText();
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QMessageBox msgBox;
     msgBox.setText("The file " + ft->getFileName() + " has been modified.");
