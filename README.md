@@ -20,6 +20,13 @@ largeNumberPrint - allow user to input two numbers, and the program will print t
 secretNumberGues - allow one user to input a secret number, and then second user to input a number to guess the secret number, the loop will keep going on until the second user guess the secret number.
 
 
+
+Be Aware!
+Your program must have an ‘end’ to indicate the end of the program. Otherwise, it won’t compile.
+
+
+
+
 Resource Credits:
 1. icons:{compile_icon.png, new_icon.png, open_icon.png, run_icon.png, save_icon.png}, all icons credited to LogoMakr.com, "Created my free logo at LogoMakr.com"
 
