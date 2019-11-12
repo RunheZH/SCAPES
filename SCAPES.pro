@@ -26,6 +26,7 @@ CONFIG += c++11
 
 SOURCES += \
         control/src/compileControl.cpp \
+        control/src/errorControl.cpp \
         control/src/runControl.cpp \
         control/src/saveControl.cpp \
         entity/src/identifier.cpp \
@@ -55,6 +56,7 @@ SOURCES += \
 
 HEADERS += \
         control/inc/compileControl.h \
+        control/inc/errorControl.h \
         control/inc/runControl.h \
         control/inc/saveControl.h \
         entity/inc/common_lib.h \

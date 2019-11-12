@@ -2,29 +2,36 @@
 
 /*********************************** API ***************************************/
 
-Program::Program(QString pgmPath)
+Program::Program(QString pgmPath, OutputTabWidget* consoleTab, OutputTabWidget* errorTab)
 {
     QStringList fileName = pgmPath.split(QRegExp(".scp"), QString::SkipEmptyParts);
     this->pgmName = fileName[0];
     this->pgmPath = pgmPath;
     this->numStmt = 0;
     this->numLabel = 0;
+    this->numJumpStmt = 0;
     this->hasEnd = false;
+    this->errorControl = new ErrorControl(consoleTab, errorTab);
 }
 
 Program::~Program()
 {
     for (qint16 i = 0; i < this->numStmt; i++)
     {
-        delete(this->statements[i]);
-        this->numStmt--;
+        delete (this->statements[i]);
     }
 
     for (qint16 i = 0; i < this->numLabel; i++)
     {
-        delete(this->ids[i]);
-        this->numLabel--;
+        delete (this->ids[i]);
     }
+
+    for (qint16 i = 0; i < this->numJumpStmt; i++)
+    {
+        delete (this->jumpStmts[i]);
+    }
+
+    delete (errorControl);
 }
 
 ResultState Program::save()
@@ -52,7 +59,10 @@ ResultState Program::save()
         ResultState res = addStmt(line, lineNum);
         // TODO: error recovery
         if (res != NO_ERROR)
+        {
             qDebug() << res << " at line " << lineNum;
+            errorControl->printErrorMsg(res);
+        }
     }
 
     file.close();
@@ -67,19 +77,46 @@ ResultState Program::compile()
     file.remove();
 
     ResultState res;
+    this->numJumpStmt = 0;
     for(qint16 i = 0; i < this->numStmt; i++){
+        if (isJumpStmt(this->statements[i]))
+        {
+            qDebug() << "detected jump statement";
+            this->jumpStmts[this->numJumpStmt] = this->statements[i];
+            this->numJumpStmt++;
+            continue;
+        }
         res = this->statements[i]->compile();
         // TODO: error recovery
         if (res != NO_ERROR)
             qDebug() << res << " statement " << i;
-        else
+        else // no syntax error
+        {
+            this->errorControl->printToConsole(res);
+            if (isEndStmt(this->statements[i]))
+            {
+                qDebug() << "detected end";
+                hasEnd = true;
+            }
             qDebug() << "compiled successfully";
+        }
     }
 
     if (!hasEnd)
     {
         qDebug() << "missing 'end'";
         return NO_END;
+    }
+
+    qDebug() << "hello!!!";
+    for (qint16 i = 0; i < this->numJumpStmt; i++){
+        res = this->jumpStmts[i]->compile();
+        // TODO: error recovery
+        if (res != NO_ERROR)
+            qDebug() << res << " statement " << i;
+        else
+            errorControl->printErrorMsg(res);
+            qDebug() << "compiled successfully";
     }
 
     return NO_ERROR;
@@ -107,7 +144,7 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
 
     if (args[0].endsWith(":")){
         qDebug() << "RUNHE: detected label";
-        newLabel = new Label(args[0], lineNum);
+        newLabel = new Label(args[0].left(args[0].lastIndexOf(":")), lineNum);
         ids[this->numLabel] = newLabel;
         // TODO: get rid of the leading spaces
         stmt = stmt.mid(args[0].length() + 1);
@@ -129,7 +166,6 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
         break;
     case END_STMT:
         newStmt = new EndStmt(this->pgmName, stmt, newLabel, lineNum);
-        hasEnd = true;
         break;
     case JEQ_STMT:
         newStmt = new JEqStmt(this->pgmName, stmt, newLabel, lineNum);
@@ -180,6 +216,8 @@ StatementId Program::getStmtId(QString stmt)
         return JLS_STMT;
     else if(stmt == "jmr")
         return JMR_STMT;
+    else if(stmt == "jmp")
+        return JMP_STMT;
     else if(stmt == "mov")
         return MOV_STMT;
     else if(stmt == "prt")
@@ -188,4 +226,24 @@ StatementId Program::getStmtId(QString stmt)
         return RDI_STMT;
     else
         return INVALID_STMT;
+}
+
+bool Program::isEndStmt(Statement* stmt)
+{
+    if (dynamic_cast<EndStmt*>(stmt))
+        return true;
+    return false;
+}
+
+bool Program::isJumpStmt(Statement* stmt)
+{
+    if (dynamic_cast<JumpStmt*>(stmt))
+        return true;
+    else if (dynamic_cast<JLessStmt*>(stmt))
+        return true;
+    else if (dynamic_cast<JMoreStmt*>(stmt))
+        return true;
+    else if (dynamic_cast<JEqStmt*>(stmt))
+        return true;
+    return false;
 }
