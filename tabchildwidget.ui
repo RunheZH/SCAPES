@@ -29,7 +29,7 @@
    <item row="0" column="0">
     <widget class="QTextEdit" name="textEdit">
      <property name="styleSheet">
-      <string notr="true">background-color: rgb(196, 196, 196);</string>
+      <string notr="true">background-color: rgb(255, 255, 255);</string>
      </property>
     </widget>
    </item>

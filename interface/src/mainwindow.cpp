@@ -289,8 +289,33 @@ void MainWindow::compileText(QString filePath){
         }
     }
     if(pgm == nullptr){
-        QMessageBox::warning(this,"ERROR","You must save before compile");
-        return;
+//        QMessageBox::warning(this,"ERROR","You must save before compile");
+//        return;
+        tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+        QMessageBox msgBox;
+        msgBox.setText("The file " + ft->getFileName() + " has been modified.");
+        msgBox.setInformativeText("Do you want to save your changes before compile?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+        msgBox.setButtonText(QMessageBox::Save, "Save and compile");
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+        switch (ret) {
+            case QMessageBox::Save:
+                saveFile();
+                for(int i=0; i<programList.size();i++){
+                    if(programList[i].first==filePath){
+                        pgm = programList[i].second;
+                    }
+                }
+                break;
+            case QMessageBox::Cancel:
+            // Cancel was clicked
+                return;
+            default:
+            // should never be reached
+                saveFile();
+                break;
+        }
     }
     CompileControl* compileControl = new CompileControl(pgm);
     compileControl->compile();
@@ -350,23 +375,23 @@ void MainWindow::on_actionCompile_triggered()
     msgBox.setButtonText(QMessageBox::Save, "Save and compile");
     msgBox.setButtonText(QMessageBox::Ignore, "Compile the last save");
     msgBox.setDefaultButton(QMessageBox::Save);
-
-    int ret = msgBox.exec();
-    switch (ret) {
-        case QMessageBox::Save:
-            saveFile();
-            break;
-        case QMessageBox::Ignore:
-            break;
-        case QMessageBox::Cancel:
-        // Cancel was clicked
-            return;
-        default:
-        // should never be reached
-            QMessageBox::warning(this, "Error", "Cannot save before compile");
-            break;
+    if(ft->isChanged()){
+        int ret = msgBox.exec();
+        switch (ret) {
+            case QMessageBox::Save:
+                saveFile();
+                break;
+            case QMessageBox::Ignore:
+                break;
+            case QMessageBox::Cancel:
+            // Cancel was clicked
+                return;
+            default:
+            // should never be reached
+                saveFile();
+                break;
+        }
     }
-
     ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QString filePath = ft->getFilePath();
     compileText(filePath);
@@ -433,6 +458,10 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
+    QFile file("~/home/student/Desktop/abc.scp");
+    QTextStream in(&file);
+    QString text = in.readAll();
+    qDebug()<<text;
     dirUpdate(ft->getFilePath());
 }
 
