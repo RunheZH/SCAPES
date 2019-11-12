@@ -1,8 +1,5 @@
 #include "../inc/readStmt.h"
 
-#include<QApplication>
-#include<QDebug>
-
 ReadStmt::ReadStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "ReadStmt()";

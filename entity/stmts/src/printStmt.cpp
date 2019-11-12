@@ -1,9 +1,4 @@
 #include "../inc/printStmt.h"
-#include "../../inc/jsonHandler.h"
-
-#include<QApplication>
-#include<QDebug>
-
 
 PrintStmt::PrintStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {

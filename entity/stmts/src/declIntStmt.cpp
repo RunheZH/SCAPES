@@ -1,8 +1,5 @@
 #include "../inc/declIntStmt.h"
 
-#include<QApplication>
-#include<QDebug>
-
 DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
 {
     qDebug() << "DeclIntStmt()";
