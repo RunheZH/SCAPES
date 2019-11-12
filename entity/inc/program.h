@@ -31,14 +31,18 @@ private:
     QString pgmPath;
     qint16  numStmt;
     qint16  numLabel;
+    qint16  numJumpStmt;
     Identifier* ids[MAX_VALUE_16];
     Statement*  statements[MAX_VALUE_16];
+    Statement*  jumpStmts[MAX_VALUE_16];
 
     bool hasEnd;
 
     // helper functions
     ResultState addStmt(QString stmt, qint16 lineNum);
     StatementId getStmtId(QString ins);
+    bool isEndStmt(Statement* stmt);
+    bool isJumpStmt(Statement* stmt);
 };
 
 #endif

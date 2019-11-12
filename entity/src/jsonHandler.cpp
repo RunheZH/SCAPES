@@ -47,8 +47,8 @@ QJsonObject JsonHandler::findLabel(QString labelName)
 {
     ResultState res = readData();
     if (res == ResultState::NO_ERROR) {
-        if (m_currentJsonObject.contains("label")) {
-            QJsonObject labelObj = m_currentJsonObject["label"].toObject();
+        if (m_currentJsonObject.contains(LABEL)) {
+            QJsonObject labelObj = m_currentJsonObject[LABEL].toObject();
             if (labelObj.contains(labelName)) {
                 QJsonObject foundLabel = labelObj[labelName].toObject();
                 return foundLabel;
@@ -62,8 +62,8 @@ QJsonObject JsonHandler::findVariable(QString variableName)
 {
     ResultState res = readData();
     if (res == ResultState::NO_ERROR) {
-        if (m_currentJsonObject.contains("variable")) {
-            QJsonObject variableObj = m_currentJsonObject["variable"].toObject();
+        if (m_currentJsonObject.contains(VAR)) {
+            QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
             if (variableObj.contains(variableName)) {
                 QJsonObject foundVar = variableObj[variableName].toObject();
                 return foundVar;
