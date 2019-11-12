@@ -2,18 +2,21 @@
 #define SAVE_CTL_H
 
 #include "../../entity/inc/common_lib.h"
+#include "../../interface/inc/outputtabwidget.h"
 #include "../../entity/inc/program.h"
 
 class SaveControl
 {
+
 public:
-    SaveControl(QString programPath);
+    SaveControl(QString programPath, OutputTabWidget* consoleTab, OutputTabWidget* errorTab);
     ~SaveControl();
     Program* save();
 
 private:
-    QString pgmName;
     QString pgmPath;
+    OutputTabWidget* consoleTab;
+    OutputTabWidget* errorTab;
 };
 
 #endif

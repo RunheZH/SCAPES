@@ -217,7 +217,7 @@ int MainWindow::saveAsFile(){
     dirUpdate(filePath);
 
     //calling save control
-    SaveControl* savecontrol = new SaveControl(ft->getFilePath());
+    SaveControl* savecontrol = new SaveControl(ft->getFilePath(), consoleTab, errorTab);
     Program* pgm = savecontrol->save();
 
     qDebug() << "filePath save as: " << filePath;
@@ -266,7 +266,7 @@ void MainWindow::saveFile(){
         dirUpdate(filePath);
 
         //save control part
-        SaveControl* sc = new SaveControl(ft->getFilePath());
+        SaveControl* sc = new SaveControl(ft->getFilePath(), consoleTab, errorTab);
         Program* pgm = sc->save();
         qDebug() << "filePath save as: " << filePath;
         if(programList.size()==0){
@@ -328,7 +328,11 @@ void MainWindow::compileText(QString filePath){
         }
     }
     CompileControl* compileControl = new CompileControl(pgm);
-    compileControl->compile();
+    ResultState res = compileControl->compile();
+    if (res == NO_ERROR)
+        outToConsole("Compiled successfully");
+    else
+        outToConsole("Compile failed");
     delete(compileControl);
 }
 

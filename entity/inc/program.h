@@ -16,17 +16,21 @@
 #include "../stmts/inc/movStmt.h"
 #include "../stmts/inc/printStmt.h"
 #include "../stmts/inc/readStmt.h"
+#include "../../control/inc/errorControl.h"
 
 class Program
 {
+
 public:
-    Program(QString programPath);
+    Program(QString programPath, OutputTabWidget* consoleTab, OutputTabWidget* errorTab);
     ~Program();
     ResultState save();
     ResultState compile();
     ResultState run();
 
 private:
+    ErrorControl* errorControl;
+
     QString pgmName;
     QString pgmPath;
     qint16  numStmt;

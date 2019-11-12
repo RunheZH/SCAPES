@@ -2,7 +2,7 @@
 
 /*********************************** API ***************************************/
 
-Program::Program(QString pgmPath)
+Program::Program(QString pgmPath, OutputTabWidget* consoleTab, OutputTabWidget* errorTab)
 {
     QStringList fileName = pgmPath.split(QRegExp(".scp"), QString::SkipEmptyParts);
     this->pgmName = fileName[0];
@@ -11,6 +11,7 @@ Program::Program(QString pgmPath)
     this->numLabel = 0;
     this->numJumpStmt = 0;
     this->hasEnd = false;
+    this->errorControl = new ErrorControl(consoleTab, errorTab);
 }
 
 Program::~Program()
@@ -29,6 +30,8 @@ Program::~Program()
     {
         delete (this->jumpStmts[i]);
     }
+
+    delete (errorControl);
 }
 
 ResultState Program::save()
@@ -56,7 +59,10 @@ ResultState Program::save()
         ResultState res = addStmt(line, lineNum);
         // TODO: error recovery
         if (res != NO_ERROR)
+        {
             qDebug() << res << " at line " << lineNum;
+            errorControl->printErrorMsg(res);
+        }
     }
 
     file.close();
@@ -86,6 +92,7 @@ ResultState Program::compile()
             qDebug() << res << " statement " << i;
         else // no syntax error
         {
+            this->errorControl->printToConsole(res);
             if (isEndStmt(this->statements[i]))
             {
                 qDebug() << "detected end";
@@ -108,6 +115,7 @@ ResultState Program::compile()
         if (res != NO_ERROR)
             qDebug() << res << " statement " << i;
         else
+            errorControl->printErrorMsg(res);
             qDebug() << "compiled successfully";
     }
 
