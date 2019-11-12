@@ -7,6 +7,8 @@ CompStmt::CompStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : St
 
 CompStmt::~CompStmt()
 {
+    delete (op1);
+    delete (op2);
     qDebug() << "~CompStmt()";
 }
 

@@ -7,6 +7,7 @@ JMoreStmt::JMoreStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : 
 
 JMoreStmt::~JMoreStmt()
 {
+    delete (op1);
     qDebug() << "~JMoreStmt()";
 }
 

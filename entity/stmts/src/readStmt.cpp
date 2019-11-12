@@ -7,6 +7,7 @@ ReadStmt::ReadStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : St
 
 ReadStmt::~ReadStmt()
 {
+    delete (op1);
     qDebug() << "~ReadStmt()";
 }
 

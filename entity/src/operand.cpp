@@ -7,6 +7,8 @@ Operand::Operand(Identifier* id)
 
 Operand::~Operand()
 {
+    if (id)
+        delete (id);
 }
 
 Identifier* Operand::getIdentifier()

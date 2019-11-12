@@ -7,6 +7,7 @@ JumpStmt::JumpStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : St
 
 JumpStmt::~JumpStmt()
 {
+    delete (op1);
     qDebug() << "~JumpStmt()";
 }
 
