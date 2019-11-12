@@ -465,10 +465,13 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
-    QFile file("~/home/student/Desktop/abc.scp");
+    QFile file(ft->getFilePath());
     QTextStream in(&file);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
+    }
     QString text = in.readAll();
-    qDebug()<<text;
+    ft->setText(text);
     dirUpdate(ft->getFilePath());
 }
 
