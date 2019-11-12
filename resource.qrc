@@ -6,5 +6,6 @@
         <file>interface/resource/run_icon.png</file>
         <file>interface/resource/save_icon.png</file>
         <file>interface/resource/exit_icon.png</file>
+        <file>interface/resource/LOGO.png</file>
     </qresource>
 </RCC>
