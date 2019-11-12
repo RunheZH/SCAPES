@@ -41,6 +41,7 @@ private:
     Statement*  jumpStmts[MAX_VALUE_16];
 
     bool hasEnd;
+    bool hasError;
 
     // helper functions
     ResultState addStmt(QString stmt, qint16 lineNum);

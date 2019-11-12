@@ -30,7 +30,6 @@ ResultState CompStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
     QString operand2 = args[2];
-    ResultState res = NO_ERROR;
 
     JsonHandler jsonHdlr(this->programName);
     // TODO: not necessary to be ints
@@ -66,7 +65,7 @@ ResultState CompStmt::compile()
         jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
     }
 
-    return res;
+    return NO_ERROR;
 }
 
 ResultState CompStmt::run()

@@ -21,7 +21,7 @@ public:
     ResultState addElement(QString elementType, QString key, QJsonObject valueObj);
 
 private:
-    ResultState readData();
+    void readData();
     ResultState writeData(QJsonObject jsonObj);
 
     QString fileToHandle;

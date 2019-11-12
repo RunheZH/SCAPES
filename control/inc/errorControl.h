@@ -12,11 +12,12 @@ public:
     ErrorControl(OutputTabWidget* consoleTab, OutputTabWidget* errorTab);
     ~ErrorControl();
 
-    void printToConsole(ResultState result);
+    void printToConsole(QString message);
     void printErrorMsg(ResultState result);
     void printErrorMsgAtLine(ResultState result, qint16 lineNum);
 
 private:
+    QString convertErrorMsg(ResultState result);
     OutputTabWidget* consoleTab;
     OutputTabWidget* errorTab;
 };

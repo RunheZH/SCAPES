@@ -8,7 +8,6 @@ JsonHandler::JsonHandler()
 JsonHandler::JsonHandler(QString fileName)
 {
     fileToHandle = fileName + ".json";
-    qDebug() << fileToHandle;
     m_currentJsonObject = getJsonFromStr("{}");
 }
 
@@ -45,14 +44,12 @@ QJsonObject JsonHandler::appendToEnd(QJsonObject firstObj, QJsonObject secondObj
 
 QJsonObject JsonHandler::findLabel(QString labelName)
 {
-    ResultState res = readData();
-    if (res == ResultState::NO_ERROR) {
-        if (m_currentJsonObject.contains(LABEL)) {
-            QJsonObject labelObj = m_currentJsonObject[LABEL].toObject();
-            if (labelObj.contains(labelName)) {
-                QJsonObject foundLabel = labelObj[labelName].toObject();
-                return foundLabel;
-            }
+    readData();
+    if (m_currentJsonObject.contains(LABEL)) {
+        QJsonObject labelObj = m_currentJsonObject[LABEL].toObject();
+        if (labelObj.contains(labelName)) {
+            QJsonObject foundLabel = labelObj[labelName].toObject();
+            return foundLabel;
         }
     }
     return getJsonFromStr("{}");
@@ -60,14 +57,12 @@ QJsonObject JsonHandler::findLabel(QString labelName)
 
 QJsonObject JsonHandler::findVariable(QString variableName)
 {
-    ResultState res = readData();
-    if (res == ResultState::NO_ERROR) {
-        if (m_currentJsonObject.contains(VAR)) {
-            QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
-            if (variableObj.contains(variableName)) {
-                QJsonObject foundVar = variableObj[variableName].toObject();
-                return foundVar;
-            }
+    readData();
+    if (m_currentJsonObject.contains(VAR)) {
+        QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
+        if (variableObj.contains(variableName)) {
+            QJsonObject foundVar = variableObj[variableName].toObject();
+            return foundVar;
         }
     }
     return getJsonFromStr("{}");
@@ -75,11 +70,7 @@ QJsonObject JsonHandler::findVariable(QString variableName)
 
 ResultState JsonHandler::addElement(QString elementType, QString key, QJsonObject valueObj)
 {
-    ResultState res = readData();
-    if (res != ResultState::NO_ERROR) {
-        return res;
-    }
-
+    readData();
     if (!m_currentJsonObject.contains(elementType)){
         m_currentJsonObject.insert(elementType, QJsonObject());
     }
@@ -87,11 +78,10 @@ ResultState JsonHandler::addElement(QString elementType, QString key, QJsonObjec
 
     elementObj.insert(key, valueObj);
     m_currentJsonObject.insert(elementType, elementObj);
-    res = writeData(m_currentJsonObject);
-    return res;
+    return writeData(m_currentJsonObject);
 }
 
-ResultState JsonHandler::readData()
+void JsonHandler::readData()
 {
     QFile file(fileToHandle);
     file.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -101,14 +91,12 @@ ResultState JsonHandler::readData()
     m_currentJsonObject = data.object();
 
     file.close();
-    return NO_ERROR;
 }
 
 ResultState JsonHandler::writeData(QJsonObject jsonObj)
 {
     QFile file(fileToHandle);
     if (!file.open(QFile::WriteOnly | QFile::Append | QFile::Text | QFile::Truncate)) {
-        qDebug() << "WRITE: cannot open file";
         return FILE_OPEN_ERROR;
     }
     QJsonDocument aQJsonDocument;

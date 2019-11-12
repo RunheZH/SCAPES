@@ -15,6 +15,7 @@ public:
 	virtual ~Statement();
     virtual ResultState compile() = 0;
     virtual ResultState run() = 0;
+    virtual qint16 getLineNum() {return this->lineNum;}
 
 protected:
     QString programName;

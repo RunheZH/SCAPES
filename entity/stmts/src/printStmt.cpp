@@ -18,6 +18,11 @@ PrintStmt::~PrintStmt()
 ResultState PrintStmt::compile()
 {
     qDebug() << "PrintStmt.compile()";
+
+    QStringList args_str = this->statement.split(QRegExp("\\s*\"\\s*"), QString::SkipEmptyParts);
+
+    //if (args_str.size() == 2) {}
+
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){
@@ -31,14 +36,13 @@ ResultState PrintStmt::compile()
 
     QString instruction = args[0];
     QString operand1 = args[1];
-    ResultState res = NO_ERROR;
 
     JsonHandler jsonHdlr(this->programName);
     QJsonObject aQJsonObject = jsonHdlr.findVariable(operand1);
 
     // Variable 1 not found
     if(aQJsonObject == jsonHdlr.getJsonFromStr("{}")){
-        res = VARIABLE_ONE_NOT_FOUND_ERROR;
+        return VARIABLE_ONE_NOT_FOUND_ERROR;
     }
 
     QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
@@ -50,7 +54,7 @@ ResultState PrintStmt::compile()
         jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
     }
 
-    return res;
+    return NO_ERROR;
 }
 
 ResultState PrintStmt::run()
