@@ -85,10 +85,10 @@ HEADERS += \
         interface/inc/tabchildwidget.h
 
 FORMS += \
-        mainwindow.ui \
-        opennewwidget.ui \
-        outputtabwidget.ui \
-        tabchildwidget.ui
+        interface/ui/mainwindow.ui \
+        interface/ui/opennewwidget.ui \
+        interface/ui/outputtabwidget.ui \
+        interface/ui/tabchildwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -96,4 +96,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    resource.qrc
+    interface/res/res.qrc

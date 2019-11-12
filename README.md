@@ -1,7 +1,12 @@
 COMP 3004 - 2019 Fall
 Team Do-while
 
-Makefile Process:
+RUN PROCESS:
+1. locate at the folder in terminal
+2. bash run
+
+
+ALTERNATIVE PROCESS:
 1. open terminal
 2. locate at the interface folder
 3. type /home/student/Qt/5.13.0/gcc_64/bin/qmake
@@ -9,10 +14,10 @@ Makefile Process:
 5. type ./SCAPES
 
 
+Test-Program:
+largeNumberPrint - allow user to input two numbers, and the program will print the large number.
 
-Edit File Process
-1. open Qt
-2. open file and locate the project file
+secretNumberGues - allow one user to input a secret number, and then second user to input a number to guess the secret number, the loop will keep going on until the second user guess the secret number.
 
 
 Resource Credits:

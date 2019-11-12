@@ -293,7 +293,7 @@ QTabBar::tab:only-one {
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>false</bool>
+    <bool>true</bool>
    </attribute>
    <addaction name="actionNew"/>
    <addaction name="actionOpen"/>
@@ -305,8 +305,8 @@ QTabBar::tab:only-one {
   <widget class="QStatusBar" name="statusBar"/>
   <action name="actionNew">
    <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/imgs/interface/resource/new_icon.png</normaloff>:/imgs/interface/resource/new_icon.png</iconset>
+    <iconset resource="../res/res.qrc">
+     <normaloff>:/imgs/imgs/new_icon.png</normaloff>:/imgs/imgs/new_icon.png</iconset>
    </property>
    <property name="text">
     <string>New</string>
@@ -317,8 +317,8 @@ QTabBar::tab:only-one {
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/imgs/interface/resource/open_icon.png</normaloff>:/imgs/interface/resource/open_icon.png</iconset>
+    <iconset resource="../res/res.qrc">
+     <normaloff>:/imgs/imgs/open_icon.png</normaloff>:/imgs/imgs/open_icon.png</iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -329,8 +329,8 @@ QTabBar::tab:only-one {
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/imgs/interface/resource/save_icon.png</normaloff>:/imgs/interface/resource/save_icon.png</iconset>
+    <iconset resource="../res/res.qrc">
+     <normaloff>:/imgs/imgs/save_icon.png</normaloff>:/imgs/imgs/save_icon.png</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -357,8 +357,8 @@ QTabBar::tab:only-one {
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/imgs/interface/resource/exit_icon.png</normaloff>:/imgs/interface/resource/exit_icon.png</iconset>
+    <iconset resource="../res/res.qrc">
+     <normaloff>:/imgs/imgs/exit_icon.png</normaloff>:/imgs/imgs/exit_icon.png</iconset>
    </property>
    <property name="text">
     <string>Quit</string>
@@ -369,8 +369,8 @@ QTabBar::tab:only-one {
   </action>
   <action name="actionCompile">
    <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/imgs/interface/resource/compile_icon.png</normaloff>:/imgs/interface/resource/compile_icon.png</iconset>
+    <iconset resource="../res/res.qrc">
+     <normaloff>:/imgs/imgs/compile_icon.png</normaloff>:/imgs/imgs/compile_icon.png</iconset>
    </property>
    <property name="text">
     <string>Compile</string>
@@ -381,8 +381,8 @@ QTabBar::tab:only-one {
   </action>
   <action name="actionRun">
    <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/imgs/interface/resource/run_icon.png</normaloff>:/imgs/interface/resource/run_icon.png</iconset>
+    <iconset resource="../res/res.qrc">
+     <normaloff>:/imgs/imgs/run_icon.png</normaloff>:/imgs/imgs/run_icon.png</iconset>
    </property>
    <property name="text">
     <string>Run</string>
@@ -403,7 +403,7 @@ QTabBar::tab:only-one {
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources>
-  <include location="resource.qrc"/>
+  <include location="../res/res.qrc"/>
  </resources>
  <connections/>
 </ui>

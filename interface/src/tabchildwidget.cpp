@@ -1,5 +1,5 @@
 #include "../inc/tabchildwidget.h"
-#include "ui_tabchildwidget.h"
+#include "./ui_tabchildwidget.h"
 
 tabchildwidget::tabchildwidget(QWidget *parent) :
     QWidget(parent),

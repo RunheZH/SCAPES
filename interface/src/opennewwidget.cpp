@@ -1,5 +1,5 @@
 #include "../inc/opennewwidget.h"
-#include "ui_opennewwidget.h"
+#include "./ui_opennewwidget.h"
 
 OpenNewWidget::OpenNewWidget(QWidget *parent) :
     QWidget(parent),
