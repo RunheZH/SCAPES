@@ -28,10 +28,10 @@ ResultState ReadStmt::compile()
     QString operand1 = args[1];
 
     JsonHandler jsonHdlr(this->programName);
-    QJsonObject aQJsonObject = jsonHdlr.findVariable(operand1);
+    this->op1 = new Operand(jsonHdlr.findVariable(operand1));
 
     // Variable 1 not found
-    if(aQJsonObject == jsonHdlr.getJsonFromStr("{}")){
+    if(this->op1->getIdentifier() == nullptr){
         return VARIABLE_ONE_NOT_FOUND_ERROR;
     }
 

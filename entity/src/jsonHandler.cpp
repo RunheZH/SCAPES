@@ -42,30 +42,35 @@ QJsonObject JsonHandler::appendToEnd(QJsonObject firstObj, QJsonObject secondObj
     return firstObj;
 }
 
-QJsonObject JsonHandler::findLabel(QString labelName)
+Label* JsonHandler::findLabel(QString labelName)
 {
     readData();
     if (m_currentJsonObject.contains(LABEL)) {
         QJsonObject labelObj = m_currentJsonObject[LABEL].toObject();
         if (labelObj.contains(labelName)) {
-            QJsonObject foundLabel = labelObj[labelName].toObject();
+            Label* foundLabel = new Label(labelName, labelObj.value(labelName).toInt());
             return foundLabel;
         }
     }
-    return getJsonFromStr("{}");
+    return nullptr;
 }
 
-QJsonObject JsonHandler::findVariable(QString variableName)
+Variable* JsonHandler::findVariable(QString variableName)
 {
     readData();
     if (m_currentJsonObject.contains(VAR)) {
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
-            QJsonObject foundVar = variableObj[variableName].toObject();
+            Variable* foundVar;
+            if (variableObj[variableName].toObject().value("type") == "int")
+                foundVar = new Variable(variableName, INT);
+            else
+                foundVar = new Variable(variableName, ARRAY);
+            foundVar->setValue(variableObj[variableName].toObject().value("value").toString());
             return foundVar;
         }
     }
-    return getJsonFromStr("{}");
+    return nullptr;
 }
 
 ResultState JsonHandler::addElement(QString elementType, QString key, QJsonObject valueObj)

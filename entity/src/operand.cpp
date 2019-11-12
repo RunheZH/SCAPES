@@ -1,21 +1,20 @@
 #include "../inc/operand.h"
 
-Operand::Operand(QString value)
+Operand::Operand(Identifier* id)
 {
-    this->value = value;
+    this->id = id;
 }
 
 Operand::~Operand()
 {
 }
 
-QString Operand::getValue()
+Identifier* Operand::getIdentifier()
 {
-    return this->value;
+    return this->id;
 }
 
-ResultState Operand::setValue(QString value)
+void Operand::setIdentifier(Identifier* newId)
 {
-    this->value = value;
-    return NO_ERROR;
+    this->id = newId;
 }

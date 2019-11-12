@@ -1,7 +1,7 @@
 #include "../inc/label.h"
 #include "../inc/jsonHandler.h"
 
-Label::Label(QString labelName, qint16 stmtLineNum) : Identifier(labelName)
+Label::Label(QString labelName, int stmtLineNum) : Identifier(labelName)
 {
     this->stmtLineNum = stmtLineNum;
 }

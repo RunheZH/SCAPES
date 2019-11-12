@@ -1,8 +1,10 @@
 #include "../inc/variable.h"
+#include "../inc/jsonHandler.h"
 
 Variable::Variable(QString variableName, TypeE type) : Identifier(variableName)
 {
     this->type = type;
+    this->value = "undefined";
 }
 
 Variable::~Variable(){}
@@ -25,10 +27,19 @@ QJsonObject Variable::toJSON()
     return varObj;
 }
 
-void Variable::setValue(QString value, TypeE type)
+void Variable::setValue(QString value)
 {
     this->value = value;
-    this->type  = type;
+}
+
+void Variable::setType(TypeE type)
+{
+    this->type = type;
+}
+
+QString Variable::getValue()
+{
+    return this->value;
 }
 
 TypeE Variable::getType()

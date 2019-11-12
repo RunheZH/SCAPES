@@ -32,6 +32,7 @@ private:
     ErrorControl* errorControl;
 
     QString pgmName;
+    QString tempFileName;
     QString pgmPath;
     qint16  numStmt;
     qint16  numLabel;

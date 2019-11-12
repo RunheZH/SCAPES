@@ -6,6 +6,7 @@ Program::Program(QString pgmPath, OutputTabWidget* consoleTab, OutputTabWidget* 
 {
     QStringList fileName = pgmPath.split(QRegExp(".scp"), QString::SkipEmptyParts);
     this->pgmName = fileName[0];
+    this->tempFileName = this->pgmName + "_tmp";
     this->pgmPath = pgmPath;
     this->numStmt = 0;
     this->numLabel = 0;
@@ -75,8 +76,7 @@ ResultState Program::compile()
 {
     qDebug() << "RUNHE: Program::compile()";
 
-    QFile file(this->pgmName + ".json");
-    file.remove();
+    QFile tmpFile(this->tempFileName + ".json");
 
     ResultState res;
     this->numJumpStmt = 0;
@@ -104,9 +104,10 @@ ResultState Program::compile()
         }
     }
 
-    if (!this->hasEnd)
+    if (!this->hasEnd) // unsuccessful compilation, remove .json file
     {
         this->errorControl->printErrorMsg(NO_END);
+        tmpFile.remove();
         return COMPILATION_ERROR;
     }
 
@@ -122,7 +123,13 @@ ResultState Program::compile()
     }
 
     if (!this->hasError)
+    {
+        QFile realFile(this->pgmName + ".json");
+        realFile.remove();
+        tmpFile.rename(this->pgmName + ".json");
         return NO_ERROR;
+    }
+    tmpFile.remove();
     return COMPILATION_ERROR;
 }
 
@@ -156,40 +163,40 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
 
     switch (this->getStmtId(instruction)) {
     case ADD_STMT:
-        newStmt = new AddStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new AddStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case CMP_STMT:
-        newStmt = new CompStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new CompStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case DCA_STMT:
-        newStmt = new DeclArrStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new DeclArrStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case DCI_STMT:
-        newStmt = new DeclIntStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new DeclIntStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case END_STMT:
-        newStmt = new EndStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new EndStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case JEQ_STMT:
-        newStmt = new JEqStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new JEqStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case JLS_STMT:
-        newStmt = new JLessStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new JLessStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case JMR_STMT:
-        newStmt = new JMoreStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new JMoreStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case JMP_STMT:
-        newStmt = new JumpStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new JumpStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case MOV_STMT:
-        newStmt = new MovStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new MovStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case PRT_STMT:
-        newStmt = new PrintStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new PrintStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case RDI_STMT:
-        newStmt = new ReadStmt(this->pgmName, stmt, newLabel, lineNum);
+        newStmt = new ReadStmt(this->tempFileName, stmt, newLabel, lineNum);
         break;
     case INVALID_STMT:
         return INVALID_STATEMENT;

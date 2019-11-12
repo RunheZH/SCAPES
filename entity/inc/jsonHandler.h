@@ -5,6 +5,8 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include "common_lib.h"
+#include "variable.h"
+#include "label.h"
 
 class JsonHandler
 {
@@ -16,8 +18,8 @@ public:
     QJsonObject getJsonObj(QString key, QString value);
     QJsonObject getJsonObj(QString key, QJsonObject value);
     QJsonObject appendToEnd(QJsonObject first, QJsonObject second);
-    QJsonObject findLabel(QString labelName);
-    QJsonObject findVariable(QString variableName);
+    Label* findLabel(QString labelName);
+    Variable* findVariable(QString variableName);
     ResultState addElement(QString elementType, QString key, QJsonObject valueObj);
 
 private:

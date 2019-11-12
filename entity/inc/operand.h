@@ -7,14 +7,13 @@
 class Operand
 {
 public:
-    Operand(QString value);
+    Operand(Identifier* id);
     ~Operand();
-    QString getValue();
-    ResultState setValue(QString value);
+    Identifier* getIdentifier();
+    void setIdentifier(Identifier*);
 
 private:
-    QString value; // use string for now, change it later
-    //Identifier* id;
+    Identifier* id;
 };
 
 #endif

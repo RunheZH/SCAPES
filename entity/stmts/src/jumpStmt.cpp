@@ -29,10 +29,10 @@ ResultState JumpStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    QJsonObject aQJsonObject = jsonHdlr.findLabel(operand1);
+    this->op1 = new Operand(jsonHdlr.findLabel(operand1));
 
     // Label 1 not found
-    if(aQJsonObject == jsonHdlr.getJsonFromStr("{}")){
+    if(this->op1->getIdentifier() == nullptr){
         return LABEL_NOT_FOUND_ERROR;
     }
 
