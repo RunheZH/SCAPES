@@ -14,7 +14,8 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color: rgb(22,67,75);</string>
+   <string notr="true">background-color: rgb(22,67,75);
+color: rgb(255,255,255);</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -104,6 +105,7 @@ QTabBar::tab:only-one {
         <property name="styleSheet">
          <string notr="true">QTreeView {
     background-color: rgb(255, 255, 255);
+	color: rgb(0,0,0);
 }
 
 QTreeView {
@@ -235,6 +237,9 @@ QTabBar::tab:only-one {
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(72, 160, 177);</string>
+    </property>
     <property name="title">
      <string>File</string>
     </property>
@@ -245,6 +250,9 @@ QTabBar::tab:only-one {
     <addaction name="actionQuit"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(72, 160, 177);</string>
+    </property>
     <property name="title">
      <string>Help</string>
     </property>
@@ -252,12 +260,18 @@ QTabBar::tab:only-one {
     <addaction name="actionInstruction_Book"/>
    </widget>
    <widget class="QMenu" name="menuCompile">
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(72, 160, 177);</string>
+    </property>
     <property name="title">
      <string>Compile</string>
     </property>
     <addaction name="actionCompile"/>
    </widget>
    <widget class="QMenu" name="menuRun">
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(72, 160, 177);</string>
+    </property>
     <property name="title">
      <string>Run</string>
     </property>
