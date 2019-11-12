@@ -15,6 +15,17 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    for(int i=0; i<programList.size();i++){
+        Program* pgm = programList[i].second;
+        delete (pgm);
+    }
+    for(int i=0; i<ui->tabWidget->count();i++){
+        delete(ui->tabWidget->widget(i));
+    }
+    delete(onw);
+    delete(consoleTab);
+    delete(errorTab);
+    delete(dirmodel);
     delete ui;
 }
 
@@ -313,7 +324,7 @@ void MainWindow::compileText(QString filePath){
             case QMessageBox::Save:
                 saveFile();
                 for(int i=0; i<programList.size();i++){
-                    if(programList[i].first==filePath){
+                    if(programList[i].first==ft->getFilePath()){
                         pgm = programList[i].second;
                     }
                 }
@@ -469,22 +480,18 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
     QFile file(ft->getFilePath());
-    if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        QTextStream in(&file);
-        QString text = in.readAll();
-        ft->setText(text);
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
+
     }
+    QTextStream in(&file);
+    QString text = in.readAll();
+    ft->setText(text);
     dirUpdate(ft->getFilePath());
 }
 
 //QUIT PROGRAM TRIGGER
 void MainWindow::on_actionQuit_triggered()
 {
-    for(int i=0; i<programList.size();i++){
-        Program* pgm = programList[i].second;
-        delete (pgm);
-    }
-    delete(onw);
     qApp->exit();
 }
 
