@@ -21,7 +21,7 @@ MainWindow::~MainWindow()
 //OPEN OR NEW START SELECTION
 void MainWindow::startSelectionView(){
     ui->tabWidget->setVisible(false);
-    OpenNewWidget* onw = new OpenNewWidget();
+    onw = new OpenNewWidget();
     ui->verticalLayout->addWidget(onw);
     connect(onw,SIGNAL(newFileClick()),this,SLOT(startNewView()));
     connect(onw,SIGNAL(openFileClick()),this,SLOT(startOpenView()));
@@ -446,7 +446,6 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
         case QMessageBox::Discard:
         // Don't Save was clicked
             ui->tabWidget->removeTab(index);
-            ft->~tabchildwidget();
             dirUpdate("");
             break;
         case QMessageBox::Cancel:
@@ -466,22 +465,22 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
     QFile file(ft->getFilePath());
-    QTextStream in(&file);
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-        QMessageBox::warning(this, "Warning", "Cannot open file: " + file.errorString());
+    if(file.open(QIODevice::ReadOnly | QIODevice::Text)){
+        QTextStream in(&file);
+        QString text = in.readAll();
+        ft->setText(text);
     }
-    QString text = in.readAll();
-    ft->setText(text);
     dirUpdate(ft->getFilePath());
 }
 
 //QUIT PROGRAM TRIGGER
 void MainWindow::on_actionQuit_triggered()
 {
-//    for(int i=0; i<programList.size();i++){
-//        Program* pgm = programList[i].second;
-//        delete (pgm);
-//    }
+    for(int i=0; i<programList.size();i++){
+        Program* pgm = programList[i].second;
+        delete (pgm);
+    }
+    delete(onw);
     qApp->exit();
 }
 
