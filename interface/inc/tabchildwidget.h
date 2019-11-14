@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QDebug>
+#include <QRegExp>
+#include <QRegExpValidator>
+#include <QRegularExpressionMatch>
 
 namespace Ui {
 class tabchildwidget;
@@ -21,6 +24,7 @@ public:
     void storeFilePath(QString dir);
     QString getFilePath();
     QString getFileName();
+    QString getFileType();
     void setChanged(bool changed);
     bool isChanged();
     ~tabchildwidget();
@@ -30,9 +34,13 @@ private slots:
 
 private:
     Ui::tabchildwidget *ui;
-    QString filePath;
-    QString fileName;
+    QString filePath = "";
+    QString fileName = "";
+    QString fileType;   //scp,jsn
     bool changed = false;
+    int getLineNum();
+    void updateLineNum();
+    void setFileType();
 };
 
 #endif // FILETEXT_H

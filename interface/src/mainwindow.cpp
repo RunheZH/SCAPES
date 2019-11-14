@@ -480,8 +480,8 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
     QFile file(ft->getFilePath());
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text) || (ft->isChanged() && ft->getFileType()=="scp")){
+        return;
     }
     QTextStream in(&file);
     QString text = in.readAll();

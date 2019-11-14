@@ -6,6 +6,7 @@ tabchildwidget::tabchildwidget(QWidget *parent) :
     ui(new Ui::tabchildwidget)
 {
     ui->setupUi(this);
+    //connect(this,SLOT(on_textEdit_textChanged()),this,SLOT(updateLineNum()));
 }
 
 tabchildwidget::~tabchildwidget()
@@ -23,7 +24,7 @@ QString tabchildwidget::getText(){
 }
 
 bool tabchildwidget::isEmpty(){
-    qDebug()<<ui->textEdit->document();
+//    qDebug()<<ui->textEdit->document();
     if(ui->textEdit->document()->isEmpty()){
         return true;
     }else{
@@ -59,4 +60,34 @@ bool tabchildwidget::isChanged(){
 
 void tabchildwidget::setChanged(bool changed){
     this->changed = changed;
+}
+
+void tabchildwidget::setFileType(){
+    QRegularExpression scpPattern("^.*\.(scp)$");
+    QRegularExpression jsnPattern("^.*\.(json)$");
+    if(fileName!=""){
+        if(scpPattern.match(fileName).hasMatch()){
+            fileType = "scp";
+        }else if(jsnPattern.match(fileName).hasMatch()) {
+            fileType = "jsn";
+        }
+    }
+}
+
+QString tabchildwidget::getFileType(){
+    setFileType();
+    return fileType;
+}
+
+int tabchildwidget::getLineNum(){
+    if(this->isEmpty()){
+        return 1;
+    }else {
+        int blockcount = ui->textEdit->document()->blockCount();
+        return blockcount;
+    }
+}
+
+void tabchildwidget::updateLineNum(){
+    qDebug()<<getLineNum();
 }
