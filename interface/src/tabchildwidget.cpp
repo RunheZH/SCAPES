@@ -6,7 +6,9 @@ tabchildwidget::tabchildwidget(QWidget *parent) :
     ui(new Ui::tabchildwidget)
 {
     ui->setupUi(this);
-    //connect(this,SLOT(on_textEdit_textChanged()),this,SLOT(updateLineNum()));
+//    connect(ui->textEdit->verticalScrollBar(), SIGNAL(sliderMoved(int)),this,SLOT(qDebug()<<"sig"));
+//    connect(this, SIGNAL(textChange()), this, SLOT(updateScroll()));
+//    connect(ui->lineNumEdit->verticalScrollBar(), SIGNAL(sliderMoved(int)), ui->textEdit->verticalScrollBar(), SLOT(setValue(int)));
 }
 
 tabchildwidget::~tabchildwidget()
@@ -16,7 +18,7 @@ tabchildwidget::~tabchildwidget()
 }
 
 void tabchildwidget::setText(QString text){
-    ui->textEdit->setText(text);
+    ui->textEdit->setPlainText(text);
 }
 
 QString tabchildwidget::getText(){
@@ -51,6 +53,8 @@ QString tabchildwidget::getFileName(){
 
 void tabchildwidget::on_textEdit_textChanged()
 {
+    updateLineNum();
+    textChange();
     changed = true;
 }
 
@@ -89,5 +93,18 @@ int tabchildwidget::getLineNum(){
 }
 
 void tabchildwidget::updateLineNum(){
-    qDebug()<<getLineNum();
+    //qDebug()<<getLineNum();
+    ui->lineNumEdit->clear();
+    for(int i=1; i<=getLineNum(); i++){
+//        qDebug()<<i;
+        ui->lineNumEdit->append(QString::number(i));
+    }
+    int pos = ui->textEdit->verticalScrollBar()->value();
+//    ui->lineNumEdit->scroll(0,pos);
+//    qDebug()<<ui->lineNumEdit->verticalScrollBar()->value();
+    ui->lineNumEdit->verticalScrollBar()->sliderMoved(pos);
+}
+
+void tabchildwidget::updateScroll(){
+    qDebug()<<"slot";
 }

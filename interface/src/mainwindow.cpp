@@ -462,6 +462,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
         // Don't Save was clicked
             ui->tabWidget->removeTab(index);
             dirUpdate("");
+            ft->~tabchildwidget();
             break;
         case QMessageBox::Cancel:
         // Cancel was clicked

@@ -6,6 +6,7 @@
 #include <QRegExp>
 #include <QRegExpValidator>
 #include <QRegularExpressionMatch>
+#include <QScrollBar>
 
 namespace Ui {
 class tabchildwidget;
@@ -31,6 +32,10 @@ public:
 
 private slots:
     void on_textEdit_textChanged();
+    void updateScroll();
+
+signals:
+    void textChange();
 
 private:
     Ui::tabchildwidget *ui;
