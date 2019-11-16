@@ -33,6 +33,7 @@ public:
 private slots:
     void on_textEdit_textChanged();
     void updateScroll(int pos);
+    void on_textEdit_cursorPositionChanged();
 
 signals:
     void textChange();

@@ -106,3 +106,19 @@ void tabchildwidget::updateLineNum(){
 void tabchildwidget::updateScroll(int pos){
     ui->lineNumEdit->verticalScrollBar()->setValue(pos);
 }
+
+void tabchildwidget::on_textEdit_cursorPositionChanged()
+{
+    //qt code editor example: https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
+    QList<QTextEdit::ExtraSelection> extraSelections;
+    if (!ui->textEdit->isReadOnly()) {
+        QTextEdit::ExtraSelection selection;
+        QColor lineColor = QColor(225,225,225);
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = ui->textEdit->textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
+    ui->textEdit->setExtraSelections(extraSelections);
+}
