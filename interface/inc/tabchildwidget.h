@@ -32,10 +32,11 @@ public:
 
 private slots:
     void on_textEdit_textChanged();
-    void updateScroll();
+    void updateScroll(int pos);
 
 signals:
     void textChange();
+    void sliderMoved(int);
 
 private:
     Ui::tabchildwidget *ui;

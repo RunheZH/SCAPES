@@ -6,9 +6,8 @@ tabchildwidget::tabchildwidget(QWidget *parent) :
     ui(new Ui::tabchildwidget)
 {
     ui->setupUi(this);
-//    connect(ui->textEdit->verticalScrollBar(), SIGNAL(sliderMoved(int)),this,SLOT(qDebug()<<"sig"));
-//    connect(this, SIGNAL(textChange()), this, SLOT(updateScroll()));
-//    connect(ui->lineNumEdit->verticalScrollBar(), SIGNAL(sliderMoved(int)), ui->textEdit->verticalScrollBar(), SLOT(setValue(int)));
+    //when user scroll textedit, the linenumber will also sync with the textedit scrollbar
+    connect(ui->textEdit->verticalScrollBar(), SIGNAL(valueChanged(int)),this,SLOT(updateScroll(int)));
 }
 
 tabchildwidget::~tabchildwidget()
@@ -55,6 +54,7 @@ void tabchildwidget::on_textEdit_textChanged()
 {
     updateLineNum();
     textChange();
+    updateScroll(ui->textEdit->verticalScrollBar()->value());
     changed = true;
 }
 
@@ -100,11 +100,9 @@ void tabchildwidget::updateLineNum(){
         ui->lineNumEdit->append(QString::number(i));
     }
     int pos = ui->textEdit->verticalScrollBar()->value();
-//    ui->lineNumEdit->scroll(0,pos);
-//    qDebug()<<ui->lineNumEdit->verticalScrollBar()->value();
-    ui->lineNumEdit->verticalScrollBar()->sliderMoved(pos);
 }
 
-void tabchildwidget::updateScroll(){
-    qDebug()<<"slot";
+//update line number area scrollbar position
+void tabchildwidget::updateScroll(int pos){
+    ui->lineNumEdit->verticalScrollBar()->setValue(pos);
 }
