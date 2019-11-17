@@ -86,6 +86,46 @@ ResultState JsonHandler::addElement(QString elementType, QString key, QJsonObjec
     return writeData(m_currentJsonObject);
 }
 
+ResultState JsonHandler::initValue(QString variableName, int position, int lineNum)
+{
+    readData();
+    if (m_currentJsonObject.contains(VAR)) {
+        QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
+        if (variableObj.contains(variableName)) {
+            QJsonObject valueObj = variableObj[variableName].toObject()["value"].toObject();
+            valueObj.insert(QString::number(position), QString::number(lineNum));
+            QJsonObject variable = variableObj[variableName].toObject();
+            variable.remove("value");
+            variable.insert("value", valueObj);
+            variableObj.remove(variableName);
+            variableObj.insert(variableName, variable);
+            m_currentJsonObject.remove(VAR);
+            m_currentJsonObject.insert(VAR, variableObj);
+            return writeData(m_currentJsonObject);
+        }
+    }
+    return VARIABLE_ONE_NOT_FOUND_ERROR;
+}
+
+ResultState JsonHandler::findInitValue(QString variableName, int position)
+{
+    readData();
+    if (m_currentJsonObject.contains(VAR)) {
+        QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
+        if (variableObj.contains(variableName)) {
+            if (variableObj[variableName].toObject()["value"].toObject().contains(QString::number(position))) {
+                qDebug() << "NO_ERROR";
+                return NO_ERROR;
+            } else {
+                qDebug() << "VARIABLE_NOT_INIT_ERROR";
+                return VARIABLE_NOT_INIT_ERROR;
+            }
+        }
+    }
+    qDebug() << "VARIABLE_NOT_FOUND_ERROR";
+    return  VARIABLE_NOT_FOUND_ERROR;
+}
+
 void JsonHandler::readData()
 {
     QFile file(fileToHandle);

@@ -15,6 +15,7 @@ CompStmt::~CompStmt()
 ResultState CompStmt::compile()
 {
     qDebug() << "CompStmt.compile()";
+
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){
@@ -32,34 +33,26 @@ ResultState CompStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
     QString operand2 = args[2];
-
     JsonHandler jsonHdlr(this->programName);
-    // TODO: not necessary to be ints
-    op1 = new Operand(jsonHdlr.findVariable(operand1));
-    op2 = new Operand(jsonHdlr.findVariable(operand2));
-
-    // Variable 1 found
-    if (op1->getIdentifier() != nullptr){
-        // Variable 2 NOT found
-        if (op2->getIdentifier() == nullptr){
-            return VARIABLE_TWO_NOT_FOUND_ERROR;
-        }
-    }
-    // Variable 1 NOT found
-    else{
-        // Variable 2 found
-        if (op2->getIdentifier() != nullptr){
-            return VARIABLE_ONE_NOT_FOUND_ERROR;
-        }
-        // Variable 2 NOT found
-        else {
-            return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
-        }
+    ResultState oneResulsState = checkOperand(operand1, op1);
+    ResultState twoResulsState = checkOperand(operand2, op2);
+    if (oneResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR && twoResulsState == ResultState::NO_ERROR) {
+        return VARIABLE_ONE_NOT_FOUND_ERROR;
+    } else if (oneResulsState == ResultState::NO_ERROR && twoResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR) {
+        return VARIABLE_TWO_NOT_FOUND_ERROR;
+    } else if (oneResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR && twoResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR) {
+        return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
+    } else if (oneResulsState == ResultState::VARIABLE_NOT_INIT_ERROR && twoResulsState == ResultState::NO_ERROR) {
+        return VARIABLE_ONE_NOT_INIT_ERROR;
+    } else if (oneResulsState == ResultState::NO_ERROR && twoResulsState == ResultState::VARIABLE_NOT_INIT_ERROR) {
+        return VARIABLE_TWO_NOT_INIT_ERROR;
+    } else if (oneResulsState == ResultState::VARIABLE_NOT_INIT_ERROR && twoResulsState == ResultState::VARIABLE_NOT_INIT_ERROR) {
+        return VARIABLE_ONE_AND_TWO_NOT_INIT_ERROR;
     }
 
-    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
-    QJsonObject op2Obj = jsonHdlr.getJsonObj(OP_2, operand2);
-    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, jsonHdlr.appendToEnd(op1Obj, op2Obj));
+    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
+    QJsonObject op2Obj = JsonHandler::getJsonObj(OP_2, operand2);
+    QJsonObject stmtObj =JsonHandler::getJsonObj(instruction, JsonHandler::appendToEnd(op1Obj, op2Obj));
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
     if (label)

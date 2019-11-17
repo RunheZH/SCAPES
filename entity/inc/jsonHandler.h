@@ -14,13 +14,15 @@ public:
     JsonHandler();
     JsonHandler(QString fileName);
     ~JsonHandler();
-    QJsonObject getJsonFromStr(QString jsonString);
-    QJsonObject getJsonObj(QString key, QString value);
-    QJsonObject getJsonObj(QString key, QJsonObject value);
-    QJsonObject appendToEnd(QJsonObject first, QJsonObject second);
+    static QJsonObject getJsonFromStr(QString jsonString);
+    static QJsonObject getJsonObj(QString key, QString value);
+    static QJsonObject getJsonObj(QString key, QJsonObject value);
+    static QJsonObject appendToEnd(QJsonObject first, QJsonObject second);
     Label* findLabel(QString labelName);
     Variable* findVariable(QString variableName);
     ResultState addElement(QString elementType, QString key, QJsonObject valueObj);
+    ResultState initValue(QString variableName, int position, int lineNum);
+    ResultState findInitValue(QString variableName, int position);
 
 private:
     void readData();

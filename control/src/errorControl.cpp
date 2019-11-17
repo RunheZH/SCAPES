@@ -41,6 +41,16 @@ QString ErrorControl::convertErrorMsg(ResultState result)
         return "Undefined operand 2";
     else if (result == VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR)
         return "Undefined operand 1 and operand 2";
+    else if (result == VARIABLE_ONE_NOT_INIT_ERROR)
+        return "Operand 1 not initial";
+    else if (result == VARIABLE_TWO_NOT_INIT_ERROR)
+        return "Operand 2 not initial";
+    else if (result == VARIABLE_ONE_AND_TWO_NOT_INIT_ERROR)
+        return "Operand 1 and operand 2 not initial";
+    else if (result == VARIABLE_ONE_NOT_FOUND_AND_TWO_NOT_INIT_ERROR)
+        return "Undefined operand 1 and operand 2 not initial";
+    else if (result == VARIABLE_ONE_NOT_INIT_AND_TWO_NOT_FOUND_ERROR)
+        return "Operand 1 not initial and undefined operand 2";
     else if (result == LABEL_NOT_FOUND_ERROR)
         return "Undefined label";
     else if (result == NO_END)

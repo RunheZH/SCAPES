@@ -27,17 +27,14 @@ ResultState ReadStmt::compile()
 
     QString instruction = args[0];
     QString operand1 = args[1];
-
     JsonHandler jsonHdlr(this->programName);
-    this->op1 = new Operand(jsonHdlr.findVariable(operand1));
-
-    // Variable 1 not found
-    if(this->op1->getIdentifier() == nullptr){
-        return VARIABLE_ONE_NOT_FOUND_ERROR;
+    ResultState aResulsState = checkOperand(operand1, op1);
+    if (aResulsState != ResultState::NO_ERROR) {
+        return aResulsState;
     }
 
-    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, operand1);
-    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
+    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
+    QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
     if (label)
@@ -52,4 +49,37 @@ ResultState ReadStmt::run()
 {
     qDebug() << "ReadStmt.run()";
     return NO_ERROR;
+}
+ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
+    int indexOne = operand.indexOf("[");
+    int indexTwo = operand.indexOf("]");
+    JsonHandler jsonHdlr(this->programName);
+    if (indexOne != -1 && indexTwo > indexOne) {
+        bool ok;
+        int position = operand.mid(indexOne+1, (indexTwo - indexOne - 1)).toInt(&ok);
+        if (!ok) {
+          return VARIABLE_NOT_FOUND_ERROR;
+        }
+        operand = operand.mid(0, indexOne);
+        indexOne = position;
+    }
+       op = new Operand(jsonHdlr.findVariable(operand));
+
+    // Variable 1 not found
+    if(op->getIdentifier() == nullptr){
+        return VARIABLE_ONE_NOT_FOUND_ERROR;
+    } else if (indexOne != -1) {
+        if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::ARRAY) {
+            return VARIABLE_NOT_FOUND_ERROR;
+        } else {
+           return jsonHdlr.initValue(operand, indexOne, lineNum);
+        }
+
+    } else {
+        if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::INT) {
+            return VARIABLE_NOT_FOUND_ERROR;
+        } else {
+           return jsonHdlr.initValue(operand, 0, lineNum);
+        }
+    }
 }

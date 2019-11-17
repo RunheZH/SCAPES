@@ -22,7 +22,7 @@ ResultState EndStmt::compile()
 
     QString instruction = args[0];
     JsonHandler jsonHdlr(this->programName);
-    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, END);
+    QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, END);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
     if (label)

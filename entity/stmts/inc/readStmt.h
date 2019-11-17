@@ -11,6 +11,7 @@ public:
     ~ReadStmt();
     ResultState compile();
     ResultState run();
+    ResultState checkOperand(QString &operand, Operand* op);
 
 private:
     Operand* op1;
