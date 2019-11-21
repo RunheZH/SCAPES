@@ -41,7 +41,6 @@ ResultState ReadStmt::compile()
     {
         jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
     }
-
     return NO_ERROR;
 }
 
@@ -58,7 +57,7 @@ ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
         bool ok;
         int position = operand.mid(indexOne+1, (indexTwo - indexOne - 1)).toInt(&ok);
         if (!ok) {
-          return VARIABLE_NOT_FOUND_ERROR;
+          return VARIABLE_ONE_NOT_FOUND_ERROR;
         }
         operand = operand.mid(0, indexOne);
         indexOne = position;
@@ -70,14 +69,14 @@ ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
         return VARIABLE_ONE_NOT_FOUND_ERROR;
     } else if (indexOne != -1) {
         if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::ARRAY) {
-            return VARIABLE_NOT_FOUND_ERROR;
+            return VARIABLE_ONE_NOT_FOUND_ERROR;
         } else {
            return jsonHdlr.initValue(operand, indexOne, lineNum);
         }
 
     } else {
         if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::INT) {
-            return VARIABLE_NOT_FOUND_ERROR;
+            return VARIABLE_ONE_NOT_FOUND_ERROR;
         } else {
            return jsonHdlr.initValue(operand, 0, lineNum);
         }

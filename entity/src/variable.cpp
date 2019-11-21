@@ -4,7 +4,7 @@
 Variable::Variable(QString variableName, TypeE type) : Identifier(variableName)
 {
     this->type = type;
-    this->value = "undefine";
+    this->value = "undefined";
     valueSet = JsonHandler::getJsonFromStr("{}");
 }
 

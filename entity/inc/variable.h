@@ -18,7 +18,7 @@ public:
 private:
     TypeE type;
     QString value; // use string for now, change it later
-    QJsonObject valueSet; // use string for now, change it later
+    QJsonObject valueSet;
 };
 
 #endif
