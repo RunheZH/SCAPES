@@ -76,9 +76,13 @@ ResultState Program::compile()
 {
     qDebug() << "RUNHE: Program::compile()";
 
+    ResultState res;
+    res = this->save();
+    if (res != NO_ERROR)
+        return res;
+
     QFile tmpFile(this->tempFileName + ".json");
 
-    ResultState res;
     this->numJumpStmt = 0;
     for(qint16 i = 0; i < this->numStmt; i++){
         if (isJumpStmt(this->statements[i]))

@@ -13,7 +13,8 @@ SaveControl::~SaveControl()
 
 Program* SaveControl::save()
 {
+    consoleTab->clearText();
     Program* pgm = new Program(pgmPath, consoleTab, errorTab);
-    pgm->save();
+    consoleTab->addText("Saved successfully.");
     return pgm;
 }
