@@ -10,15 +10,16 @@ public:
     Variable(QString variableName, TypeE variableType);
     ~Variable();
     QJsonObject toJSON();
-    void setValue(QString value);
-    void setType(TypeE type);
-    QString getValue();
     TypeE getType();
+    //it will change the value if the user provide the invaild index
+    bool changeValue(int aValue, int position = 0);
+    QVector<int> getValue();
+    //it will return the last value if position bigger than size
+    int getValue(int position);
 
 private:
     TypeE type;
-    QString value; // use string for now, change it later
-    QJsonObject valueSet;
+    QVector<int> value;
 };
 
 #endif

@@ -66,7 +66,6 @@ Variable* JsonHandler::findVariable(QString variableName)
                 foundVar = new Variable(variableName, INT);
             else
                 foundVar = new Variable(variableName, ARRAY);
-            foundVar->setValue(variableObj[variableName].toObject().value("value").toString());
             return foundVar;
         }
     }
@@ -92,7 +91,10 @@ ResultState JsonHandler::initArrayValue(QString variableName, int position, int 
     if (m_currentJsonObject.contains(VAR)) {
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
-            QJsonObject valueObj = variableObj[variableName].toObject()["value"].toObject();
+            QJsonObject valueObj = getJsonFromStr("{}");
+            if (!variableObj[variableName].toObject().contains("value")) {
+                QJsonObject valueObj = variableObj[variableName].toObject()["value"].toObject();
+            }
             valueObj.insert(QString::number(position), QString::number(lineNum));
             QJsonObject variable = variableObj[variableName].toObject();
             variable.insert("value", valueObj);

@@ -4,8 +4,6 @@
 Variable::Variable(QString variableName, TypeE type) : Identifier(variableName)
 {
     this->type = type;
-    this->value = "undefined";
-    valueSet = JsonHandler::getJsonFromStr("{}");
 }
 
 Variable::~Variable(){}
@@ -22,24 +20,8 @@ QJsonObject Variable::toJSON()
 
     QJsonObject varObj = QJsonObject();
     varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("type", typeToWrite));
-    varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("value", valueSet));
 
     return varObj;
-}
-
-void Variable::setValue(QString value)
-{
-    this->value = value;
-}
-
-void Variable::setType(TypeE type)
-{
-    this->type = type;
-}
-
-QString Variable::getValue()
-{
-    return this->value;
 }
 
 TypeE Variable::getType()
@@ -47,3 +29,30 @@ TypeE Variable::getType()
     return type;
 }
 
+bool Variable::changeValue(int aValue, int position)
+{
+    if (type != ARRAY && position != 0) {
+        return false;
+    }
+    if (value.size() < position) {
+        return false;
+    } else if (value.size() == position) {
+        value.append(aValue);
+    } else {
+        value[position] = aValue;
+    }
+    return true;
+}
+
+QVector<int> Variable::getValue()
+{
+    return value;
+}
+
+int Variable::getValue(int position)
+{
+    if (value.size() < position) {
+        position = value.size() - 1;
+    }
+    return value[position];
+}
