@@ -347,6 +347,51 @@ void MainWindow::compileText(QString filePath){
     delete(compileControl);
 }
 
+void MainWindow::runText(QString filePath){
+    Program* pgm = nullptr;
+    for(int i=0; i<programList.size();i++){
+        if(programList[i].first==filePath){
+            pgm = programList[i].second;
+        }
+    }
+    if(pgm == nullptr){
+//        QMessageBox::warning(this,"ERROR","You must save before run");
+//        return;
+        tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+        QMessageBox msgBox;
+        msgBox.setText("The file " + ft->getFileName() + " has been modified.");
+        msgBox.setInformativeText("Do you want to save your changes before run?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+        msgBox.setButtonText(QMessageBox::Save, "Save and run");
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+        switch (ret) {
+            case QMessageBox::Save:
+                saveFile();
+                for(int i=0; i<programList.size();i++){
+                    if(programList[i].first==ft->getFilePath()){
+                        pgm = programList[i].second;
+                    }
+                }
+                break;
+            case QMessageBox::Cancel:
+            // Cancel was clicked
+                return;
+            default:
+            // should never be reached
+                saveFile();
+                break;
+        }
+    }
+    RunControl* runControl = new RunControl(pgm);
+    ResultState res = runControl->run();
+    if (res == NO_ERROR)
+        outToConsole("Run successfully");
+    else
+        outToConsole("Run failed");
+    delete(runControl);
+}
+
 //ACTION BUTTON TRIGGER
 //ABOUT TRIGGER
 void MainWindow::on_actionAbout_SCAPES_triggered()
@@ -422,7 +467,38 @@ void MainWindow::on_actionCompile_triggered()
 void MainWindow::on_actionRun_triggered()
 {
 //    qDebug()<<ui->tabWidget->count();
-    QMessageBox::warning(this, "Sorry", "not yet implemented");
+//    QMessageBox::warning(this, "Sorry", "not yet implemented");
+    if(ui->tabWidget->count()==0){ return; }
+    consoleTab->clearText();
+    errorTab->clearText();
+    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    QMessageBox msgBox;
+    msgBox.setText("The file " + ft->getFileName() + " has been modified.");
+    msgBox.setInformativeText("Do you want to save your changes before run?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Ignore | QMessageBox::Cancel);
+    msgBox.setButtonText(QMessageBox::Save, "Save and run");
+    msgBox.setButtonText(QMessageBox::Ignore, "Run the last save");
+    msgBox.setDefaultButton(QMessageBox::Save);
+    if(ft->isChanged()){
+        int ret = msgBox.exec();
+        switch (ret) {
+            case QMessageBox::Save:
+                saveFile();
+                break;
+            case QMessageBox::Ignore:
+                break;
+            case QMessageBox::Cancel:
+            // Cancel was clicked
+                return;
+            default:
+            // should never be reached
+                saveFile();
+                break;
+        }
+    }
+    ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    QString filePath = ft->getFilePath();
+    runText(filePath);
 }
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)

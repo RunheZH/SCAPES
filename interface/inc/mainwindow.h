@@ -21,6 +21,7 @@
 #include "outputtabwidget.h"
 #include "../../control/inc/compileControl.h"
 #include "../../control/inc/saveControl.h"
+#include "../../control/inc/runControl.h"
 #include "../../entity/inc/program.h"
 
 namespace Ui {
@@ -57,6 +58,7 @@ private:
     int saveAsFile();
     void saveFile();
     void compileText(QString filePath);
+    void runText(QString filePath);
     void tabView();
     void tabAdd();
     int tabIsExist(QString fileDir);
