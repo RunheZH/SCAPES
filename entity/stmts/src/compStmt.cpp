@@ -34,9 +34,10 @@ ResultState CompStmt::compile()
     QString operand1 = args[1];
     QString operand2 = args[2];
     JsonHandler jsonHdlr(this->programName);
-    ResultState oneResultState = checkOperand(operand1, op1);
-    ResultState twoResultState = checkOperand(operand2, op2);
-    ResultState finalResultSate = getResultStateForTwo(oneResultState, twoResultState);
+    ResultState finalResultSate = checkTwoOperand(operand1, op1, operand2, op2, false);
+    if (finalResultSate == All_LITERAL) {
+        finalResultSate = NO_ERROR;
+    }
     if (finalResultSate != NO_ERROR) {
         return finalResultSate;
     }

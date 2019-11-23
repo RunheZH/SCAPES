@@ -103,7 +103,7 @@ ResultState JsonHandler::initArrayValue(QString variableName, int position)
             }
         }
     }
-    return VARIABLE_ONE_NOT_FOUND_ERROR;
+    return VARIABLE_NOT_FOUND_ERROR;
 }
 
 ResultState JsonHandler::initIntValue(QString variableName, int lineNum)
@@ -119,7 +119,7 @@ ResultState JsonHandler::initIntValue(QString variableName, int lineNum)
             return writeData(m_currentJsonObject);
         }
     }
-    return VARIABLE_ONE_NOT_FOUND_ERROR;
+    return VARIABLE_NOT_FOUND_ERROR;
 }
 
 ResultState JsonHandler::findInitArrayValue(QString variableName, int position)
