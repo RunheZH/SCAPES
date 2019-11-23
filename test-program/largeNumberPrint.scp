@@ -2,8 +2,6 @@ dci a
 dci b
 rdi a
 rdi b
-rdi c
-rdi d
 #compare a and b
 cmp a b
 #if a>b, print a
@@ -12,5 +10,5 @@ jmr L1
 prt b
 #and jump to end
 jmp L2
-L1: prwt as
+L1: prt a
 L2: end
