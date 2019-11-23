@@ -51,5 +51,10 @@ ResultState JLessStmt::compile()
 ResultState JLessStmt::run()
 {
     qDebug() << "JLessStmt.run()";
+
+//    Label aLabel = DBM.getLable(op1->getIdentifier()->getName());
+//    int lineNum = aLabel.getStmtLineNum();
+//    return lineNum;
+
     return NO_ERROR;
 }

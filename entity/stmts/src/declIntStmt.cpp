@@ -47,6 +47,9 @@ ResultState DeclIntStmt::compile()
 ResultState DeclIntStmt::run()
 {
     qDebug() << "DeclIntStmt.run()";
+
+    // DBM.addVariable(op1->getIdentifier()->getName(), INT);
+
     return NO_ERROR;
 }
 
