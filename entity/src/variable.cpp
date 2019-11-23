@@ -1,11 +1,10 @@
 #include "../inc/variable.h"
 #include "../inc/jsonHandler.h"
 
-Variable::Variable(QString variableName, TypeE type) : Identifier(variableName)
+Variable::Variable(QString variableName, TypeE type, int maxSize) : Identifier(variableName)
 {
     this->type = type;
-    this->value = "undefined";
-    valueSet = JsonHandler::getJsonFromStr("{}");
+    this->maxSize = maxSize;
 }
 
 Variable::~Variable(){}
@@ -22,24 +21,15 @@ QJsonObject Variable::toJSON()
 
     QJsonObject varObj = QJsonObject();
     varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("type", typeToWrite));
-    varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("value", valueSet));
+    if (type == ARRAY) {
+        QJsonObject valueArray = QJsonObject();
+        for(int i = 0; i < maxSize; i++) {
+            valueArray.insert(QString::number(i), QString::number(false));
+        }
+        varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("value", valueArray));
+    }
 
     return varObj;
-}
-
-void Variable::setValue(QString value)
-{
-    this->value = value;
-}
-
-void Variable::setType(TypeE type)
-{
-    this->type = type;
-}
-
-QString Variable::getValue()
-{
-    return this->value;
 }
 
 TypeE Variable::getType()
@@ -47,3 +37,35 @@ TypeE Variable::getType()
     return type;
 }
 
+int Variable::getSize()
+{
+    return maxSize;
+}
+
+bool Variable::setValue(int aValue, int position)
+{
+    if (type != ARRAY && position != 0) {
+        return false;
+    }
+    if (value.size() < position) {
+        return false;
+    } else if (value.size() == position) {
+        value.append(aValue);
+    } else {
+        value[position] = aValue;
+    }
+    return true;
+}
+
+QVector<int> Variable::getValue()
+{
+    return value;
+}
+
+int Variable::getValue(int position)
+{
+    if (value.size() < position) {
+        position = value.size() - 1;
+    }
+    return value[position];
+}

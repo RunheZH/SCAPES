@@ -1,3 +1,4 @@
+#include <QJsonValue>
 #include "../inc/jsonHandler.h"
 
 JsonHandler::JsonHandler()
@@ -66,7 +67,6 @@ Variable* JsonHandler::findVariable(QString variableName)
                 foundVar = new Variable(variableName, INT);
             else
                 foundVar = new Variable(variableName, ARRAY);
-            foundVar->setValue(variableObj[variableName].toObject().value("value").toString());
             return foundVar;
         }
     }
@@ -86,19 +86,21 @@ ResultState JsonHandler::addElement(QString elementType, QString key, QJsonObjec
     return writeData(m_currentJsonObject);
 }
 
-ResultState JsonHandler::initArrayValue(QString variableName, int position, int lineNum)
+ResultState JsonHandler::initArrayValue(QString variableName, int position)
 {
     readData();
     if (m_currentJsonObject.contains(VAR)) {
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
             QJsonObject valueObj = variableObj[variableName].toObject()["value"].toObject();
-            valueObj.insert(QString::number(position), QString::number(lineNum));
-            QJsonObject variable = variableObj[variableName].toObject();
-            variable.insert("value", valueObj);
-            variableObj.insert(variableName, variable);
-            m_currentJsonObject.insert(VAR, variableObj);
-            return writeData(m_currentJsonObject);
+            if (valueObj.contains(QString::number(position))) {
+                valueObj.insert(QString::number(position), QString::number(true));
+                QJsonObject variable = variableObj[variableName].toObject();
+                variable.insert("value", valueObj);
+                variableObj.insert(variableName, variable);
+                m_currentJsonObject.insert(VAR, variableObj);
+                return writeData(m_currentJsonObject);
+            }
         }
     }
     return VARIABLE_ONE_NOT_FOUND_ERROR;
@@ -127,11 +129,13 @@ ResultState JsonHandler::findInitArrayValue(QString variableName, int position)
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
             if (variableObj[variableName].toObject()["value"].toObject().contains(QString::number(position))) {
-                qDebug() << "NO_ERROR";
-                return NO_ERROR;
-            } else {
-                qDebug() << "VARIABLE_NOT_INIT_ERROR";
-                return VARIABLE_NOT_INIT_ERROR;
+                if (variableObj[variableName].toObject()["value"].toObject().value(QString::number(position)) == "1") {
+                    qDebug() << "NO_ERROR";
+                    return NO_ERROR;
+                }  else {
+                    qDebug() << "VARIABLE_NOT_INIT_ERROR";
+                    return VARIABLE_NOT_INIT_ERROR;
+                }
             }
         }
     }
