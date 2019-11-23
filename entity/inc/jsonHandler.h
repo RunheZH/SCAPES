@@ -21,8 +21,10 @@ public:
     Label* findLabel(QString labelName);
     Variable* findVariable(QString variableName);
     ResultState addElement(QString elementType, QString key, QJsonObject valueObj);
-    ResultState initValue(QString variableName, int position, int lineNum);
-    ResultState findInitValue(QString variableName, int position);
+    ResultState initArrayValue(QString variableName, int position, int lineNum);
+    ResultState initIntValue(QString variableName, int lineNum);
+    ResultState findInitArrayValue(QString variableName, int position);
+    ResultState findInitIntValue(QString variableName);
 
 private:
     void readData();

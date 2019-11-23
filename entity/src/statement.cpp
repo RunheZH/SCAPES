@@ -33,14 +33,14 @@ ResultState Statement::checkOperand(QString &Qop, Operand* op){
             if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::ARRAY) {
                 return VARIABLE_NOT_FOUND_ERROR;
             } else {
-                return jsonHdlr.findInitValue(operand, indexOne);
+                return jsonHdlr.findInitArrayValue(operand, indexOne);
             }
 
         } else {
             if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::INT) {
                 return VARIABLE_NOT_FOUND_ERROR;
             } else {
-                return jsonHdlr.findInitValue(operand, 0);
+                return jsonHdlr.findInitIntValue(operand);
             }
         }
     }
