@@ -52,5 +52,10 @@ ResultState JMoreStmt::compile()
 ResultState JMoreStmt::run()
 {
     qDebug() << "JMoreStmt.run()";
+
+//    Label aLabel = DBM.getLable(op1->getIdentifier()->getName());
+//    int lineNum = aLabel.getStmtLineNum();
+//    return lineNum;
+
     return NO_ERROR;
 }

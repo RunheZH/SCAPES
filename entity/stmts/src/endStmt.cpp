@@ -36,5 +36,8 @@ ResultState EndStmt::compile()
 ResultState EndStmt::run()
 {
     qDebug() << "EndStmt.run()";
+
+    // return end;
+
     return NO_ERROR;
 }

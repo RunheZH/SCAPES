@@ -62,5 +62,12 @@ ResultState PrintStmt::compile()
 ResultState PrintStmt::run()
 {
     qDebug() << "PrintStmt.run()";
+
+    // Variable aVariable = DBM.getVariable(op1->getIdentifier()->getName());
+    // OR
+    // Variable* aVariable = static_cast<Variable*>(op1->getIdentifier());
+    // QString printedValue = aVariable->getValue();
+    // qDebug() << printedValue;
+
     return NO_ERROR;
 }

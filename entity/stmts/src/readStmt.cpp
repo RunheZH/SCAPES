@@ -44,11 +44,6 @@ ResultState ReadStmt::compile()
     return NO_ERROR;
 }
 
-ResultState ReadStmt::run()
-{
-    qDebug() << "ReadStmt.run()";
-    return NO_ERROR;
-}
 ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
     int indexOne = operand.indexOf("[");
     int indexTwo = operand.indexOf("]");
@@ -81,4 +76,16 @@ ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
            return jsonHdlr.initIntValue(operand, lineNum);
         }
     }
+}
+
+ResultState ReadStmt::run()
+{
+    qDebug() << "ReadStmt.run()";
+
+    // Variable aVariable = DBM.getVariable(op1->getIdentifier()->getName());
+    // Value newValue = UI.popRead(); OR Value newValue = controller.readValue();
+    // aVariable.setValue(newValue);
+    // DBM.setVariable(aVariable.getName(), aVariable.getType(), newValue);
+
+    return NO_ERROR;
 }

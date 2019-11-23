@@ -52,5 +52,10 @@ ResultState JEqStmt::compile()
 ResultState JEqStmt::run()
 {
     qDebug() << "JEqStmt.run()";
+
+//    Label aLabel = DBM.getLable(op1->getIdentifier()->getName());
+//    int lineNum = aLabel.getStmtLineNum();
+//    return lineNum;
+
     return NO_ERROR;
 }
