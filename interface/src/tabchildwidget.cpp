@@ -6,6 +6,7 @@ tabchildwidget::tabchildwidget(QWidget *parent) :
     ui(new Ui::tabchildwidget)
 {
     ui->setupUi(this);
+    highlighter = new Highlighter(ui->textEdit->document());
     //when user scroll textedit, the linenumber will also sync with the textedit scrollbar
     connect(ui->textEdit->verticalScrollBar(), SIGNAL(valueChanged(int)),this,SLOT(updateScroll(int)));
 }

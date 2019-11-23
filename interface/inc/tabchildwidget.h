@@ -7,6 +7,7 @@
 #include <QRegExpValidator>
 #include <QRegularExpressionMatch>
 #include <QScrollBar>
+#include "../inc/highlighter.h"
 
 namespace Ui {
 class tabchildwidget;
@@ -48,6 +49,7 @@ private:
     int getLineNum();
     void updateLineNum();
     void setFileType();
+    Highlighter *highlighter;
 };
 
 #endif // FILETEXT_H

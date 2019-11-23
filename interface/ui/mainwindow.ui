@@ -36,7 +36,7 @@ QTabBar::tab {
     background: rgb(147,204,213);
     border-top-left-radius: 4px;
     border-top-right-radius: 4px;
-    min-width: 13ex;
+	min-width: auto;
     padding: 3px;
 	font: 75 11pt &quot;Source Code Pro&quot; white;
 }
@@ -293,7 +293,7 @@ QTabBar::tab:only-one {
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionNew"/>
    <addaction name="actionOpen"/>

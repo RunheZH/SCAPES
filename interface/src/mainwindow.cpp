@@ -113,6 +113,7 @@ void MainWindow::tabView(){
 //ADD NEW TAB ON TABWIDGET
 void MainWindow::tabAdd(){
     ui->tabWidget->addTab(new tabchildwidget(), QString("newfile %0").arg(ui->tabWidget->count()+1));
+
     ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
 }
 
@@ -341,9 +342,9 @@ void MainWindow::compileText(QString filePath){
     CompileControl* compileControl = new CompileControl(pgm);
     ResultState res = compileControl->compile();
     if (res == NO_ERROR)
-        outToConsole("Compiled successfully");
+        outToConsole("Compiled Successfully.");
     else
-        outToConsole("Compile failed");
+        outToConsole("Compilation Failed.");
     delete(compileControl);
 }
 

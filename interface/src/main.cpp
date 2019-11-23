@@ -1,9 +1,9 @@
 #include "../inc/mainwindow.h"
+#include "../inc/inputwindow.h"
 #include <QApplication>
 #include <QDebug>
 #include <QSplashScreen>
 #include <QTimer>
-#include "../../entity/stmts/inc/declIntStmt.h"
 
 int main(int argc, char *argv[])
 {
@@ -12,12 +12,18 @@ int main(int argc, char *argv[])
     MainWindow w;
 
     QSplashScreen* splash = new QSplashScreen();
-    splash->setPixmap(QPixmap(":/imgs/interface/resource/LOGO.png"));
+    splash->setPixmap(QPixmap(":/imgs/imgs/LOGO.png"));
 
-    splash->show();
-    QTimer::singleShot(2500,splash,SLOT(close()));
-    QTimer::singleShot(2500,&w,SLOT(show()));
-//    w.show();
+    //uncomment this to show logo
+//    splash->show();
+//    QTimer::singleShot(2500,splash,SLOT(close()));
+//    QTimer::singleShot(2500,&w,SLOT(show()));
+
+    //uncomment this to not show logo
+    w.show();
+
+    InputWindow iw;
+    iw.readValue("hello");
 
     return a.exec();
 }
