@@ -71,7 +71,7 @@ ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
         if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::ARRAY) {
             return VARIABLE_ONE_NOT_FOUND_ERROR;
         } else {
-           return jsonHdlr.initArrayValue(operand, indexOne, lineNum);
+           return jsonHdlr.initArrayValue(operand, indexOne);
         }
 
     } else {

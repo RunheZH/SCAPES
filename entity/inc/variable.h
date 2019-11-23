@@ -7,18 +7,20 @@
 class Variable : public Identifier
 {
 public:
-    Variable(QString variableName, TypeE variableType);
+    Variable(QString variableName, TypeE variableType, int maxSize = 0);
     ~Variable();
     QJsonObject toJSON();
     TypeE getType();
-    //it will change the value if the user provide the invaild index
-    bool changeValue(int aValue, int position = 0);
+    int getSize();
+    //it will change the value if the user provide the vaild index
+    bool setValue(int aValue, int position = 0);
     QVector<int> getValue();
     //it will return the last value if position bigger than size
     int getValue(int position);
 
 private:
     TypeE type;
+    int maxSize;
     QVector<int> value;
 };
 

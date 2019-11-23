@@ -35,20 +35,11 @@ ResultState MovStmt::compile()
     QString operand2 = args[2];
 
     JsonHandler jsonHdlr(this->programName);
-    ResultState oneResulsState = checkOperand(operand1, op1);
-    ResultState twoResulsState = checkOperand(operand2, op2);
-    if (oneResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR && twoResulsState == ResultState::NO_ERROR) {
-        return VARIABLE_ONE_NOT_FOUND_ERROR;
-    } else if (oneResulsState == ResultState::NO_ERROR && twoResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR) {
-        return VARIABLE_TWO_NOT_FOUND_ERROR;
-    } else if (oneResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR && twoResulsState == ResultState::VARIABLE_NOT_FOUND_ERROR) {
-        return VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR;
-    } else if (oneResulsState == ResultState::VARIABLE_NOT_INIT_ERROR && twoResulsState == ResultState::NO_ERROR) {
-        return VARIABLE_ONE_NOT_INIT_ERROR;
-    } else if (oneResulsState == ResultState::NO_ERROR && twoResulsState == ResultState::VARIABLE_NOT_INIT_ERROR) {
-        return VARIABLE_TWO_NOT_INIT_ERROR;
-    } else if (oneResulsState == ResultState::VARIABLE_NOT_INIT_ERROR && twoResulsState == ResultState::VARIABLE_NOT_INIT_ERROR) {
-        return VARIABLE_ONE_AND_TWO_NOT_INIT_ERROR;
+    ResultState oneResultState = checkOperand(operand1, op1);
+    ResultState twoResultState = checkOperand(operand2, op2);
+    ResultState finalResultSate = getResultStateForTwo(oneResultState, twoResultState);
+    if (finalResultSate != NO_ERROR) {
+        return finalResultSate;
     }
 
     QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);

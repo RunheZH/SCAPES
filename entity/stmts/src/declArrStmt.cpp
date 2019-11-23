@@ -16,17 +16,23 @@ ResultState DeclArrStmt::compile()
 
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
-    if (args.size() != 2){
-        if(args.size() == 1){
+    if (args.size() != 3) {
+        if (args.size() == 1) {
             return NO_OPERAND_ONE_ERROR;
-        }
-        else {
+        } else if (args.size() == 2) {
+            return NO_OPERAND_TWO_ERROR;
+        } else {
             return OPERAND_NUMBER_EXCEED_ERROR;
         }
     }
 
+    bool vaildSize;
     QString instruction = args[0];
-    this->op1 = new Operand(new Variable(args[1], ARRAY));
+    int maxSize = args[2].toInt(&vaildSize);
+    if (!vaildSize || maxSize < 1) {
+        return INVALID_OPERAND;
+    }
+    this->op1 = new Operand(new Variable(args[1], ARRAY, maxSize));
 
     JsonHandler jsonHdlr(this->programName);
     jsonHdlr.addElement(VAR, op1->getIdentifier()->getName(), op1->getIdentifier()->toJSON());

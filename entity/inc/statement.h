@@ -17,6 +17,7 @@ public:
     virtual ResultState run() = 0;
     virtual qint16 getLineNum() {return this->lineNum;}
     virtual ResultState checkOperand(QString &Qop, Operand* op);
+    virtual ResultState getResultStateForTwo(ResultState resultState1, ResultState resultState2);
 
 protected:
     QString programName;
