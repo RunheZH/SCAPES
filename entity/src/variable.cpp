@@ -5,6 +5,7 @@ Variable::Variable(QString variableName, TypeE type) : Identifier(variableName)
 {
     this->type = type;
     this->value = "undefined";
+    valueSet = JsonHandler::getJsonFromStr("{}");
 }
 
 Variable::~Variable(){}
@@ -19,10 +20,9 @@ QJsonObject Variable::toJSON()
     else
         typeToWrite = "undefined";
 
-    JsonHandler jsonHdlr;
     QJsonObject varObj = QJsonObject();
-    varObj = jsonHdlr.appendToEnd(varObj, jsonHdlr.getJsonObj("type", typeToWrite));
-    varObj = jsonHdlr.appendToEnd(varObj, jsonHdlr.getJsonObj("value", value));
+    varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("type", typeToWrite));
+    varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("value", valueSet));
 
     return varObj;
 }

@@ -10,9 +10,8 @@ Label::~Label(){}
 
 QJsonObject Label::toJSON()
 {
-    JsonHandler jsonHdlr;
     QJsonObject labelObj = QJsonObject();
-    labelObj = jsonHdlr.appendToEnd(labelObj, jsonHdlr.getJsonObj("stmtLine", QString::number(this->stmtLineNum)));
+    labelObj = JsonHandler::appendToEnd(labelObj, JsonHandler::getJsonObj("stmtLine", QString::number(this->stmtLineNum)));
 
     return labelObj;
 }

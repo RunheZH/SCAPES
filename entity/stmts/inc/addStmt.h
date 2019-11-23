@@ -14,6 +14,8 @@ public:
     ResultState run();
 
 private:
+    Operand* op1;
+    Operand* op2;
 };
 
 #endif

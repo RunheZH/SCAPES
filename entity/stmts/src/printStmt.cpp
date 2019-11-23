@@ -47,8 +47,8 @@ ResultState PrintStmt::compile()
         }
     }
 
-    QJsonObject op1Obj = jsonHdlr.getJsonObj(OP_1, op1->getIdentifier()->getName());
-    QJsonObject stmtObj = jsonHdlr.getJsonObj(instruction, op1Obj);
+    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, op1->getIdentifier()->getName());
+    QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
     if (label)
