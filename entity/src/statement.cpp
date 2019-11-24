@@ -45,7 +45,7 @@ ResultState Statement::checkOperand(QString &Qop, Operand* op)
     }
 }
 
-ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop2, Operand* op2, bool notAllowed)
+ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop2, Operand* op2, bool notAllowed, bool checkInit)
 {
     TypeE type1 = UNDEFINED;
     TypeE type2 = UNDEFINED;
@@ -130,12 +130,25 @@ ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop
         if (static_cast<Variable*>(op2->getIdentifier())->getType() != TypeE::ARRAY) {
             resultState2 =  VARIABLE_NOT_FOUND_ERROR;
         } else {
-            resultState2 = jsonHdlr.findInitArrayValue(operand1, indexOne1);
+            qDebug() << checkInit;
+            qDebug() <<static_cast<Variable*>(op2->getIdentifier())->getSize();
+            qDebug() <<indexOne2;
+            if (checkInit) {
+                resultState2 = jsonHdlr.findInitArrayValue(operand2, indexOne2);
+            } else if (indexOne2 >= static_cast<Variable*>(op2->getIdentifier())->getSize()) {
+                resultState2 =  VARIABLE_NOT_FOUND_ERROR;
+            } else {
+                jsonHdlr.initArrayValue(operand2, indexOne2);
+            }
             type2 = INT;
         }
     } else {
         if (static_cast<Variable*>(op2->getIdentifier())->getType() == TypeE::INT) {
-            resultState2 = jsonHdlr.findInitIntValue(operand2);
+            if (checkInit) {
+                resultState2 = jsonHdlr.findInitIntValue(operand2);
+            } else {
+                jsonHdlr.initIntValue(operand2);
+            }
             type2 = INT;
         } else if (static_cast<Variable*>(op2->getIdentifier())->getType() == TypeE::ARRAY) {
             type2 = ARRAY;

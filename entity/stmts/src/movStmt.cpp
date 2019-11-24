@@ -35,7 +35,7 @@ ResultState MovStmt::compile()
     QString operand2 = args[2];
 
     JsonHandler jsonHdlr(this->programName);
-    ResultState finalResultSate = checkTwoOperand(operand1, op1, operand2, op2);
+    ResultState finalResultSate = checkTwoOperand(operand1, op1, operand2, op2, true, false);
     if (finalResultSate != NO_ERROR) {
         return finalResultSate;
     }

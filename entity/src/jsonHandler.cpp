@@ -63,10 +63,11 @@ Variable* JsonHandler::findVariable(QString variableName)
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
             Variable* foundVar;
-            if (variableObj[variableName].toObject().value("type") == "int")
+            if (variableObj[variableName].toObject().value("type") == "int") {
                 foundVar = new Variable(variableName, INT);
-            else
-                foundVar = new Variable(variableName, ARRAY);
+            } else {
+                foundVar = new Variable(variableName, ARRAY, variableObj[variableName].toObject().value("size").toString().toInt());
+            }
             return foundVar;
         }
     }
@@ -106,14 +107,14 @@ ResultState JsonHandler::initArrayValue(QString variableName, int position)
     return VARIABLE_NOT_FOUND_ERROR;
 }
 
-ResultState JsonHandler::initIntValue(QString variableName, int lineNum)
+ResultState JsonHandler::initIntValue(QString variableName)
 {
     readData();
     if (m_currentJsonObject.contains(VAR)) {
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
             QJsonObject variable = variableObj[variableName].toObject();
-            variable.insert("value", lineNum);
+            variable.insert("value", QString::number(true));
             variableObj.insert(variableName, variable);
             m_currentJsonObject.insert(VAR, variableObj);
             return writeData(m_currentJsonObject);
@@ -129,7 +130,7 @@ ResultState JsonHandler::findInitArrayValue(QString variableName, int position)
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
             if (variableObj[variableName].toObject()["value"].toObject().contains(QString::number(position))) {
-                if (variableObj[variableName].toObject()["value"].toObject().value(QString::number(position)) == "1") {
+                if (variableObj[variableName].toObject()["value"].toObject().value(QString::number(position)).toString().toInt()) {
                     qDebug() << "NO_ERROR";
                     return NO_ERROR;
                 }  else {
