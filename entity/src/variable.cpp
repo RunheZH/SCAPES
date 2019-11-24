@@ -22,6 +22,7 @@ QJsonObject Variable::toJSON()
     QJsonObject varObj = QJsonObject();
     varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("type", typeToWrite));
     if (type == ARRAY) {
+        varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("size", QString::number(maxSize)));
         QJsonObject valueArray = QJsonObject();
         for(int i = 0; i < maxSize; i++) {
             valueArray.insert(QString::number(i), QString::number(false));

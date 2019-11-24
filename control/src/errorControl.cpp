@@ -31,6 +31,8 @@ QString ErrorControl::convertErrorMsg(ResultState result)
         return "Invalid statement";
     else if (result == INVALID_OPERAND)
         return "Invalid operand";
+    else if (result == DIFF_TYPE_ERROR)
+        return "Different type of operand were provided";
     else if (result == NO_OPERAND_ONE_ERROR)
         return "Missing first operand";
     else if (result == NO_OPERAND_TWO_ERROR)

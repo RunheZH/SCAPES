@@ -22,7 +22,7 @@ public:
     Variable* findVariable(QString variableName);
     ResultState addElement(QString elementType, QString key, QJsonObject valueObj);
     ResultState initArrayValue(QString variableName, int position);
-    ResultState initIntValue(QString variableName, int lineNum);
+    ResultState initIntValue(QString variableName);
     ResultState findInitArrayValue(QString variableName, int position);
     ResultState findInitIntValue(QString variableName);
 

@@ -36,6 +36,8 @@ enum StatementId
 enum ResultState
 {
     NO_ERROR,
+    All_LITERAL,
+    DIFF_TYPE_ERROR,
     FILE_OPEN_ERROR,
     INVALID_STATEMENT,
     INVALID_OPERAND,
@@ -59,6 +61,8 @@ enum ResultState
 
 enum TypeE
 {
+    UNDEFINED,
+    LITERAL,
     INT,
     ARRAY
 };
