@@ -130,9 +130,6 @@ ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop
         if (static_cast<Variable*>(op2->getIdentifier())->getType() != TypeE::ARRAY) {
             resultState2 =  VARIABLE_NOT_FOUND_ERROR;
         } else {
-            qDebug() << checkInit;
-            qDebug() <<static_cast<Variable*>(op2->getIdentifier())->getSize();
-            qDebug() <<indexOne2;
             if (checkInit) {
                 resultState2 = jsonHdlr.findInitArrayValue(operand2, indexOne2);
             } else if (indexOne2 >= static_cast<Variable*>(op2->getIdentifier())->getSize()) {
@@ -157,10 +154,11 @@ ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop
         }
     }
 
-    if (type1 != type2) {
+    ResultState finalResultState = getResultStateForTwo(resultState1, resultState2);
+    if (finalResultState == NO_ERROR && type1 != type2) {
         return DIFF_TYPE_ERROR;
     } else {
-        return getResultStateForTwo(resultState1, resultState2);
+        return finalResultState;
     }
 }
 
