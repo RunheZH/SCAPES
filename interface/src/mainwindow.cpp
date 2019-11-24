@@ -353,6 +353,7 @@ void MainWindow::compileText(QString filePath){
 void MainWindow::on_actionAbout_SCAPES_triggered()
 {
 //    QMessageBox::about(this, "About SCAPES", "SCAPES Version 0.1\n\n Developed by Team DOWHILE");
+    //for test right now
     InputWindow iw;
     int v = iw.readValue("hello");
     QString s = QString::number(v);
