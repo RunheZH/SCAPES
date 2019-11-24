@@ -10,7 +10,7 @@ public:
     ReadStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~ReadStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
     ResultState checkOperand(QString &operand, Operand* op);
 
 private:

@@ -10,7 +10,7 @@ public:
     JMoreStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~JMoreStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
 
 private:
     // add helper functions

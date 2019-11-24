@@ -11,7 +11,7 @@ public:
     CompStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~CompStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
 
 private:
     Operand* op1;

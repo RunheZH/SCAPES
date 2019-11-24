@@ -1,6 +1,9 @@
 # VS Code
 .vscode/
 
+# program generated
+test-program/*.json
+
 # C++ objects and libs
 *.slo
 *.lo

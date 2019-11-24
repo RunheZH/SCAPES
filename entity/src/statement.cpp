@@ -1,7 +1,5 @@
 #include "../inc/statement.h"
 
-//static Logger* m_logger = Logger::getInstance("statement");
-
 Statement::Statement(QString programName, QString statement, Label* label, qint16 lineNum)
 {
     this->programName = programName;
@@ -9,6 +7,8 @@ Statement::Statement(QString programName, QString statement, Label* label, qint1
     this->label = label;
     this->lineNum = lineNum;
 }
+
+Statement::~Statement(){}
 
 ResultState Statement::checkOperand(QString &Qop, Operand* op)
 {
@@ -184,6 +184,3 @@ ResultState Statement::getResultStateForTwo(ResultState resultState1, ResultStat
         return NO_ERROR;
     }
 }
-
-Statement::~Statement()
-{}

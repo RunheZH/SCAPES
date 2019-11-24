@@ -49,8 +49,8 @@ ResultState DeclArrStmt::compile()
     return NO_ERROR;
 }
 
-ResultState DeclArrStmt::run()
+ReturnValue* DeclArrStmt::run()
 {
     qDebug() << "DeclArrStmt().run()";
-    return NO_ERROR;
+    return nullptr;
 }

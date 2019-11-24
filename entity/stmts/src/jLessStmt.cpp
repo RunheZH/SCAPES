@@ -48,7 +48,7 @@ ResultState JLessStmt::compile()
     return NO_ERROR;
 }
 
-ResultState JLessStmt::run()
+ReturnValue* JLessStmt::run()
 {
     qDebug() << "JLessStmt.run()";
 
@@ -56,5 +56,5 @@ ResultState JLessStmt::run()
 //    int lineNum = aLabel.getStmtLineNum();
 //    return lineNum;
 
-    return NO_ERROR;
+    return nullptr;
 }

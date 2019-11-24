@@ -49,7 +49,7 @@ ResultState JMoreStmt::compile()
     return NO_ERROR;
 }
 
-ResultState JMoreStmt::run()
+ReturnValue* JMoreStmt::run()
 {
     qDebug() << "JMoreStmt.run()";
 
@@ -57,5 +57,5 @@ ResultState JMoreStmt::run()
 //    int lineNum = aLabel.getStmtLineNum();
 //    return lineNum;
 
-    return NO_ERROR;
+    return nullptr;
 }

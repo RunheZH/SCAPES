@@ -44,12 +44,12 @@ ResultState DeclIntStmt::compile()
     return NO_ERROR;
 }
 
-ResultState DeclIntStmt::run()
+ReturnValue* DeclIntStmt::run()
 {
     qDebug() << "DeclIntStmt.run()";
 
     // DBM.addVariable(op1->getIdentifier()->getName(), INT);
 
-    return NO_ERROR;
+    return nullptr;
 }
 

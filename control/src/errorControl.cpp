@@ -13,6 +13,11 @@ void ErrorControl::printToConsole(QString message)
     this->consoleTab->addText(message);
 }
 
+void ErrorControl::printErrorMsg(QString errorMsg)
+{
+    this->errorTab->addText(errorMsg);
+}
+
 void ErrorControl::printErrorMsg(ResultState result)
 {
     this->errorTab->addText(convertErrorMsg(result));

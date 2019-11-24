@@ -55,7 +55,7 @@ ResultState CompStmt::compile()
     return NO_ERROR;
 }
 
-ResultState CompStmt::run()
+ReturnValue* CompStmt::run()
 {
     qDebug() << "CompStmt.run()";
 
@@ -66,5 +66,5 @@ ResultState CompStmt::run()
 //                //variable 2 bigger: result<0
 //                //var1=var2:         reuslt=0
 
-    return NO_ERROR;
+    return nullptr;
 }

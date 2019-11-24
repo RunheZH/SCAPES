@@ -59,7 +59,7 @@ ResultState PrintStmt::compile()
     return NO_ERROR;
 }
 
-ResultState PrintStmt::run()
+ReturnValue* PrintStmt::run()
 {
     qDebug() << "PrintStmt.run()";
 
@@ -69,5 +69,5 @@ ResultState PrintStmt::run()
     // QString printedValue = aVariable->getValue();
     // qDebug() << printedValue;
 
-    return NO_ERROR;
+    return nullptr;
 }
