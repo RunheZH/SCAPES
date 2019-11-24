@@ -14,26 +14,32 @@ InputWindow::~InputWindow()
 }
 
 int InputWindow::readValue(QString variableName){
-    QThread thread;
-    thread.start();
-
-    //connect(this, SLOT(on_okayButton_clicked()), thread, SLOT(quit));
-
-        // Do other stuff.
-        // ... stuff
-
-        int returnValue = QApplication::exec();
-        thread.wait();
     this->show();
     ui->label->setText("Please Input value for " + variableName);
-    on_okayButton_clicked();
+    ui->lineEdit->setValidator(new QIntValidator(-100000, 100000, this)); //for now accept -100000 to 100000 integer input
+    //wait until press okay
+    QEventLoop loop;
+    connect(this, SIGNAL(okayClicked()), &loop, SLOT(quit()));
+    connect(this, SIGNAL(cancelClicked()), &loop, SLOT(quit()));
+    loop.exec();
+    int value = -1000000;   //default value is out of input range, check if the value has input
+    if(whichClicked == 1){
+        QString input = ui->lineEdit->text();
+        value = input.toInt();
+    }
+    return value;
 }
 
 
 
 void InputWindow::on_okayButton_clicked()
 {
-    if(ui->textEdit->toPlainText()!=""){
-        qDebug()<<"correct";
-    }
+    whichClicked = 1;
+    emit okayClicked();
+}
+
+void InputWindow::on_cancelButton_clicked()
+{
+    whichClicked = 0;
+    emit cancelClicked();
 }

@@ -22,6 +22,7 @@
 #include "../../control/inc/compileControl.h"
 #include "../../control/inc/saveControl.h"
 #include "../../entity/inc/program.h"
+#include "../inc/inputwindow.h"
 
 namespace Ui {
 class MainWindow;

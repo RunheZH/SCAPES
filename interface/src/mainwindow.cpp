@@ -352,7 +352,11 @@ void MainWindow::compileText(QString filePath){
 //ABOUT TRIGGER
 void MainWindow::on_actionAbout_SCAPES_triggered()
 {
-    QMessageBox::about(this, "About SCAPES", "SCAPES Version 0.1\n\n Developed by Team DOWHILE");
+//    QMessageBox::about(this, "About SCAPES", "SCAPES Version 0.1\n\n Developed by Team DOWHILE");
+    InputWindow iw;
+    int v = iw.readValue("hello");
+    QString s = QString::number(v);
+    consoleTab->setText(s);
 }
 
 //SAVE FILE TRIGGER

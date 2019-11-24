@@ -1,5 +1,4 @@
 #include "../inc/mainwindow.h"
-#include "../inc/inputwindow.h"
 #include <QApplication>
 #include <QDebug>
 #include <QSplashScreen>
@@ -21,9 +20,6 @@ int main(int argc, char *argv[])
 
     //uncomment this to not show logo
     w.show();
-
-    InputWindow iw;
-    iw.readValue("hello");
 
     return a.exec();
 }
