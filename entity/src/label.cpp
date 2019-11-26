@@ -24,5 +24,5 @@ QJsonObject Label::toJSON()
 void Label::addToDB()
 {
     DBManager db(this->programName);
-    db.addLabel(this->getName(), this->getLineNum());
+    db.addLabel(this->getName());
 }
