@@ -17,21 +17,18 @@ void DBManager::createDB()
     qDebug() << "creating DB...";
     this->createAConnection();
     this->createVariableTable();
+    this->createLabelTable();
     this->closeDB();
     qDebug() << "DB created successfully!";
 }
 
-void DBManager::createVariableTable()
-{
-    qDebug() << "creating variable table...";
-    QSqlQuery query(QSqlDatabase::database());
-    query.exec("CREATE TABLE variable (varName CHAR(256) PRIMARY KEY, value INT, type CHAR(5))");
-    qDebug() << "variable table is created successfully";
-}
-
 void DBManager::addLabel(QString labelName, int lineNum)
 {
-    // TODO
+    qDebug() << "adding a new label...";
+    this->createAConnection();
+    QSqlQuery query(QSqlDatabase::database());
+    query.exec("INSERT INTO label VALUES( '" + labelName + "', " + QString::number(lineNum) +")");
+    this->closeDB();
 }
 
 void DBManager::addVariable(QString variableName, TypeE type)
@@ -41,6 +38,60 @@ void DBManager::addVariable(QString variableName, TypeE type)
     QSqlQuery query(QSqlDatabase::database());
     query.exec("INSERT INTO variable VALUES( '" + variableName + "', -1, '" + QString::number(type) + "')");
     this->closeDB();
+}
+
+void DBManager::setVariable(QString variableName, TypeE type, QString newValue)
+{
+    // TODO
+}
+
+void DBManager::setLabel(QString labelName, qint16 newLineNum)
+{
+    // TODO
+}
+
+QString DBManager::getVariableValue(QString variableName)
+{
+    // TODO
+}
+
+TypeE DBManager::getVariableType(QString varaibleName)
+{
+    // TODO
+}
+
+int DBManager::getVariableSize(QString variableName)
+{
+    // TODO
+}
+
+qint16 DBManager::getLabelLineNum(QString labelName)
+{
+    // TODO
+}
+
+void DBManager::removeVariable(QString variableName, TypeE type)
+{
+    // TODO
+}
+
+void DBManager::removeLabel(QString labelName)
+{
+    // TODO
+}
+
+void DBManager::createVariableTable()
+{
+    qDebug() << "creating variable table...";
+    QSqlQuery query(QSqlDatabase::database());
+    query.exec("CREATE TABLE variable (varName CHAR(256) PRIMARY KEY, value INT, type CHAR(5))");
+}
+
+void DBManager::createLabelTable()
+{
+    qDebug() << "creating label table...";
+    QSqlQuery query(QSqlDatabase::database());
+    query.exec("CREATE TABLE label (labelName CHAR(256) PRIMARY KEY, lineNum INT)");
 }
 
 void DBManager::createAConnection()

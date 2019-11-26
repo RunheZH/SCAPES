@@ -136,6 +136,12 @@ ResultState Program::run()
     DBManager db(this->tempFileName);
     db.createDB();
 
+    // adding labels to DB
+    for (qint16 i = 0; i < this->numLabel; i++)
+    {
+        this->ids[i]->addToDB();
+    }
+
     ReturnValue* runResult;
     for (QMap<qint16, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
     {
@@ -191,7 +197,7 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
     if (args[0].endsWith(":")){
         //qDebug() << "RUNHE: detected label";
         newLabel = new Label(this->tempFileName, args[0].left(args[0].lastIndexOf(":")), lineNum);
-        ids[this->numLabel] = newLabel;
+        ids[this->numLabel++] = newLabel;
         // get rid of the leading spaces (?)
         stmt = stmt.mid(args[0].length() + 1);
         instruction = args[1];
