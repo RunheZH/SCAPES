@@ -22,12 +22,12 @@ void DBManager::createDB()
     qDebug() << "DB created successfully!";
 }
 
-void DBManager::addLabel(QString labelName)
+void DBManager::addLabel(QString labelName, int lineNum)
 {
     qDebug() << "adding a new label...";
     this->createAConnection();
     QSqlQuery query(QSqlDatabase::database());
-    query.exec("INSERT INTO label VALUES( '" + labelName + "', -1)");
+    query.exec("INSERT INTO label VALUES( '" + labelName + "', " + QString::number(lineNum) +")");
     this->closeDB();
 }
 

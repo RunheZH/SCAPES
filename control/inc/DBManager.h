@@ -12,7 +12,7 @@ class DBManager
 public:
     DBManager(QString programName);
     ~DBManager();
-    void addLabel(QString labelName);
+    void addLabel(QString labelName, int lineNum);
     void addVariable(QString variableName, TypeE type);
     void setVariable(QString variableName, TypeE type, QString newValue);
     void setLabel(QString labelName, qint16 newLineNum);
