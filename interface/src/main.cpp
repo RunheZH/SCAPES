@@ -14,12 +14,12 @@ int main(int argc, char *argv[])
     splash->setPixmap(QPixmap(":/imgs/imgs/LOGO.png"));
 
     //uncomment this to show logo
-//    splash->show();
-//    QTimer::singleShot(2500,splash,SLOT(close()));
-//    QTimer::singleShot(2500,&w,SLOT(show()));
+    splash->show();
+    QTimer::singleShot(2500,splash,SLOT(close()));
+    QTimer::singleShot(2500,&w,SLOT(show()));
 
     //uncomment this to not show logo
-    w.show();
+//    w.show();
 
     return a.exec();
 }
