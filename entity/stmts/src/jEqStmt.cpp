@@ -57,5 +57,5 @@ ReturnValue* JEqStmt::run()
 //    int lineNum = aLabel.getStmtLineNum();
 //    return lineNum;
 
-    return nullptr;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

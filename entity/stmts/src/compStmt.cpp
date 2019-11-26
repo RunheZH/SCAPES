@@ -66,5 +66,5 @@ ReturnValue* CompStmt::run()
 //                //variable 2 bigger: result<0
 //                //var1=var2:         reuslt=0
 
-    return nullptr;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

@@ -55,5 +55,5 @@ ResultState AddStmt::compile()
 ReturnValue* AddStmt::run()
 {
     qDebug() << "AddStmt.run()";
-    return nullptr;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

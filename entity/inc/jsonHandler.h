@@ -30,6 +30,7 @@ private:
     void readData();
     ResultState writeData(QJsonObject jsonObj);
 
+    QString programName;
     QString fileToHandle;
     QJsonObject m_currentJsonObject;
 };

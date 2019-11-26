@@ -8,7 +8,8 @@ JsonHandler::JsonHandler()
 
 JsonHandler::JsonHandler(QString fileName)
 {
-    fileToHandle = fileName + ".json";
+    programName = fileName;
+    fileToHandle = programName + ".json";
     m_currentJsonObject = getJsonFromStr("{}");
 }
 
@@ -49,7 +50,7 @@ Label* JsonHandler::findLabel(QString labelName)
     if (m_currentJsonObject.contains(LABEL)) {
         QJsonObject labelObj = m_currentJsonObject[LABEL].toObject();
         if (labelObj.contains(labelName)) {
-            Label* foundLabel = new Label(labelName, labelObj.value(labelName).toInt());
+            Label* foundLabel = new Label(this->programName, labelName, labelObj.value(labelName).toInt());
             return foundLabel;
         }
     }
@@ -64,9 +65,9 @@ Variable* JsonHandler::findVariable(QString variableName)
         if (variableObj.contains(variableName)) {
             Variable* foundVar;
             if (variableObj[variableName].toObject().value("type") == "int") {
-                foundVar = new Variable(variableName, INT);
+                foundVar = new Variable(this->programName, variableName, INT);
             } else {
-                foundVar = new Variable(variableName, ARRAY, variableObj[variableName].toObject().value("size").toString().toInt());
+                foundVar = new Variable(this->programName, variableName, ARRAY, variableObj[variableName].toObject().value("size").toString().toInt());
             }
             return foundVar;
         }
@@ -97,7 +98,7 @@ ResultState JsonHandler::initArrayValue(QString variableName, int position)
             if (valueObj.contains(QString::number(position))) {
                 valueObj.insert(QString::number(position), QString::number(true));
                 QJsonObject variable = variableObj[variableName].toObject();
-                variable.insert("value", valueObj);
+                variable.insert("initialized?", valueObj);
                 variableObj.insert(variableName, variable);
                 m_currentJsonObject.insert(VAR, variableObj);
                 return writeData(m_currentJsonObject);
@@ -114,7 +115,7 @@ ResultState JsonHandler::initIntValue(QString variableName)
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
             QJsonObject variable = variableObj[variableName].toObject();
-            variable.insert("value", QString::number(true));
+            variable.insert("initialized?", QString::number(true));
             variableObj.insert(variableName, variable);
             m_currentJsonObject.insert(VAR, variableObj);
             return writeData(m_currentJsonObject);
@@ -129,8 +130,8 @@ ResultState JsonHandler::findInitArrayValue(QString variableName, int position)
     if (m_currentJsonObject.contains(VAR)) {
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
-            if (variableObj[variableName].toObject()["value"].toObject().contains(QString::number(position))) {
-                if (variableObj[variableName].toObject()["value"].toObject().value(QString::number(position)).toString().toInt()) {
+            if (variableObj[variableName].toObject()["initialized?"].toObject().contains(QString::number(position))) {
+                if (variableObj[variableName].toObject()["initialized?"].toObject().value(QString::number(position)).toString().toInt()) {
                     qDebug() << "NO_ERROR";
                     return NO_ERROR;
                 }  else {
@@ -150,7 +151,7 @@ ResultState JsonHandler::findInitIntValue(QString variableName)
     if (m_currentJsonObject.contains(VAR)) {
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
-            if (variableObj[variableName].toObject().contains("value")){
+            if (variableObj[variableName].toObject().contains("initialized?")){
                 qDebug() << "NO_ERROR";
                 return NO_ERROR;
             } else {

@@ -7,7 +7,6 @@
 #include "jsonHandler.h"
 #include "variable.h"
 
-
 class Statement
 {
 public:
