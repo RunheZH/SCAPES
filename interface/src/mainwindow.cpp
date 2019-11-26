@@ -113,6 +113,7 @@ void MainWindow::tabView(){
 //ADD NEW TAB ON TABWIDGET
 void MainWindow::tabAdd(){
     ui->tabWidget->addTab(new tabchildwidget(), QString("newfile %0").arg(ui->tabWidget->count()+1));
+
     ui->tabWidget->setCurrentIndex(ui->tabWidget->count()-1);
 }
 
@@ -341,9 +342,9 @@ void MainWindow::compileText(QString filePath){
     CompileControl* compileControl = new CompileControl(pgm);
     ResultState res = compileControl->compile();
     if (res == NO_ERROR)
-        outToConsole("Compiled successfully");
+        outToConsole("Compiled Successfully.");
     else
-        outToConsole("Compile failed");
+        outToConsole("Compilation Failed.");
     delete(compileControl);
 }
 
@@ -396,7 +397,12 @@ void MainWindow::runText(QString filePath){
 //ABOUT TRIGGER
 void MainWindow::on_actionAbout_SCAPES_triggered()
 {
-    QMessageBox::about(this, "About SCAPES", "SCAPES Version 0.1\n\n Developed by Team DOWHILE");
+//    QMessageBox::about(this, "About SCAPES", "SCAPES Version 0.1\n\n Developed by Team DOWHILE");
+    //for test right now
+    InputWindow iw;
+    int v = iw.readValue("hello");
+    QString s = QString::number(v);
+    consoleTab->setText(s);
 }
 
 //SAVE FILE TRIGGER
@@ -538,6 +544,7 @@ void MainWindow::on_tabWidget_tabCloseRequested(int index)
         // Don't Save was clicked
             ui->tabWidget->removeTab(index);
             dirUpdate("");
+            ft->~tabchildwidget();
             break;
         case QMessageBox::Cancel:
         // Cancel was clicked
@@ -556,8 +563,8 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->widget(index));
     QFile file(ft->getFilePath());
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)){
-
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text) || (ft->isChanged() && ft->getFileType()=="scp")){
+        return;
     }
     QTextStream in(&file);
     QString text = in.readAll();

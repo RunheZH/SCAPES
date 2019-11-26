@@ -3,6 +3,11 @@
 
 #include <QWidget>
 #include <QDebug>
+#include <QRegExp>
+#include <QRegExpValidator>
+#include <QRegularExpressionMatch>
+#include <QScrollBar>
+#include "../inc/highlighter.h"
 
 namespace Ui {
 class tabchildwidget;
@@ -21,18 +26,30 @@ public:
     void storeFilePath(QString dir);
     QString getFilePath();
     QString getFileName();
+    QString getFileType();
     void setChanged(bool changed);
     bool isChanged();
     ~tabchildwidget();
 
 private slots:
     void on_textEdit_textChanged();
+    void updateScroll(int pos);
+    void on_textEdit_cursorPositionChanged();
+
+signals:
+    void textChange();
+    void sliderMoved(int);
 
 private:
     Ui::tabchildwidget *ui;
-    QString filePath;
-    QString fileName;
+    QString filePath = "";
+    QString fileName = "";
+    QString fileType;   //scp,jsn
     bool changed = false;
+    int getLineNum();
+    void updateLineNum();
+    void setFileType();
+    Highlighter *highlighter;
 };
 
 #endif // FILETEXT_H

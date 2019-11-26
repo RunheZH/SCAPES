@@ -49,6 +49,8 @@ SOURCES += \
         entity/stmts/src/movStmt.cpp \
         entity/stmts/src/printStmt.cpp \
         entity/stmts/src/readStmt.cpp \
+        interface/src/highlighter.cpp \
+        interface/src/inputwindow.cpp \
         interface/src/main.cpp \
         interface/src/mainwindow.cpp \
         interface/src/opennewwidget.cpp \
@@ -81,12 +83,15 @@ HEADERS += \
         entity/stmts/inc/movStmt.h \
         entity/stmts/inc/printStmt.h \
         entity/stmts/inc/readStmt.h \
+        interface/inc/highlighter.h \
+        interface/inc/inputwindow.h \
         interface/inc/mainwindow.h \
         interface/inc/opennewwidget.h \
         interface/inc/outputtabwidget.h \
         interface/inc/tabchildwidget.h
 
 FORMS += \
+        interface/ui/inputwindow.ui \
         interface/ui/mainwindow.ui \
         interface/ui/opennewwidget.ui \
         interface/ui/outputtabwidget.ui \

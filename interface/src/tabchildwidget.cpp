@@ -6,6 +6,9 @@ tabchildwidget::tabchildwidget(QWidget *parent) :
     ui(new Ui::tabchildwidget)
 {
     ui->setupUi(this);
+    highlighter = new Highlighter(ui->textEdit->document());
+    //when user scroll textedit, the linenumber will also sync with the textedit scrollbar
+    connect(ui->textEdit->verticalScrollBar(), SIGNAL(valueChanged(int)),this,SLOT(updateScroll(int)));
 }
 
 tabchildwidget::~tabchildwidget()
@@ -15,7 +18,7 @@ tabchildwidget::~tabchildwidget()
 }
 
 void tabchildwidget::setText(QString text){
-    ui->textEdit->setText(text);
+    ui->textEdit->setPlainText(text);
 }
 
 QString tabchildwidget::getText(){
@@ -23,7 +26,7 @@ QString tabchildwidget::getText(){
 }
 
 bool tabchildwidget::isEmpty(){
-    qDebug()<<ui->textEdit->document();
+//    qDebug()<<ui->textEdit->document();
     if(ui->textEdit->document()->isEmpty()){
         return true;
     }else{
@@ -50,6 +53,9 @@ QString tabchildwidget::getFileName(){
 
 void tabchildwidget::on_textEdit_textChanged()
 {
+    updateLineNum();
+    textChange();
+    updateScroll(ui->textEdit->verticalScrollBar()->value());
     changed = true;
 }
 
@@ -59,4 +65,61 @@ bool tabchildwidget::isChanged(){
 
 void tabchildwidget::setChanged(bool changed){
     this->changed = changed;
+}
+
+void tabchildwidget::setFileType(){
+    QRegularExpression scpPattern("^.*\.(scp)$");
+    QRegularExpression jsnPattern("^.*\.(json)$");
+    if(fileName!=""){
+        if(scpPattern.match(fileName).hasMatch()){
+            fileType = "scp";
+        }else if(jsnPattern.match(fileName).hasMatch()) {
+            fileType = "jsn";
+        }
+    }
+}
+
+QString tabchildwidget::getFileType(){
+    setFileType();
+    return fileType;
+}
+
+int tabchildwidget::getLineNum(){
+    if(this->isEmpty()){
+        return 1;
+    }else {
+        int blockcount = ui->textEdit->document()->blockCount();
+        return blockcount;
+    }
+}
+
+void tabchildwidget::updateLineNum(){
+    //qDebug()<<getLineNum();
+    ui->lineNumEdit->clear();
+    for(int i=1; i<=getLineNum(); i++){
+//        qDebug()<<i;
+        ui->lineNumEdit->append(QString::number(i));
+    }
+    int pos = ui->textEdit->verticalScrollBar()->value();
+}
+
+//update line number area scrollbar position
+void tabchildwidget::updateScroll(int pos){
+    ui->lineNumEdit->verticalScrollBar()->setValue(pos);
+}
+
+void tabchildwidget::on_textEdit_cursorPositionChanged()
+{
+    //qt code editor example: https://doc.qt.io/qt-5/qtwidgets-widgets-codeeditor-example.html
+    QList<QTextEdit::ExtraSelection> extraSelections;
+    if (!ui->textEdit->isReadOnly()) {
+        QTextEdit::ExtraSelection selection;
+        QColor lineColor = QColor(225,225,225);
+        selection.format.setBackground(lineColor);
+        selection.format.setProperty(QTextFormat::FullWidthSelection, true);
+        selection.cursor = ui->textEdit->textCursor();
+        selection.cursor.clearSelection();
+        extraSelections.append(selection);
+    }
+    ui->textEdit->setExtraSelections(extraSelections);
 }
