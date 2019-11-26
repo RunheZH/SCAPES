@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += \
+        control/src/DBManager.cpp \
         control/src/compileControl.cpp \
         control/src/errorControl.cpp \
         control/src/runControl.cpp \
@@ -55,6 +56,7 @@ SOURCES += \
         interface/src/tabchildwidget.cpp
 
 HEADERS += \
+        control/inc/DBManager.h \
         control/inc/compileControl.h \
         control/inc/errorControl.h \
         control/inc/runControl.h \

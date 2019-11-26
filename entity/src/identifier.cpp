@@ -1,8 +1,9 @@
 #include "../inc/identifier.h"
 
-Identifier::Identifier(QString name)
+Identifier::Identifier(QString programName, QString name)
 {
     this->name = name;
+    this->programName = programName;
 }
 
 Identifier::~Identifier(){}

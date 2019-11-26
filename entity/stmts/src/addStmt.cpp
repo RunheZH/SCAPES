@@ -52,8 +52,8 @@ ResultState AddStmt::compile()
     return NO_ERROR;
 }
 
-ResultState AddStmt::run()
+ReturnValue* AddStmt::run()
 {
     qDebug() << "AddStmt.run()";
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

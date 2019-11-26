@@ -10,7 +10,7 @@ public:
     EndStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~EndStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
 
 private:
     // add helper functions

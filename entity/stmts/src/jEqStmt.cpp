@@ -49,7 +49,7 @@ ResultState JEqStmt::compile()
     return NO_ERROR;
 }
 
-ResultState JEqStmt::run()
+ReturnValue* JEqStmt::run()
 {
     qDebug() << "JEqStmt.run()";
 
@@ -57,5 +57,5 @@ ResultState JEqStmt::run()
 //    int lineNum = aLabel.getStmtLineNum();
 //    return lineNum;
 
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

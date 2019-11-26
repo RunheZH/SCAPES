@@ -33,11 +33,11 @@ ResultState EndStmt::compile()
     return NO_ERROR;
 }
 
-ResultState EndStmt::run()
+ReturnValue* EndStmt::run()
 {
     qDebug() << "EndStmt.run()";
 
     // return end;
 
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

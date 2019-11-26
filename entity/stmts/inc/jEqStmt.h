@@ -10,7 +10,7 @@ public:
     JEqStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~JEqStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
 
 private:
     // add helper functions

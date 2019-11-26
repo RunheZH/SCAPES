@@ -10,7 +10,7 @@ public:
     DeclIntStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~DeclIntStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
 
 private:
     // add helper functions

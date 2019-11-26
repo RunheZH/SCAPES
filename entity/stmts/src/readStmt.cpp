@@ -78,7 +78,7 @@ ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
     }
 }
 
-ResultState ReadStmt::run()
+ReturnValue* ReadStmt::run()
 {
     qDebug() << "ReadStmt.run()";
 
@@ -87,5 +87,5 @@ ResultState ReadStmt::run()
     // aVariable.setValue(newValue);
     // DBM.setVariable(aVariable.getName(), aVariable.getType(), newValue);
 
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

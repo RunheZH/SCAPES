@@ -49,8 +49,8 @@ ResultState JumpStmt::compile()
     return NO_ERROR;
 }
 
-ResultState JumpStmt::run()
+ReturnValue* JumpStmt::run()
 {
     qDebug() << "JumpStmt.run()";
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

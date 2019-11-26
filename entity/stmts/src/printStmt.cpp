@@ -23,7 +23,7 @@ ResultState PrintStmt::compile()
     if (args_str.size() == 2) // print a string
     {
         instruction = args_str[0];
-        op1 = new Operand(new Variable(args_str[1], ARRAY)); // say string is an array for now
+        op1 = new Operand(new Variable(this->programName, args_str[1], ARRAY)); // say string is an array for now
     }
     else
     {
@@ -59,7 +59,7 @@ ResultState PrintStmt::compile()
     return NO_ERROR;
 }
 
-ResultState PrintStmt::run()
+ReturnValue* PrintStmt::run()
 {
     qDebug() << "PrintStmt.run()";
 
@@ -69,5 +69,5 @@ ResultState PrintStmt::run()
     // QString printedValue = aVariable->getValue();
     // qDebug() << printedValue;
 
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

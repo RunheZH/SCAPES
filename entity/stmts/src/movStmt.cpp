@@ -53,8 +53,8 @@ ResultState MovStmt::compile()
     return NO_ERROR;
 }
 
-ResultState MovStmt::run()
+ReturnValue* MovStmt::run()
 {
     qDebug() << "MovStmt.run()";
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

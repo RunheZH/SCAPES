@@ -15,6 +15,8 @@
 #define OP_1  "op_1"
 #define OP_2  "op_2"
 #define END   "end"
+#define NO_JUMP -1
+#define NO_CMP  -2
 
 enum StatementId
 {
@@ -56,6 +58,7 @@ enum ResultState
     VARIABLE_ONE_NOT_INIT_AND_TWO_NOT_FOUND_ERROR,
     LABEL_NOT_FOUND_ERROR,
     COMPILATION_ERROR,
+    RUNTIME_ERROR,
     NO_END
 };
 
@@ -65,6 +68,21 @@ enum TypeE
     LITERAL,
     INT,
     ARRAY
+};
+
+class ReturnValue
+{
+public:
+    ReturnValue(ResultState result, qint16 jumpTo=NO_JUMP, qint16 compareR=NO_CMP) : error(result), jumpToLine(jumpTo), compareResult(compareR){}
+    ~ReturnValue(){}
+    ResultState getResultState(){return this->error;}
+    qint16 getJumpToLine(){return this->jumpToLine;}
+    qint16 getCompareResult(){return this->compareResult;}
+
+private:
+    ResultState error;
+    qint16 jumpToLine;
+    qint16 compareResult;
 };
 
 #endif

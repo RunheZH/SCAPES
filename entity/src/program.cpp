@@ -8,9 +8,9 @@ Program::Program(QString pgmPath, OutputTabWidget* consoleTab, OutputTabWidget* 
     this->pgmName = fileName[0];
     this->tempFileName = this->pgmName + "_tmp";
     this->pgmPath = pgmPath;
-    this->numStmt = 0;
     this->numLabel = 0;
-    this->numJumpStmt = 0;
+    this->cmpResult = NO_CMP;
+    this->jumpToLineNum = NO_JUMP;
     this->hasEnd = false;
     this->hasError = false;
     this->errorControl = new ErrorControl(consoleTab, errorTab);
@@ -18,22 +18,15 @@ Program::Program(QString pgmPath, OutputTabWidget* consoleTab, OutputTabWidget* 
 
 Program::~Program()
 {
-    for (qint16 i = 0; i < this->numStmt; i++)
-    {
-        delete (this->statements[i]);
-    }
+    this->statements.clear();
+    this->jumpStmts.clear(); // TODO: double deletion?
 
     for (qint16 i = 0; i < this->numLabel; i++)
     {
-        delete (this->ids[i]);
+        delete this->ids[i];
     }
 
-    for (qint16 i = 0; i < this->numJumpStmt; i++)
-    {
-        delete (this->jumpStmts[i]);
-    }
-
-    delete (errorControl);
+    delete errorControl;
 }
 
 ResultState Program::save()
@@ -41,10 +34,10 @@ ResultState Program::save()
     qDebug() << "RUNHE: Program::save()";
     QFile file(this->pgmPath);
     qint16 lineNum = 0;
-    this->numStmt = 0;
     this->numLabel = 0;
     this->hasEnd = false;
     this->hasError = false;
+    this->statements.clear();
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         this->errorControl->printErrorMsg(FILE_OPEN_ERROR);
@@ -53,7 +46,6 @@ ResultState Program::save()
 
     // read the file line by line
     while (!file.atEnd()) {
-        // TODO: need to get rid of '\n'
         QString line = file.readLine();
         lineNum++;
         // ignore comments
@@ -83,25 +75,25 @@ ResultState Program::compile()
 
     QFile tmpFile(this->tempFileName + ".json");
 
-    this->numJumpStmt = 0;
-    for(qint16 i = 0; i < this->numStmt; i++){
-        if (isJumpStmt(this->statements[i]))
+    this->jumpStmts.clear();
+    for(QMap<qint16, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++){
+        if (isJumpStmt(it.value()))
         {
-            this->jumpStmts[this->numJumpStmt] = this->statements[i];
-            this->numJumpStmt++;
+            this->jumpStmts.insert(it.key(), it.value());
             continue;
         }
-        res = this->statements[i]->compile();
+        // TODO: if it's cmp, check for at least one of the conditional jump statements
+        res = it.value()->compile();
         // error recovery
         if (res != NO_ERROR)
         {
             this->hasError = true;
-            qint16 lineNum = this->statements[i]->getLineNum();
+            qint16 lineNum = it.key();
             this->errorControl->printErrorMsgAtLine(res, lineNum);
         }
         else // no syntax error
         {
-            if (isEndStmt(this->statements[i]))
+            if (isEndStmt(it.value()))
             {
                 this->hasEnd = true;
             }
@@ -115,13 +107,13 @@ ResultState Program::compile()
         return COMPILATION_ERROR;
     }
 
-    for (qint16 i = 0; i < this->numJumpStmt; i++){
-        res = this->jumpStmts[i]->compile();
+    for (QMap<qint16, Statement*>::iterator it = this->jumpStmts.begin(); it != this->jumpStmts.end(); it++){
+        res = it.value()->compile();
         // error recovery
         if (res != NO_ERROR)
         {
             this->hasError = true;
-            qint16 lineNum = this->jumpStmts[i]->getLineNum();
+            qint16 lineNum = it.key();
             this->errorControl->printErrorMsgAtLine(res, lineNum);
         }
     }
@@ -140,7 +132,47 @@ ResultState Program::compile()
 ResultState Program::run()
 {
     qDebug() << "RUNHE: Program::run()";
-    // TODO: D2
+    // init DB
+    DBManager db(this->tempFileName);
+    db.createDB();
+
+    ReturnValue* runResult;
+    for (QMap<qint16, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
+    {
+        // has reached 'end'
+        if (isEndStmt(it.value())) break;
+
+        runResult = it.value()->run();
+        if (runResult->getResultState() != NO_ERROR)
+        {
+            this->errorControl->printErrorMsgAtLine(runResult->getResultState(), it.key());
+            return RUNTIME_ERROR;
+        }
+        if (runResult->getJumpToLine() != NO_JUMP) // NO_ERROR
+        {
+            // jump to the given line
+            it = this->statements.find(runResult->getJumpToLine());
+            continue;
+        }
+        if (runResult->getCompareResult() != NO_CMP)
+        {
+            this->cmpResult = runResult->getCompareResult();
+            switch (runResult->getCompareResult()) {
+            case -1:
+                //this->jumpToJls();
+                break;
+            case 0:
+                //this->jumpToJeq();
+                break;
+            case 1:
+                //this->jumpToJmr();
+                break;
+            default:
+                errorControl->printErrorMsg("CMP returned wrong value: " + QString::number(runResult->getCompareResult()));
+            }
+        }
+        delete runResult; // avoid memory leak
+    }
     return NO_ERROR;
 }
 
@@ -158,9 +190,9 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
 
     if (args[0].endsWith(":")){
         //qDebug() << "RUNHE: detected label";
-        newLabel = new Label(args[0].left(args[0].lastIndexOf(":")), lineNum);
+        newLabel = new Label(this->tempFileName, args[0].left(args[0].lastIndexOf(":")), lineNum);
         ids[this->numLabel] = newLabel;
-        // get rid of the leading spaces
+        // get rid of the leading spaces (?)
         stmt = stmt.mid(args[0].length() + 1);
         instruction = args[1];
     }
@@ -206,8 +238,7 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
         return INVALID_STATEMENT;
     }
 
-    this->statements[this->numStmt] = newStmt;
-    this->numStmt++;
+    this->statements.insert(lineNum, newStmt);
     return NO_ERROR;
 }
 

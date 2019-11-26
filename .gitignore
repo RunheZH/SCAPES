@@ -1,6 +1,10 @@
 # VS Code
 .vscode/
 
+# program generated
+test-program/*.json
+test-program/*.db
+
 # C++ objects and libs
 *.slo
 *.lo

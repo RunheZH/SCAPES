@@ -7,9 +7,10 @@
 class Variable : public Identifier
 {
 public:
-    Variable(QString variableName, TypeE variableType, int maxSize = 0);
+    Variable(QString programName, QString variableName, TypeE variableType, int maxSize = 0);
     ~Variable();
     QJsonObject toJSON();
+    void addToDB();
     TypeE getType();
     int getSize();
     //it will change the value if the user provide the vaild index

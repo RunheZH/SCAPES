@@ -7,14 +7,13 @@
 #include "jsonHandler.h"
 #include "variable.h"
 
-
 class Statement
 {
 public:
     Statement(QString programName, QString statement, Label* label, qint16 lineNum);
 	virtual ~Statement();
     virtual ResultState compile() = 0;
-    virtual ResultState run() = 0;
+    virtual ReturnValue* run() = 0;
     virtual qint16 getLineNum() {return this->lineNum;}
     virtual ResultState checkOperand(QString &Qop, Operand* op);
     virtual ResultState checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop2, Operand* op2, bool notAllow = true, bool checkInit = true);

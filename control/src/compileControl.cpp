@@ -11,6 +11,5 @@ CompileControl::~CompileControl()
 
 ResultState CompileControl::compile()
 {
-    ResultState res = program->compile();
-    return res;
+    return program->compile();
 }

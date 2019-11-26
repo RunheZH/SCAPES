@@ -1,6 +1,7 @@
 #ifndef PROGRAM_H
 #define PROGRAM_H
 
+#include <QMap>
 #include "common_lib.h"
 #include "identifier.h"
 #include "statement.h"
@@ -34,12 +35,12 @@ private:
     QString pgmName;
     QString tempFileName;
     QString pgmPath;
-    qint16  numStmt;
     qint16  numLabel;
-    qint16  numJumpStmt;
+    qint16  cmpResult;
+    qint16  jumpToLineNum;
     Identifier* ids[MAX_VALUE_16];
-    Statement*  statements[MAX_VALUE_16];
-    Statement*  jumpStmts[MAX_VALUE_16];
+    QMap<qint16, Statement*> statements;
+    QMap<qint16, Statement*> jumpStmts;
 
     bool hasEnd;
     bool hasError;

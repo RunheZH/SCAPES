@@ -1,7 +1,7 @@
 #include "../inc/variable.h"
 #include "../inc/jsonHandler.h"
 
-Variable::Variable(QString variableName, TypeE type, int maxSize) : Identifier(variableName)
+Variable::Variable(QString pgmName, QString variableName, TypeE type, int maxSize) : Identifier(pgmName, variableName)
 {
     this->type = type;
     this->maxSize = maxSize;
@@ -31,6 +31,12 @@ QJsonObject Variable::toJSON()
     }
 
     return varObj;
+}
+
+void Variable::addToDB()
+{
+    DBManager db(this->programName);
+    db.addVariable(this->getName(), INT);
 }
 
 TypeE Variable::getType()

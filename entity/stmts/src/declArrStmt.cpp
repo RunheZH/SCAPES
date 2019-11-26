@@ -32,7 +32,7 @@ ResultState DeclArrStmt::compile()
     if (!vaildSize || maxSize < 1) {
         return INVALID_OPERAND;
     }
-    this->op1 = new Operand(new Variable(args[1], ARRAY, maxSize));
+    this->op1 = new Operand(new Variable(this->programName, args[1], ARRAY, maxSize));
 
     JsonHandler jsonHdlr(this->programName);
     jsonHdlr.addElement(VAR, op1->getIdentifier()->getName(), op1->getIdentifier()->toJSON());
@@ -49,8 +49,8 @@ ResultState DeclArrStmt::compile()
     return NO_ERROR;
 }
 
-ResultState DeclArrStmt::run()
+ReturnValue* DeclArrStmt::run()
 {
     qDebug() << "DeclArrStmt().run()";
-    return NO_ERROR;
+    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

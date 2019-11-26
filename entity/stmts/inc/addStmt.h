@@ -11,7 +11,7 @@ public:
     AddStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~AddStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
 
 private:
     Operand* op1;

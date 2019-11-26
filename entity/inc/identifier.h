@@ -3,17 +3,20 @@
 
 #include <QJsonObject>
 #include "common_lib.h"
+#include "../../control/inc/DBManager.h"
 
 class Identifier
 {
 public:
-    Identifier(QString identifierName);
+    Identifier(QString programName, QString identifierName);
     virtual ~Identifier();
     QString getName();
     virtual QJsonObject toJSON() = 0;
+    virtual void addToDB() = 0;
 
 protected:
     QString name;
+    QString programName;
 };
 
 #endif

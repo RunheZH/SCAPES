@@ -10,7 +10,7 @@ public:
     DeclArrStmt(QString programName, QString statement, Label* label, qint16 lineNum);
     ~DeclArrStmt();
     ResultState compile();
-    ResultState run();
+    ReturnValue* run();
 
 private:
     // add helper functions
