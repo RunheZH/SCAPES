@@ -57,5 +57,8 @@ ReturnValue* JMoreStmt::run()
 //    int lineNum = aLabel.getStmtLineNum();
 //    return lineNum;
 
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+    Label* aLabel = static_cast<Label*>(op1->getIdentifier());
+    int lineNum = aLabel->getLineNum();
+
+    return new ReturnValue(NO_ERROR, lineNum, NO_CMP);
 }

@@ -87,5 +87,26 @@ ReturnValue* ReadStmt::run()
     // aVariable.setValue(newValue);
     // DBM.setVariable(aVariable.getName(), aVariable.getType(), newValue);
 
+
+    Variable* aVariable = static_cast<Variable*>(op1->getIdentifier());
+    TypeE variableType = aVariable->getType();
+
+    int newValue = UI.popRead();
+
+    // if we set value to a int
+    if (variableType == TypeE::INT){
+        aVariable->setValue(newValue,0);
+    }
+    // if we set value to an arryr
+    else if (variableType == TypeE::ARRAY){
+        // for loop to set value to every vector?
+        aVariable->setValue(newValue,0);
+    }
+    else{
+        qDebug() << "ERROR";
+    }
+
+
+
     return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }
