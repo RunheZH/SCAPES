@@ -10,8 +10,14 @@ Statement::Statement(QString programName, QString statement, Label* label, qint1
 
 Statement::~Statement(){}
 
-ResultState Statement::checkOperand(QString &Qop, Operand* op)
+ResultState Statement::checkOperand(QString &Qop, Operand& op)
 {
+    bool literal;
+    int opValue = Qop.toInt(&literal);
+    if (literal) {
+        op.setValue(opValue);
+        return All_LITERAL;
+    }
     QString operand = Qop;
     int indexOne = operand.indexOf("[");
     int indexTwo = operand.indexOf("]");
@@ -25,19 +31,20 @@ ResultState Statement::checkOperand(QString &Qop, Operand* op)
         operand = operand.mid(0, indexOne);
         indexOne = position;
     }
-    op = new Operand(jsonHdlr.findVariable(operand));
+    op.setIdentifier(jsonHdlr.findVariable(operand));
 
-    if(op->getIdentifier() == nullptr){
+    if(op.getIdentifier() == nullptr){
         return VARIABLE_ONE_NOT_FOUND_ERROR;
     } else if (indexOne != -1) {
-        if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::ARRAY) {
+        if (static_cast<Variable*>(op.getIdentifier())->getType() != TypeE::ARRAY) {
             return VARIABLE_NOT_FOUND_ERROR;
         } else {
+            op.setIndex(indexOne);
             return jsonHdlr.findInitArrayValue(operand, indexOne);
         }
 
     } else {
-        if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::INT) {
+        if (static_cast<Variable*>(op.getIdentifier())->getType() != TypeE::INT) {
             return VARIABLE_NOT_FOUND_ERROR;
         } else {
             return jsonHdlr.findInitIntValue(operand);
@@ -45,21 +52,25 @@ ResultState Statement::checkOperand(QString &Qop, Operand* op)
     }
 }
 
-ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop2, Operand* op2, bool notAllowed, bool checkInit)
+ResultState Statement::checkTwoOperand(QString &Qop1, Operand& op1, QString &Qop2, Operand& op2, bool notAllowed, bool checkInit)
 {
     TypeE type1 = UNDEFINED;
     TypeE type2 = UNDEFINED;
     bool literal1;
     bool literal2;
-    Qop1.toInt(&literal1);
-    Qop2.toInt(&literal2);
+    int op1Value = Qop1.toInt(&literal1);
+    int op2Value = Qop2.toInt(&literal2);
     if (literal1 && literal2 && !notAllowed) {
+        op1.setValue(op1Value);
+        op2.setValue(op2Value);
         return All_LITERAL;
     } else if (literal2 && notAllowed) {
         return INVALID_OPERAND;
     } else if (literal1) {
+        op1.setValue(op1Value);
         type1 = LITERAL;
     } else if (literal2) {
+        op2.setValue(op2Value);
         type2 = LITERAL;
     }
 
@@ -96,26 +107,27 @@ ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop
         }
     }
 
-    op1 = new Operand(jsonHdlr.findVariable(operand1));
-    op2 = new Operand(jsonHdlr.findVariable(operand2));
+    op1.setIdentifier(jsonHdlr.findVariable(operand1));
+    op2.setIdentifier(jsonHdlr.findVariable(operand2));
 
 
     if (type1 == LITERAL) {
         type1 = INT;
-    } else if(op1->getIdentifier() == nullptr){
+    } else if(op1.getIdentifier() == nullptr){
         resultState1 = VARIABLE_NOT_FOUND_ERROR;
     } else if (indexOne1 != -1) {
-        if (static_cast<Variable*>(op1->getIdentifier())->getType() != TypeE::ARRAY) {
+        if (static_cast<Variable*>(op1.getIdentifier())->getType() != TypeE::ARRAY) {
             resultState1 =  VARIABLE_NOT_FOUND_ERROR;
         } else {
+            op1.setIndex(indexOne1);
             resultState1 = jsonHdlr.findInitArrayValue(operand1, indexOne1);
             type1 = INT;
         }
     } else {
-        if (static_cast<Variable*>(op1->getIdentifier())->getType() == TypeE::INT) {
+        if (static_cast<Variable*>(op1.getIdentifier())->getType() == TypeE::INT) {
             resultState1 = jsonHdlr.findInitIntValue(operand1);
             type1 = INT;
-        } else if (static_cast<Variable*>(op1->getIdentifier())->getType() == TypeE::ARRAY) {
+        } else if (static_cast<Variable*>(op1.getIdentifier())->getType() == TypeE::ARRAY) {
             type1 = ARRAY;
         } else {
             resultState1 = VARIABLE_NOT_FOUND_ERROR;
@@ -124,15 +136,16 @@ ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop
 
     if (type2 == LITERAL) {
         type2 = INT;
-    } else if(op2->getIdentifier() == nullptr){
+    } else if(op2.getIdentifier() == nullptr){
         resultState2 = VARIABLE_NOT_FOUND_ERROR;
     } else if (indexOne2 != -1) {
-        if (static_cast<Variable*>(op2->getIdentifier())->getType() != TypeE::ARRAY) {
+        if (static_cast<Variable*>(op2.getIdentifier())->getType() != TypeE::ARRAY) {
             resultState2 =  VARIABLE_NOT_FOUND_ERROR;
         } else {
+            op2.setIndex(indexOne2);
             if (checkInit) {
                 resultState2 = jsonHdlr.findInitArrayValue(operand2, indexOne2);
-            } else if (indexOne2 >= static_cast<Variable*>(op2->getIdentifier())->getSize()) {
+            } else if (indexOne2 >= static_cast<Variable*>(op2.getIdentifier())->getSize()) {
                 resultState2 =  VARIABLE_NOT_FOUND_ERROR;
             } else {
                 jsonHdlr.initArrayValue(operand2, indexOne2);
@@ -140,14 +153,14 @@ ResultState Statement::checkTwoOperand(QString &Qop1, Operand* op1, QString &Qop
             type2 = INT;
         }
     } else {
-        if (static_cast<Variable*>(op2->getIdentifier())->getType() == TypeE::INT) {
+        if (static_cast<Variable*>(op2.getIdentifier())->getType() == TypeE::INT) {
             if (checkInit) {
                 resultState2 = jsonHdlr.findInitIntValue(operand2);
             } else {
                 jsonHdlr.initIntValue(operand2);
             }
             type2 = INT;
-        } else if (static_cast<Variable*>(op2->getIdentifier())->getType() == TypeE::ARRAY) {
+        } else if (static_cast<Variable*>(op2.getIdentifier())->getType() == TypeE::ARRAY) {
             type2 = ARRAY;
         } else {
             resultState2 = VARIABLE_NOT_FOUND_ERROR;

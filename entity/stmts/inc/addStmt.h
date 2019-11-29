@@ -14,8 +14,8 @@ public:
     ReturnValue* run();
 
 private:
-    Operand* op1;
-    Operand* op2;
+    Operand op1;
+    Operand op2;
 };
 
 #endif

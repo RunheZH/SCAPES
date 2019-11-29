@@ -7,7 +7,7 @@ PrintStmt::PrintStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : 
 
 PrintStmt::~PrintStmt()
 {
-    delete (op1);
+    delete (&op1);
     qDebug() << "~PrintStmt()";
 }
 
@@ -16,38 +16,26 @@ ResultState PrintStmt::compile()
     qDebug() << "PrintStmt.compile()";
 
     JsonHandler jsonHdlr(this->programName);
-    QString instruction;
-    QString operand1;
-    QStringList args_str = this->statement.split(QRegExp("\\s*\"\\s*"), QString::SkipEmptyParts);
+    QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
-    if (args_str.size() == 2) // print a string
-    {
-        instruction = args_str[0];
-        op1 = new Operand(new Variable(this->programName, args_str[1], ARRAY)); // say string is an array for now
-    }
-    else
-    {
-        QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
-
-        if (args.size() != 2){
-            if(args.size() == 1){
-                return NO_OPERAND_ONE_ERROR;
-            }
-            else {
-                return OPERAND_NUMBER_EXCEED_ERROR;
-            }
-        }
-
-        instruction = args[0];
-        this->op1 = new Operand(jsonHdlr.findVariable(args[1]));
-
-        // Variable 1 not found
-        if(this->op1->getIdentifier() == nullptr){
-            return VARIABLE_ONE_NOT_FOUND_ERROR;
+    if (args.size() != 2){
+        if(args.size() == 1){
+            return NO_OPERAND_ONE_ERROR;
         }
     }
 
-    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, op1->getIdentifier()->getName());
+    QString instruction = args[0];instruction = args[0];
+    QString operand1 = args[1];
+    ResultState aResulsState = checkOperand(operand1, op1);
+    QJsonObject op1Obj;
+    if (aResulsState != ResultState::All_LITERAL && aResulsState !=NO_ERROR) {
+        for (int i = 2; i < args.size(); i++) {
+            operand1 = " " + args[i];
+        }
+        op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
+    } else {
+        op1Obj = JsonHandler::getJsonObj(OP_1, op1.getIdentifier()->getName());
+    }
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 

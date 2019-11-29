@@ -94,7 +94,7 @@ ResultState JsonHandler::initArrayValue(QString variableName, int position)
     if (m_currentJsonObject.contains(VAR)) {
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
-            QJsonObject valueObj = variableObj[variableName].toObject()["value"].toObject();
+            QJsonObject valueObj = variableObj[variableName].toObject()["initialized?"].toObject();
             if (valueObj.contains(QString::number(position))) {
                 valueObj.insert(QString::number(position), QString::number(true));
                 QJsonObject variable = variableObj[variableName].toObject();

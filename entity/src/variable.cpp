@@ -27,7 +27,7 @@ QJsonObject Variable::toJSON()
         for(int i = 0; i < maxSize; i++) {
             valueArray.insert(QString::number(i), QString::number(false));
         }
-        varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("value", valueArray));
+        varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("initialized?", valueArray));
     }
 
     return varObj;
@@ -64,15 +64,27 @@ bool Variable::setValue(int aValue, int position)
     return true;
 }
 
-QVector<int> Variable::getValue()
+QString Variable::getValue()
 {
-    return value;
+    QString aValue;
+    if (value.size()==0) {
+        aValue = "undefined";
+    } else if (value.size()==1) {
+        aValue = QString::number(value[0]);
+    } else {
+        aValue += "[" + QString::number(value[0]);
+        for(int i = 1; i < value.size(); ++i) {
+            aValue += ", " + QString::number(value[i]);
+        }
+        aValue += "]";
+    }
+    return aValue;
 }
 
-int Variable::getValue(int position)
+QString Variable::getValue(int position)
 {
     if (value.size() < position) {
-        position = value.size() - 1;
+        return "undefined";
     }
-    return value[position];
+    return QString::number(value[position]);
 }

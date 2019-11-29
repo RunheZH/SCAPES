@@ -7,7 +7,7 @@ JMoreStmt::JMoreStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : 
 
 JMoreStmt::~JMoreStmt()
 {
-    delete (op1);
+    delete (&op1);
     qDebug() << "~JMoreStmt()";
 }
 
@@ -30,10 +30,10 @@ ResultState JMoreStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    this->op1 = new Operand(jsonHdlr.findLabel(operand1));
+    op1.setIdentifier(jsonHdlr.findLabel(operand1));
 
     // Label 1 not found
-    if(this->op1->getIdentifier() == nullptr){
+    if(this->op1.getIdentifier() == nullptr){
         return LABEL_NOT_FOUND_ERROR;
     }
 

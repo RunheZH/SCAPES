@@ -11,10 +11,10 @@ public:
     ~ReadStmt();
     ResultState compile();
     ReturnValue* run();
-    ResultState checkOperand(QString &operand, Operand* op);
+    ResultState checkOperand(QString &operand, Operand& op);
 
 private:
-    Operand* op1;
+    Operand op1;
 };
 
 #endif
