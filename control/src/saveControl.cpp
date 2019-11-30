@@ -18,3 +18,12 @@ Program* SaveControl::save()
     consoleTab->addText("Saved successfully.");
     return pgm;
 }
+
+Program* SaveControl::loadFromJSON()
+{
+    consoleTab->clearText();
+    Program* pgm = new Program(pgmPath, consoleTab, errorTab);
+    pgm->loadFromJSON();
+    consoleTab->addText("Saved successfully.");
+    return pgm;
+}
