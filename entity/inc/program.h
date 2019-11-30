@@ -26,6 +26,7 @@ public:
     Program(QString programPath, OutputTabWidget* consoleTab, OutputTabWidget* errorTab);
     ~Program();
     ResultState save();
+    ResultState loadFromJSON();
     ResultState compile();
     ResultState run();
 

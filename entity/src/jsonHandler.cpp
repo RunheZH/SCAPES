@@ -164,6 +164,12 @@ ResultState JsonHandler::findInitIntValue(QString variableName)
     return  VARIABLE_NOT_FOUND_ERROR;
 }
 
+QJsonObject JsonHandler::read()
+{
+    readData();
+    return this->m_currentJsonObject;
+}
+
 void JsonHandler::readData()
 {
     QFile file(fileToHandle);

@@ -25,6 +25,7 @@ public:
     ResultState initIntValue(QString variableName);
     ResultState findInitArrayValue(QString variableName, int position);
     ResultState findInitIntValue(QString variableName);
+    QJsonObject read();
 
 private:
     void readData();

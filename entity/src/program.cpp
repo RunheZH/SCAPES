@@ -64,6 +64,18 @@ ResultState Program::save()
     return NO_ERROR;
 }
 
+ResultState Program::loadFromJSON()
+{
+    QFile jsonFile(this->pgmName + ".json");
+    JsonHandler jsonHdlr(this->pgmName);
+
+    QJsonObject jsonObj = jsonHdlr.read();
+
+    //TODO: convert json to statements
+
+    return NO_ERROR;
+}
+
 ResultState Program::compile()
 {
     qDebug() << "RUNHE: Program::compile()";

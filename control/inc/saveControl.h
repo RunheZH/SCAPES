@@ -12,6 +12,7 @@ public:
     SaveControl(QString programPath, OutputTabWidget* consoleTab, OutputTabWidget* errorTab);
     ~SaveControl();
     Program* save();
+    Program* loadFromJSON();
 
 private:
     QString pgmPath;
