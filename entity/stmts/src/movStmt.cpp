@@ -7,8 +7,8 @@ MovStmt::MovStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Stat
 
 MovStmt::~MovStmt()
 {
-    delete (op1);
-    delete (op2);
+    delete (&op1);
+    delete (&op2);
     qDebug() << "~MovStmt()";
 }
 

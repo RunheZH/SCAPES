@@ -15,9 +15,9 @@ public:
     int getSize();
     //it will change the value if the user provide the vaild index
     bool setValue(int aValue, int position = 0);
-    QVector<int> getValue();
+    QString getValue();
     //it will return the last value if position bigger than size
-    int getValue(int position);
+    QString getValue(int position);
 
 private:
     TypeE type;
