@@ -14,9 +14,9 @@ public:
     ~DBManager();
     void addLabel(QString labelName, int lineNum);
     void addVariable(QString variableName, TypeE type);
-    void setVariable(QString variableName, TypeE type, QString newValue);
+    void setVariable(QString variableName, TypeE type, QVector<int> newValue);
     void setLabel(QString labelName, qint16 newLineNum);
-    QString getVariableValue(QString variableName);
+    QVector<int> getVariableValue(QString variableName);
     TypeE getVariableType(QString varaibleName);
     int getVariableSize(QString variableName);
     qint16 getLabelLineNum(QString labelName);

@@ -61,11 +61,25 @@ bool Variable::setValue(int aValue, int position)
     } else {
         value[position] = aValue;
     }
+
+    // pass the new value to the DB
+    DBManager db(this->programName);
+    db.setVariable(this->getName(),this->getType(),value);
+
     return true;
 }
 
 QString Variable::getValue()
 {
+    // get value from the DB
+    //DBManager db(this->programName);
+    // NOTE : not sure if we need DB after restructure
+    //QVector<int> varValue = db.getVariableValue(this->getName());
+
+    // set this variable's value as the varValue
+    // do we need this ?
+    //this->value = varValue;
+  
     QString aValue;
     if (value.size()==0) {
         aValue = "undefined";
@@ -83,8 +97,18 @@ QString Variable::getValue()
 
 QString Variable::getValue(int position)
 {
+    // NOTE : not sure if we need DB after restructure
+    // get value from the DB
+    //DBManager db(this->programName);
+    //QVector<int> varValue = db.getVariableValue(this->getName());
+
+    // set this variable's value as the varValue
+    // do we need this ?
+    // if we do, we can call getValue() directly
+    //this->value = varValue;
     if (value.size() < position) {
         return "undefined";
     }
-    return QString::number(value[position]);
+
+    return value[position];
 }
