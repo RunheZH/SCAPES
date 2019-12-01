@@ -69,5 +69,25 @@ ReturnValue* PrintStmt::run()
     // QString printedValue = aVariable->getValue();
     // qDebug() << printedValue;
 
+    Variable* aVariable = static_cast<Variable*>(op1->getIdentifier());
+    QVector<int> aVector = aVariable->getValue();
+
+    // if we read value from the INT type
+    if (aVector.size() == 1){
+        qDebug() << "the value of this int is:";
+        qDebug() << aVariable->getValue(aVector[0]);
+    }
+    // if we read value from the ARRAY type
+    else if (aVector.size() > 1){
+        qDebug() << "the value of this array is:";
+        for (int i=0; i<aVector.size(); i++){
+            qDebug() << aVariable->getValue(aVector[i]);
+        }
+    }
+    else{
+        qDebug() << "ERROR";
+    }
+
+
     return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
 }

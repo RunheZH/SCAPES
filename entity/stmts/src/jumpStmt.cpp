@@ -52,5 +52,9 @@ ResultState JumpStmt::compile()
 ReturnValue* JumpStmt::run()
 {
     qDebug() << "JumpStmt.run()";
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+
+    Label* aLabel = static_cast<Label*>(op1->getIdentifier());
+    int lineNum = aLabel->getLineNum();
+
+    return new ReturnValue(NO_ERROR, lineNum, NO_CMP);
 }

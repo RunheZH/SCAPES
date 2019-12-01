@@ -59,12 +59,12 @@ ReturnValue* CompStmt::run()
 {
     qDebug() << "CompStmt.run()";
 
-//    Variable* variable1 = static_cast<Variable*>(op1->getIdentifier());
-//    Variable* variable2 = static_cast<Variable*>(op2->getIdentifier());
-//    int result = (variable1->getValue()).toInt() - (variable2->getValue()).toInt();
-//                //variable 1 bigger: result>0
-//                //variable 2 bigger: result<0
-//                //var1=var2:         reuslt=0
+    Variable* variable1 = static_cast<Variable*>(op1->getIdentifier());
+    Variable* variable2 = static_cast<Variable*>(op2->getIdentifier());
+    int result = variable1 - variable2;
+                //variable 1 bigger: result>0
+                //variable 2 bigger: result<0
+                //var1=var2:         reuslt=0
 
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+    return new ReturnValue(NO_ERROR, NO_JUMP, result);
 }
