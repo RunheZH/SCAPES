@@ -57,8 +57,8 @@ ReturnValue* CompStmt::run()
 {
     qDebug() << "CompStmt.run()";
 
-    Variable* variable1 = static_cast<Variable*>(op1->getIdentifier());
-    Variable* variable2 = static_cast<Variable*>(op2->getIdentifier());
+    Variable* variable1 = static_cast<Variable*>(op1.getIdentifier());
+    Variable* variable2 = static_cast<Variable*>(op2.getIdentifier());
     int result = variable1 - variable2;
                 //variable 1 bigger: result>0
                 //variable 2 bigger: result<0

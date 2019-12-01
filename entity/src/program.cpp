@@ -8,7 +8,6 @@ Program::Program(QString pgmPath, OutputTabWidget* consoleTab, OutputTabWidget* 
     this->pgmName = fileName[0];
     this->tempFileName = this->pgmName + "_tmp";
     this->pgmPath = pgmPath;
-    this->numLabel = 0;
     this->cmpResult = NO_CMP;
     this->jumpToLineNum = NO_JUMP;
     this->hasEnd = false;
@@ -20,11 +19,7 @@ Program::~Program()
 {
     this->statements.clear();
     this->jumpStmts.clear(); // TODO: double deletion?
-
-    for (qint16 i = 0; i < this->numLabel; i++)
-    {
-        delete this->ids[i];
-    }
+    this->ids.clear();
 
     delete errorControl;
 }
@@ -34,7 +29,6 @@ ResultState Program::save()
     qDebug() << "RUNHE: Program::save()";
     QFile file(this->pgmPath);
     qint16 lineNum = 0;
-    this->numLabel = 0;
     this->hasEnd = false;
     this->hasError = false;
     this->statements.clear();
@@ -69,7 +63,7 @@ ResultState Program::loadFromJSON()
     QFile jsonFile(this->pgmName + ".json");
     JsonHandler jsonHdlr(this->pgmName);
 
-    QJsonObject jsonObj = jsonHdlr.read();
+    //QJsonObject jsonObj = jsonHdlr.read();
 
     //TODO: convert json to statements
 
@@ -149,9 +143,9 @@ ResultState Program::run()
     db.createDB();
 
     // adding labels to DB
-    for (qint16 i = 0; i < this->numLabel; i++)
+    for (QVector<Identifier*>::iterator it = ids.begin(); it != ids.end(); it++)
     {
-        this->ids[i]->addToDB();
+        (*it)->addToDB();
     }
 
     ReturnValue* runResult;
@@ -209,7 +203,7 @@ ResultState Program::addStmt(QString stmt, qint16 lineNum)
     if (args[0].endsWith(":")){
         //qDebug() << "RUNHE: detected label";
         newLabel = new Label(this->tempFileName, args[0].left(args[0].lastIndexOf(":")), lineNum);
-        ids[this->numLabel++] = newLabel;
+        ids.append(newLabel);
         // get rid of the leading spaces (?)
         stmt = stmt.mid(args[0].length() + 1);
         instruction = args[1];

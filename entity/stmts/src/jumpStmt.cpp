@@ -53,7 +53,7 @@ ReturnValue* JumpStmt::run()
 {
     qDebug() << "JumpStmt.run()";
 
-    Label* aLabel = static_cast<Label*>(op1->getIdentifier());
+    Label* aLabel = static_cast<Label*>(op1.getIdentifier());
     int lineNum = aLabel->getLineNum();
 
     return new ReturnValue(NO_ERROR, lineNum, NO_CMP);

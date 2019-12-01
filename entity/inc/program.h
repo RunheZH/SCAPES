@@ -2,6 +2,7 @@
 #define PROGRAM_H
 
 #include <QMap>
+#include <QVector>
 #include "common_lib.h"
 #include "identifier.h"
 #include "statement.h"
@@ -36,10 +37,9 @@ private:
     QString pgmName;
     QString tempFileName;
     QString pgmPath;
-    qint16  numLabel;
     qint16  cmpResult;
     qint16  jumpToLineNum;
-    Identifier* ids[MAX_VALUE_16];
+    QVector<Identifier*> ids;
     QMap<qint16, Statement*> statements;
     QMap<qint16, Statement*> jumpStmts;
 
@@ -54,4 +54,3 @@ private:
 };
 
 #endif
-
