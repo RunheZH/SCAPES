@@ -40,7 +40,7 @@ void DBManager::addVariable(QString variableName, TypeE type)
     this->closeDB();
 }
 
-void DBManager::setVariable(QString variableName, TypeE type, QString newValue)
+void DBManager::setVariable(QString variableName, TypeE type, QVector<int> newValue)
 {
     // TODO
 }
@@ -50,7 +50,7 @@ void DBManager::setLabel(QString labelName, qint16 newLineNum)
     // TODO
 }
 
-QString DBManager::getVariableValue(QString variableName)
+QVector<int> DBManager::getVariableValue(QString variableName)
 {
     // TODO
 }

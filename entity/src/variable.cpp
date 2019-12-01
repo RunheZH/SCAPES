@@ -61,18 +61,42 @@ bool Variable::setValue(int aValue, int position)
     } else {
         value[position] = aValue;
     }
+
+    // pass the new value to the DB
+    DBManager db(this->programName);
+    db.setVariable(this->getName(),this->getType(),value);
+
     return true;
 }
 
 QVector<int> Variable::getValue()
 {
-    return value;
+
+    // get value from the DB
+    DBManager db(this->programName);
+    QVector<int> varValue = db.getVariableValue(this->getName());
+
+    // set this variable's value as the varValue
+    // do we need this ?
+    this->value = varValue;
+
+    return varValue;
 }
 
 int Variable::getValue(int position)
-{
+{   
+    // get value from the DB
+    DBManager db(this->programName);
+    QVector<int> varValue = db.getVariableValue(this->getName());
+
+    // set this variable's value as the varValue
+    // do we need this ?
+    // if we do, we can call getValue() directly
+    this->value = varValue;
+
     if (value.size() < position) {
         position = value.size() - 1;
     }
+
     return value[position];
 }
