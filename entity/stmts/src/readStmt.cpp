@@ -89,10 +89,12 @@ ReturnValue* ReadStmt::run()
     // DBM.setVariable(aVariable.getName(), aVariable.getType(), newValue);
 
 
-    Variable* aVariable = static_cast<Variable*>(op1->getIdentifier());
+    Variable* aVariable = static_cast<Variable*>(op1.getIdentifier());
     TypeE variableType = aVariable->getType();
 
-    int newValue = UI.popRead();
+    int newValue = 0;
+    // TODO: include UI
+    //newValue = UI.popRead();
 
     // if we set value to a int
     if (variableType == TypeE::INT){

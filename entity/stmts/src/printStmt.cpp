@@ -57,7 +57,10 @@ ReturnValue* PrintStmt::run()
     // QString printedValue = aVariable->getValue();
     // qDebug() << printedValue;
 
-    Variable* aVariable = static_cast<Variable*>(op1->getIdentifier());
+    Variable* aVariable = static_cast<Variable*>(op1.getIdentifier());
+    if (aVariable->getValue().isEmpty())
+        return new ReturnValue(VARIABLE_NOT_FOUND_ERROR);
+
     QVector<int> aVector = aVariable->getValue();
 
     // if we read value from the INT type

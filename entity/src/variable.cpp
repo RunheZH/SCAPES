@@ -69,7 +69,7 @@ bool Variable::setValue(int aValue, int position)
     return true;
 }
 
-QString Variable::getValue()
+QVector<int> Variable::getValue()
 {
     // get value from the DB
     //DBManager db(this->programName);
@@ -80,7 +80,7 @@ QString Variable::getValue()
     // do we need this ?
     //this->value = varValue;
   
-    QString aValue;
+    /*QString aValue;
     if (value.size()==0) {
         aValue = "undefined";
     } else if (value.size()==1) {
@@ -92,7 +92,8 @@ QString Variable::getValue()
         }
         aValue += "]";
     }
-    return aValue;
+    return aValue;*/
+    return value;
 }
 
 QString Variable::getValue(int position)
@@ -110,5 +111,5 @@ QString Variable::getValue(int position)
         return "undefined";
     }
 
-    return value[position];
+    return QString::number(value[position]);
 }

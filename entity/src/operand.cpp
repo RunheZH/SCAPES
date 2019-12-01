@@ -56,6 +56,7 @@ void Operand::setIndex(int index)
 QString Operand::getValue()
 {
     QString str;
+    /*
     if (exist_value) {
         str = QString::number(value, 10);
     }else if (!exist_intdex && id != nullptr){
@@ -70,6 +71,6 @@ QString Operand::getValue()
         }
     } else if (!exist_intdex && id == nullptr){
         return pValue;
-    }
+    }*/
     return str;
 }
