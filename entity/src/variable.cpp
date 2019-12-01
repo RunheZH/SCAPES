@@ -27,7 +27,7 @@ QJsonObject Variable::toJSON()
         for(int i = 0; i < maxSize; i++) {
             valueArray.insert(QString::number(i), QString::number(false));
         }
-        varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("value", valueArray));
+        varObj = JsonHandler::appendToEnd(varObj, JsonHandler::getJsonObj("initialized?", valueArray));
     }
 
     return varObj;
@@ -69,33 +69,45 @@ bool Variable::setValue(int aValue, int position)
     return true;
 }
 
-QVector<int> Variable::getValue()
+QString Variable::getValue()
 {
-
     // get value from the DB
-    DBManager db(this->programName);
-    QVector<int> varValue = db.getVariableValue(this->getName());
+    //DBManager db(this->programName);
+    // NOTE : not sure if we need DB after restructure
+    //QVector<int> varValue = db.getVariableValue(this->getName());
 
     // set this variable's value as the varValue
     // do we need this ?
-    this->value = varValue;
-
-    return varValue;
+    //this->value = varValue;
+  
+    QString aValue;
+    if (value.size()==0) {
+        aValue = "undefined";
+    } else if (value.size()==1) {
+        aValue = QString::number(value[0]);
+    } else {
+        aValue += "[" + QString::number(value[0]);
+        for(int i = 1; i < value.size(); ++i) {
+            aValue += ", " + QString::number(value[i]);
+        }
+        aValue += "]";
+    }
+    return aValue;
 }
 
-int Variable::getValue(int position)
-{   
+QString Variable::getValue(int position)
+{
+    // NOTE : not sure if we need DB after restructure
     // get value from the DB
-    DBManager db(this->programName);
-    QVector<int> varValue = db.getVariableValue(this->getName());
+    //DBManager db(this->programName);
+    //QVector<int> varValue = db.getVariableValue(this->getName());
 
     // set this variable's value as the varValue
     // do we need this ?
     // if we do, we can call getValue() directly
-    this->value = varValue;
-
+    //this->value = varValue;
     if (value.size() < position) {
-        position = value.size() - 1;
+        return "undefined";
     }
 
     return value[position];

@@ -7,8 +7,8 @@ CompStmt::CompStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : St
 
 CompStmt::~CompStmt()
 {
-    delete (op1);
-    delete (op2);
+    delete (&op1);
+    delete (&op2);
     qDebug() << "~CompStmt()";
 }
 
@@ -46,12 +46,10 @@ ResultState CompStmt::compile()
     QJsonObject op2Obj = JsonHandler::getJsonObj(OP_2, operand2);
     QJsonObject stmtObj =JsonHandler::getJsonObj(instruction, JsonHandler::appendToEnd(op1Obj, op2Obj));
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
-
     if (label)
     {
         jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
     }
-
     return NO_ERROR;
 }
 

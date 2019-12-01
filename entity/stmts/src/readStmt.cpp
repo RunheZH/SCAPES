@@ -7,7 +7,7 @@ ReadStmt::ReadStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : St
 
 ReadStmt::~ReadStmt()
 {
-    delete (op1);
+    delete (&op1);
     qDebug() << "~ReadStmt()";
 }
 
@@ -44,7 +44,7 @@ ResultState ReadStmt::compile()
     return NO_ERROR;
 }
 
-ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
+ResultState ReadStmt::checkOperand(QString &operand, Operand& op){
     int indexOne = operand.indexOf("[");
     int indexTwo = operand.indexOf("]");
     JsonHandler jsonHdlr(this->programName);
@@ -57,20 +57,21 @@ ResultState ReadStmt::checkOperand(QString &operand, Operand* op){
         operand = operand.mid(0, indexOne);
         indexOne = position;
     }
-       op = new Operand(jsonHdlr.findVariable(operand));
+        op.setIdentifier(jsonHdlr.findVariable(operand));
 
     // Variable 1 not found
-    if(op->getIdentifier() == nullptr){
+    if(op.getIdentifier() == nullptr){
         return VARIABLE_ONE_NOT_FOUND_ERROR;
     } else if (indexOne != -1) {
-        if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::ARRAY) {
+        if (static_cast<Variable*>(op.getIdentifier())->getType() != TypeE::ARRAY) {
             return VARIABLE_ONE_NOT_FOUND_ERROR;
         } else {
+           op.setIndex(indexOne);
            return jsonHdlr.initArrayValue(operand, indexOne);
         }
 
     } else {
-        if (static_cast<Variable*>(op->getIdentifier())->getType() != TypeE::INT) {
+        if (static_cast<Variable*>(op.getIdentifier())->getType() != TypeE::INT) {
             return VARIABLE_ONE_NOT_FOUND_ERROR;
         } else {
            return jsonHdlr.initIntValue(operand);
