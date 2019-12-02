@@ -26,8 +26,10 @@ ResultState DeclIntStmt::compile()
         }
     }
 
+    // declare a new int
     QString instruction = args[0];
-    Variable* newVar = new Variable(this->programName, args[1], INT);
+    QString varName = args[1];
+    Variable* newVar = new Variable(this->programName, varName, INT);
     op1.setIdentifier(newVar);
     ids.insert(newVar->getName(), std::shared_ptr<Variable>(newVar));
 
@@ -35,7 +37,7 @@ ResultState DeclIntStmt::compile()
     JsonHandler jsonHdlr(this->programName);
     jsonHdlr.addElement(VAR, op1.getIdentifier()->getName(), op1.getIdentifier()->toJSON());
 
-    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, args[1]);
+    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, varName);
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 

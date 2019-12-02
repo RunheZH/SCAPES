@@ -5,6 +5,7 @@ Variable::Variable(QString pgmName, QString variableName, TypeE type, int maxSiz
 {
     this->type = type;
     this->maxSize = maxSize;
+    this->usedSize = 0;
 }
 
 Variable::~Variable(){}
@@ -47,6 +48,16 @@ TypeE Variable::getType()
 int Variable::getSize()
 {
     return maxSize;
+}
+
+int Variable::getUsedSize()
+{
+    return usedSize;
+}
+
+void Variable::setUsedSize(int newUsedSize)
+{
+    usedSize = newUsedSize;
 }
 
 bool Variable::setValue(int aValue, int position)

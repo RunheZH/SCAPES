@@ -1,9 +1,10 @@
 dci a
-dci b
+dca b 3
 rdi a
-rdi b
+rdi b[0]
+rdi b[1]
 #compare a and b
-cmp a b
+cmp a b[1]
 #if a>b, print a
 jmr L1
 #if a<=b, print b

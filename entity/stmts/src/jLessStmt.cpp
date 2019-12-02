@@ -29,12 +29,12 @@ ResultState JLessStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
 
-    op1.setIdentifier(jsonHdlr.findLabel(operand1));
-
-    // Label 1 not found
-    if(this->op1.getIdentifier() == nullptr){
+    QMap<QString, std::shared_ptr<Identifier>>::iterator foundLabel = ids.find(operand1);
+    // Label not found
+    if(foundLabel == ids.end()){
         return LABEL_NOT_FOUND_ERROR;
     }
+    op1.setIdentifier(foundLabel.value().get());
 
     QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);

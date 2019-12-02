@@ -27,19 +27,28 @@ ResultState DeclArrStmt::compile()
         }
     }
 
+    // check if a valid size is given
     bool vaildSize;
     QString instruction = args[0];
-    int maxSize = args[2].toInt(&vaildSize);
+    QString varName = args[1];
+    QString arrSize = args[2];
+    int maxSize = arrSize.toInt(&vaildSize);
     if (!vaildSize || maxSize < 1) {
         return INVALID_OPERAND;
     }
-    op1.setIdentifier(new Variable(this->programName, args[1], ARRAY, maxSize));
 
+    // declare an array
+    Variable* newVar = new Variable(this->programName, varName, ARRAY, maxSize);
+    op1.setIdentifier(newVar);
+    ids.insert(varName, std::shared_ptr<Variable>(newVar));
+
+    // add to JSON file
     JsonHandler jsonHdlr(this->programName);
     jsonHdlr.addElement(VAR, op1.getIdentifier()->getName(), op1.getIdentifier()->toJSON());
 
-    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, args[1]);
-    QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
+    QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, varName);
+    QJsonObject op2Obj = JsonHandler::getJsonObj(OP_2, arrSize);
+    QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, JsonHandler::appendToEnd(op1Obj, op2Obj));
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
     return NO_ERROR;

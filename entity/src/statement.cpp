@@ -28,7 +28,7 @@ ResultState Statement::checkOperand(QString &Qop, Operand& op)
     int opValue = Qop.toInt(&literal);
     if (literal) {
         op.setValue(opValue);
-        return All_LITERAL;
+        return NO_ERROR;
     }
     QString operand = Qop;
     int indexOne = operand.indexOf("[");
@@ -75,7 +75,7 @@ ResultState Statement::checkTwoOperand(QString &Qop1, Operand& op1, QString &Qop
     if (literal1 && literal2 && !notAllowed) {
         op1.setValue(op1Value);
         op2.setValue(op2Value);
-        return All_LITERAL;
+        return NO_ERROR;
     } else if (literal2 && notAllowed) {
         return INVALID_OPERAND;
     } else if (literal1) {

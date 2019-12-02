@@ -30,41 +30,53 @@ void ErrorControl::printErrorMsgAtLine(ResultState result, int lineNum)
 
 QString ErrorControl::convertErrorMsg(ResultState result)
 {
-    if (result == FILE_OPEN_ERROR)
-        return "Could not open file";
-    else if (result == INVALID_STATEMENT)
-        return "Invalid statement";
-    else if (result == INVALID_OPERAND)
-        return "Invalid operand";
-    else if (result == DIFF_TYPE_ERROR)
+    switch (result)
+    {
+    case DIFF_TYPE_ERROR:
         return "Different type of operand were provided";
-    else if (result == NO_OPERAND_ONE_ERROR)
-        return "Missing first operand";
-    else if (result == NO_OPERAND_TWO_ERROR)
-        return "Missing second operand";
-    else if (result == OPERAND_NUMBER_EXCEED_ERROR)
-        return "Too much arguments";
-    else if (result == VARIABLE_ONE_NOT_FOUND_ERROR)
-        return "Undefined operand 1";
-    else if (result == VARIABLE_TWO_NOT_FOUND_ERROR)
-        return "Undefined operand 2";
-    else if (result == VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR)
-        return "Undefined operand 1 and operand 2";
-    else if (result == VARIABLE_ONE_NOT_INIT_ERROR)
-        return "Operand 1 not initial";
-    else if (result == VARIABLE_TWO_NOT_INIT_ERROR)
-        return "Operand 2 not initial";
-    else if (result == VARIABLE_ONE_AND_TWO_NOT_INIT_ERROR)
-        return "Operand 1 and operand 2 not initial";
-    else if (result == VARIABLE_ONE_NOT_FOUND_AND_TWO_NOT_INIT_ERROR)
-        return "Undefined operand 1 and operand 2 not initial";
-    else if (result == VARIABLE_ONE_NOT_INIT_AND_TWO_NOT_FOUND_ERROR)
-        return "Operand 1 not initial and undefined operand 2";
-    else if (result == LABEL_NOT_FOUND_ERROR)
-        return "Undefined label";
-    else if (result == NO_END)
-        return "Missing 'end' at the end of the program";
-    else if (result == INDEX_OUT_OF_BOUNDS)
+    case FILE_OPEN_ERROR:
+        return "Could not open file";
+    case INDEX_OUT_OF_BOUNDS:
         return "Index out of bounds";
-    return "No error";
+    case INVALID_STATEMENT:
+        return "Invalid statement";
+    case INVALID_OPERAND:
+        return "Invalid operand";
+    case NO_OPERAND_ONE_ERROR:
+        return "Missing the first operand";
+    case NO_OPERAND_TWO_ERROR:
+        return "Missing the second operand";
+    case OPERAND_NUMBER_EXCEED_ERROR:
+        return "Too many arguments have been given to this statement";
+    case VARIABLE_NOT_FOUND_ERROR:
+        return "Undefined variable";
+    case VARIABLE_ONE_NOT_FOUND_ERROR:
+        return "The first variable is undefined";
+    case VARIABLE_TWO_NOT_FOUND_ERROR:
+        return "The second variable is undefined";
+    case VARIABLE_ONE_AND_TWO_NOT_FOUND_ERROR:
+        return "Both variables are undefined";
+    case VARIABLE_NOT_INIT_ERROR:
+        return "Variable has not been initialized yet";
+    case VARIABLE_ONE_NOT_INIT_ERROR:
+        return "The first variable has not been initialized yet";
+    case VARIABLE_TWO_NOT_INIT_ERROR:
+        return "The second variable has not been initialized yet";
+    case VARIABLE_ONE_AND_TWO_NOT_INIT_ERROR:
+        return "Both variables have not been initialized yet";
+    case VARIABLE_ONE_NOT_FOUND_AND_TWO_NOT_INIT_ERROR:
+        return "Undefined first variable and uninitialized second variable";
+    case VARIABLE_ONE_NOT_INIT_AND_TWO_NOT_FOUND_ERROR:
+        return "Unintialized first variable and undefined second variable";
+    case LABEL_NOT_FOUND_ERROR:
+        return "Undefined label";
+    case COMPILATION_ERROR:
+        return "Compilation error";
+    case RUNTIME_ERROR:
+        return "Runtime error";
+    case NO_END:
+        return "Missing a 'end' statement to end the program";
+    default:
+        return "No error";
+    }
 }

@@ -28,7 +28,7 @@ ResultState PrintStmt::compile()
     QString operand1 = args[1];
     ResultState aResulsState = checkOperand(operand1, op1);
     QJsonObject op1Obj;
-    if (aResulsState != ResultState::All_LITERAL && aResulsState !=NO_ERROR) {
+    if (aResulsState != ResultState::NO_ERROR && aResulsState !=NO_ERROR) {
         for (int i = 2; i < args.size(); i++) {
             operand1 = " " + args[i];
         }

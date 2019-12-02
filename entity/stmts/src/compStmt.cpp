@@ -35,7 +35,7 @@ ResultState CompStmt::compile()
     QString operand2 = args[2];
     JsonHandler jsonHdlr(this->programName);
     ResultState finalResultSate = checkTwoOperand(operand1, op1, operand2, op2, false);
-    if (finalResultSate == All_LITERAL) {
+    if (finalResultSate == NO_ERROR) {
         finalResultSate = NO_ERROR;
     }
     if (finalResultSate != NO_ERROR) {
@@ -56,10 +56,10 @@ ReturnValue* CompStmt::run()
 
     Variable* variable1 = static_cast<Variable*>(op1.getIdentifier());
     Variable* variable2 = static_cast<Variable*>(op2.getIdentifier());
-    int result = variable1 - variable2;
+    //int result = variable1 - variable2;
                 //variable 1 bigger: result>0
                 //variable 2 bigger: result<0
                 //var1=var2:         reuslt=0
 
-    return new ReturnValue(NO_ERROR, NO_JUMP, result);
+    return new ReturnValue(NO_ERROR, NO_JUMP, 0);
 }

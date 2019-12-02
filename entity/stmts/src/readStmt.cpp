@@ -28,7 +28,9 @@ ResultState ReadStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
     QRegExp pattern("\\[[0-9]+\\]");
-    if (operand1.contains(pattern)) // an array element, access using negative indices are not supported
+    if (operand1.contains(QRegExp("\\[\\-[0-9]+\\]"))) // accessing an array using a negative index are not allowed
+        return INDEX_OUT_OF_BOUNDS;
+    else if (operand1.contains(pattern)) // an array element
     {
         // found variable and index
         QStringList op1_args = operand1.split(QRegExp("[\\[\\]]"), QString::SkipEmptyParts);
@@ -38,17 +40,20 @@ ResultState ReadStmt::compile()
             if (dynamic_cast<Variable*>(foundVar_it.value().get())->getType() != ARRAY)
                 return DIFF_TYPE_ERROR;
 
-            if (op1_args[1] > dynamic_cast<Variable*>(foundVar_it.value().get())->getValue().size())
+            // make sure the user won't skip initializing an element in this array (e.g. rdi arr[0], rdi arr[1], rdi arr[3])
+            if ((op1_args[1].toInt() > dynamic_cast<Variable*>(foundVar_it.value().get())->getUsedSize()) ||
+                    // and won't go over the max size of the array
+                    (op1_args[1].toInt() >= dynamic_cast<Variable*>(foundVar_it.value().get())->getSize()))
                 return INDEX_OUT_OF_BOUNDS;
 
             op1.setIdentifier(foundVar_it.value().get());
             op1.setIndex(op1_args[1].toInt());
-
+            dynamic_cast<Variable*>(op1.getIdentifier())->setUsedSize(dynamic_cast<Variable*>(op1.getIdentifier())->getUsedSize() + 1);
         }
         else
             return VARIABLE_NOT_FOUND_ERROR;
     }
-    else
+    else // int
     {
         if (ids.find(operand1) == ids.end())
             return VARIABLE_NOT_FOUND_ERROR;
@@ -94,7 +99,7 @@ ReturnValue* ReadStmt::run()
     if (variableType == TypeE::INT){
         aVariable->setValue(newValue, 0);
     }
-    // if we set value to an arryr
+    // if we set value to an array
     else if (variableType == TypeE::ARRAY){
         // for loop to set value to every vector?
         aVariable->setValue(newValue, 0);
