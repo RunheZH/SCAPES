@@ -10,11 +10,11 @@
 class Statement
 {
 public:
-    Statement(QString programName, QString statement, Label* label, qint16 lineNum);
+    Statement(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
 	virtual ~Statement();
     virtual ResultState compile() = 0;
     virtual ReturnValue* run() = 0;
-    virtual qint16 getLineNum() {return this->lineNum;}
+    virtual int getLineNum() {return this->lineNum;}
     virtual ResultState checkOperand(QString &Qop, Operand& op);
     virtual ResultState checkTwoOperand(QString &Qop1, Operand& op1, QString &Qop2, Operand& op2, bool notAllow = true, bool checkInit = true);
     virtual ResultState getResultStateForTwo(ResultState resultState1, ResultState resultState2);
@@ -22,8 +22,9 @@ public:
 protected:
     QString programName;
     QString statement;
-    Label*  label;
-    qint16  lineNum;
+    QMap<QString, std::shared_ptr<Identifier>>& ids;
+    Label* label;
+    int lineNum;
 };
 
 #endif

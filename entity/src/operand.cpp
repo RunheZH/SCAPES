@@ -74,3 +74,8 @@ QString Operand::getValue()
     }*/
     return str;
 }
+
+int Operand::getIndex()
+{
+    return this->index;
+}

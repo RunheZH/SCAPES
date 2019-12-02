@@ -7,7 +7,7 @@
 class EndStmt : public Statement
 {
 public:
-    EndStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    EndStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~EndStmt();
     ResultState compile();
     ReturnValue* run();

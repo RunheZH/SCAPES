@@ -37,17 +37,17 @@ private:
     QString pgmName;
     QString tempFileName;
     QString pgmPath;
-    qint16  cmpResult;
-    qint16  jumpToLineNum;
-    QVector<Identifier*> ids;
-    QMap<qint16, Statement*> statements;
-    QMap<qint16, Statement*> jumpStmts;
+    int     cmpResult;
+    int     jumpToLineNum;
+    QMap<QString, std::shared_ptr<Identifier>> ids;
+    QMap<int, Statement*> statements;
+    QMap<int, Statement*> jumpStmts;
 
     bool hasEnd;
     bool hasError;
 
     // helper functions
-    ResultState addStmt(QString stmt, qint16 lineNum);
+    ResultState addStmt(QString stmt, int lineNum);
     StatementId getStmtId(QString ins);
     bool isEndStmt(Statement* stmt);
     bool isJumpStmt(Statement* stmt);

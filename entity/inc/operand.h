@@ -16,6 +16,7 @@ public:
     void setValue(QString pValue);
     void setIndex(int index);
     QString getValue();
+    int getIndex();
 
 private:
     Identifier* id;

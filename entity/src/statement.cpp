@@ -1,11 +1,23 @@
 #include "../inc/statement.h"
 
-Statement::Statement(QString programName, QString statement, Label* label, qint16 lineNum)
+Statement::Statement(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum) : ids(ids)
 {
     this->programName = programName;
     this->statement = statement;
-    this->label = label;
+    //this->ids = ids;
     this->lineNum = lineNum;
+    this->label = nullptr;
+    QStringList args = statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
+
+    if (args[0].endsWith(":")){
+        //qDebug() << "RUNHE: detected label";
+        this->label = new Label(this->programName, args[0].left(args[0].lastIndexOf(":")), lineNum);
+        ids.insert(this->label->getName(), std::shared_ptr<Label>(this->label));
+        JsonHandler jsonHdlr(this->programName);
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+        // get rid of the leading spaces
+        this->statement = statement.mid(args[0].length() + 1);
+    }
 }
 
 Statement::~Statement(){}

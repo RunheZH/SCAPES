@@ -1,13 +1,13 @@
 #include "../inc/printStmt.h"
 
-PrintStmt::PrintStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
+PrintStmt::PrintStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
 {
     qDebug() << "PrintStmt()";
 }
 
 PrintStmt::~PrintStmt()
 {
-    delete (&op1);
+    delete (op1.getIdentifier());
     qDebug() << "~PrintStmt()";
 }
 
@@ -38,11 +38,6 @@ ResultState PrintStmt::compile()
     }
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
-
-    if (label)
-    {
-        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
-    }
 
     return NO_ERROR;
 }

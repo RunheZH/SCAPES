@@ -7,7 +7,7 @@
 class JMoreStmt : public Statement
 {
 public:
-    JMoreStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    JMoreStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~JMoreStmt();
     ResultState compile();
     ReturnValue* run();

@@ -7,7 +7,7 @@
 class JLessStmt : public Statement
 {
 public:
-    JLessStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    JLessStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~JLessStmt();
     ResultState compile();
     ReturnValue* run();

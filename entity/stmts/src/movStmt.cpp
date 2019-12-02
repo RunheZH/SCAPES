@@ -1,14 +1,14 @@
 #include "../inc/movStmt.h"
 
-MovStmt::MovStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
+MovStmt::MovStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
 {
     qDebug() << "MovStmt()";
 }
 
 MovStmt::~MovStmt()
 {
-    delete (&op1);
-    delete (&op2);
+    delete (op1.getIdentifier());
+    delete (op2.getIdentifier());
     qDebug() << "~MovStmt()";
 }
 
@@ -44,11 +44,6 @@ ResultState MovStmt::compile()
     QJsonObject op2Obj = JsonHandler::getJsonObj(OP_2, operand2);
     QJsonObject stmtObj =JsonHandler::getJsonObj(instruction, JsonHandler::appendToEnd(op1Obj, op2Obj));
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
-
-    if (label)
-    {
-        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
-    }
 
     return NO_ERROR;
 }

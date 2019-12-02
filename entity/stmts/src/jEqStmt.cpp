@@ -1,13 +1,13 @@
 #include "../inc/jEqStmt.h"
 
-JEqStmt::JEqStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
+JEqStmt::JEqStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
 {
     qDebug() << "JEqStmt()";
 }
 
 JEqStmt::~JEqStmt()
 {
-    delete (&op1);
+    delete (op1.getIdentifier());
     qDebug() << "~JEqStmt()";
 }
 
@@ -40,11 +40,6 @@ ResultState JEqStmt::compile()
     QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
-
-    if (label)
-    {
-        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
-    }
 
     return NO_ERROR;
 }

@@ -23,7 +23,7 @@ void ErrorControl::printErrorMsg(ResultState result)
     this->errorTab->addText(convertErrorMsg(result));
 }
 
-void ErrorControl::printErrorMsgAtLine(ResultState result, qint16 lineNum)
+void ErrorControl::printErrorMsgAtLine(ResultState result, int lineNum)
 {
     this->errorTab->addText(convertErrorMsg(result) + " at line " + QString::number(lineNum));
 }
@@ -64,5 +64,7 @@ QString ErrorControl::convertErrorMsg(ResultState result)
         return "Undefined label";
     else if (result == NO_END)
         return "Missing 'end' at the end of the program";
+    else if (result == INDEX_OUT_OF_BOUNDS)
+        return "Index out of bounds";
     return "No error";
 }

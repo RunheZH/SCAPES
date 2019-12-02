@@ -28,10 +28,11 @@ ResultState Program::save()
 {
     qDebug() << "RUNHE: Program::save()";
     QFile file(this->pgmPath);
-    qint16 lineNum = 0;
+    int lineNum = 0;
     this->hasEnd = false;
     this->hasError = false;
     this->statements.clear();
+    this->ids.clear();
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         this->errorControl->printErrorMsg(FILE_OPEN_ERROR);
@@ -82,7 +83,7 @@ ResultState Program::compile()
     QFile tmpFile(this->tempFileName + ".json");
 
     this->jumpStmts.clear();
-    for(QMap<qint16, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++){
+    for(QMap<int, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++){
         if (isJumpStmt(it.value()))
         {
             this->jumpStmts.insert(it.key(), it.value());
@@ -90,11 +91,13 @@ ResultState Program::compile()
         }
         // TODO: if it's cmp, check for at least one of the conditional jump statements
         res = it.value()->compile();
+        qDebug() << ids.keys();
+        qDebug() << ids.size();
         // error recovery
         if (res != NO_ERROR)
         {
             this->hasError = true;
-            qint16 lineNum = it.key();
+            int lineNum = it.key();
             this->errorControl->printErrorMsgAtLine(res, lineNum);
         }
         else // no syntax error
@@ -113,13 +116,14 @@ ResultState Program::compile()
         return COMPILATION_ERROR;
     }
 
-    for (QMap<qint16, Statement*>::iterator it = this->jumpStmts.begin(); it != this->jumpStmts.end(); it++){
+    for (QMap<int, Statement*>::iterator it = this->jumpStmts.begin(); it != this->jumpStmts.end(); it++){
         res = it.value()->compile();
+        qDebug() << ids.size();
         // error recovery
         if (res != NO_ERROR)
         {
             this->hasError = true;
-            qint16 lineNum = it.key();
+            int lineNum = it.key();
             this->errorControl->printErrorMsgAtLine(res, lineNum);
         }
     }
@@ -143,13 +147,13 @@ ResultState Program::run()
     db.createDB();
 
     // adding labels to DB
-    for (QVector<Identifier*>::iterator it = ids.begin(); it != ids.end(); it++)
+    for (QMap<QString, std::shared_ptr<Identifier>>::iterator it = ids.begin(); it != ids.end(); it++)
     {
-        (*it)->addToDB();
+        it.value()->addToDB();
     }
 
     ReturnValue* runResult;
-    for (QMap<qint16, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
+    for (QMap<int, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
     {
         // has reached 'end'
         if (isEndStmt(it.value())) break;
@@ -190,61 +194,55 @@ ResultState Program::run()
 
 /*********************************** private helper functions ***************************************/
 
-ResultState Program::addStmt(QString stmt, qint16 lineNum)
+ResultState Program::addStmt(QString stmt, int lineNum)
 {
     QStringList args = stmt.split(QRegExp("\\s+"), QString::SkipEmptyParts);
     Statement* newStmt = nullptr;
-    Label* newLabel = nullptr;
     // empty line
     if (args.isEmpty()) return NO_ERROR;
 
     QString instruction = args[0];
 
-    if (args[0].endsWith(":")){
-        //qDebug() << "RUNHE: detected label";
-        newLabel = new Label(this->tempFileName, args[0].left(args[0].lastIndexOf(":")), lineNum);
-        ids.append(newLabel);
-        // get rid of the leading spaces (?)
-        stmt = stmt.mid(args[0].length() + 1);
+    if (args[0].endsWith(":")){ // detected label
         instruction = args[1];
     }
 
     switch (this->getStmtId(instruction)) {
     case ADD_STMT:
-        newStmt = new AddStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new AddStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case CMP_STMT:
-        newStmt = new CompStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new CompStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case DCA_STMT:
-        newStmt = new DeclArrStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new DeclArrStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case DCI_STMT:
-        newStmt = new DeclIntStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new DeclIntStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case END_STMT:
-        newStmt = new EndStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new EndStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case JEQ_STMT:
-        newStmt = new JEqStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new JEqStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case JLS_STMT:
-        newStmt = new JLessStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new JLessStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case JMR_STMT:
-        newStmt = new JMoreStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new JMoreStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case JMP_STMT:
-        newStmt = new JumpStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new JumpStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case MOV_STMT:
-        newStmt = new MovStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new MovStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case PRT_STMT:
-        newStmt = new PrintStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new PrintStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case RDI_STMT:
-        newStmt = new ReadStmt(this->tempFileName, stmt, newLabel, lineNum);
+        newStmt = new ReadStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case INVALID_STMT:
         return INVALID_STATEMENT;

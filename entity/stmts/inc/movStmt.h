@@ -7,7 +7,7 @@
 class MovStmt : public Statement
 {
 public:
-    MovStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    MovStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~MovStmt();
     ResultState compile();
     ReturnValue* run();

@@ -7,7 +7,7 @@
 class DeclArrStmt : public Statement
 {
 public:
-    DeclArrStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    DeclArrStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~DeclArrStmt();
     ResultState compile();
     ReturnValue* run();

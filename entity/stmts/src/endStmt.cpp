@@ -1,6 +1,6 @@
 #include "../inc/endStmt.h"
 
-EndStmt::EndStmt(QString pgmName, QString stmt, Label* lbl, qint16 lnNum) : Statement(pgmName, stmt, lbl, lnNum)
+EndStmt::EndStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
 {
     qDebug() << "EndStmt()";
 }
@@ -24,11 +24,6 @@ ResultState EndStmt::compile()
     JsonHandler jsonHdlr(this->programName);
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, END);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
-
-    if (label)
-    {
-        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
-    }
 
     return NO_ERROR;
 }
