@@ -348,29 +348,62 @@ void MainWindow::compileText(QString filePath){
     delete(compileControl);
 }
 
-void MainWindow::runText(QString filePath){
+void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
     Program* pgm = nullptr;
-    for(int i=0; i<programList.size();i++){
-        if(programList[i].first==filePath){
-            pgm = programList[i].second;
-        }
-    }
-    if(pgm == nullptr){
-//        QMessageBox::warning(this,"ERROR","You must save before run");
-//        return;
-        tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
+    if(jsonExisted && ft->getFileType()=="scp"){    //------scp is open, it is already compiled before------//
         QMessageBox msgBox;
-        msgBox.setText("The file " + ft->getFileName() + " has been modified.");
-        msgBox.setInformativeText("Do you want to save your changes before run?");
+        msgBox.setText("The file " + ft->getFileName() + " has been compiled before.");
+        msgBox.setInformativeText("Do you want to run the last compiled?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Ignore | QMessageBox::Cancel);
+        msgBox.setButtonText(QMessageBox::Save, "Recompile and run");
+        msgBox.setButtonText(QMessageBox::Ignore, "Run last compilation");
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+        SaveControl* sc = nullptr;
+        switch (ret) {
+            case QMessageBox::Save: //recompile and run
+                for(int i=0; i<programList.size();i++){
+                    if(programList[i].first==filePath){
+                        pgm = programList[i].second;
+                    }
+                }
+                if(pgm == nullptr){ //re-initialize program*
+                    saveFile();
+                    for(int i=0; i<programList.size();i++){
+                        if(programList[i].first==ft->getFilePath()){
+                            pgm = programList[i].second;
+                        }
+                    }
+                }
+                break;
+            case QMessageBox::Ignore:
+                sc = new SaveControl(jsonPath, consoleTab, errorTab);
+//                pgm = sc->loadFromJSON();  //wait to be implement
+                qDebug()<<"not yet implemented - loadFromJSON()";
+                break;
+            case QMessageBox::Cancel:
+            // Cancel was clicked
+                return;
+            default:
+            // should never be reached
+                qDebug()<<"run encounter error";
+                return;
+        }
+        delete(sc);
+    }else if(!jsonExisted && ft->getFileType()=="scp") {    //------scp file is open, no compiled before------//
+        QMessageBox msgBox;
+        msgBox.setText("The file " + ft->getFileName() + " has not been compiled before.");
+        msgBox.setInformativeText("Do you want to compile and run?");
         msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
-        msgBox.setButtonText(QMessageBox::Save, "Save and run");
+        msgBox.setButtonText(QMessageBox::Save, "Compile and Run");
         msgBox.setDefaultButton(QMessageBox::Save);
         int ret = msgBox.exec();
         switch (ret) {
-            case QMessageBox::Save:
-                saveFile();
+            case QMessageBox::Save: //recompile and run
+                compileText(filePath);
                 for(int i=0; i<programList.size();i++){
-                    if(programList[i].first==ft->getFilePath()){
+                    if(programList[i].first==filePath){
                         pgm = programList[i].second;
                     }
                 }
@@ -380,17 +413,46 @@ void MainWindow::runText(QString filePath){
                 return;
             default:
             // should never be reached
-                saveFile();
-                break;
+                qDebug()<<"run encounter error";
+                return;
         }
+    }else if(ft->getFileType()=="jsn") {    //------json file is open------//
+        QMessageBox msgBox;
+        msgBox.setText("The file " + ft->getFileName() + " is ready to run.");
+        msgBox.setInformativeText("Do you want to run the file?");
+        msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+        msgBox.setButtonText(QMessageBox::Save, "Run");
+        msgBox.setDefaultButton(QMessageBox::Save);
+        int ret = msgBox.exec();
+        SaveControl* sc;
+        switch (ret) {
+            case QMessageBox::Save: //recompile and run
+                sc = new SaveControl(jsonPath, consoleTab, errorTab);
+//                pgm = sc->loadFromJSON();  //uncomment following after done
+                break;
+            case QMessageBox::Cancel:
+            // Cancel was clicked
+                return;
+            default:
+            // should never be reached
+                qDebug()<<"run encounter error";
+                return;
+        }
+        delete(sc);
+    }else {
+        qDebug()<<"the open file is not valid type";
+        errorTab->addText("The opened file is not valid type used to run");
+        return;
     }
-    RunControl* runControl = new RunControl(pgm);
-    ResultState res = runControl->run();
-    if (res == NO_ERROR)
-        outToConsole("Run successfully");
-    else
-        outToConsole("Run failed");
-    delete(runControl);
+
+    //uncomment following after done savecontrol->loadFromJSON(QString jsonPath, consoleTab, errorTab);
+//    RunControl* rc = new RunControl(pgm);
+//    ResultState res = rc->run();
+//    if (res == NO_ERROR)
+//        outToConsole("Run successfully");
+//    else
+//        outToConsole("Run failed");
+//    delete(rc);
 }
 
 //ACTION BUTTON TRIGGER
@@ -472,18 +534,17 @@ void MainWindow::on_actionCompile_triggered()
 
 void MainWindow::on_actionRun_triggered()
 {
-//    qDebug()<<ui->tabWidget->count();
-//    QMessageBox::warning(this, "Sorry", "not yet implemented");
-    if(ui->tabWidget->count()==0){ return; }
+    if(ui->tabWidget->count()==0){ return; }    //no file open
     consoleTab->clearText();
     errorTab->clearText();
+
+    //check if script modified need to save
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QMessageBox msgBox;
     msgBox.setText("The file " + ft->getFileName() + " has been modified.");
-    msgBox.setInformativeText("Do you want to save your changes before run?");
-    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Ignore | QMessageBox::Cancel);
-    msgBox.setButtonText(QMessageBox::Save, "Save and run");
-    msgBox.setButtonText(QMessageBox::Ignore, "Run the last save");
+    msgBox.setInformativeText("Do you want to save your changes?");
+    msgBox.setStandardButtons(QMessageBox::Save | QMessageBox::Cancel);
+    msgBox.setButtonText(QMessageBox::Save, "Save");
     msgBox.setDefaultButton(QMessageBox::Save);
     if(ft->isChanged()){
         int ret = msgBox.exec();
@@ -491,20 +552,30 @@ void MainWindow::on_actionRun_triggered()
             case QMessageBox::Save:
                 saveFile();
                 break;
-            case QMessageBox::Ignore:
-                break;
             case QMessageBox::Cancel:
             // Cancel was clicked
                 return;
             default:
             // should never be reached
-                saveFile();
-                break;
+                return;
         }
     }
+
+    //check if the last saved json existed
+    QString scpPath = ft->getFilePath();
+    int lastPoint = scpPath.lastIndexOf(".");
+    QString jsonPath = scpPath.left(lastPoint) + ".json";
+//    qDebug()<<"jsnPath: "<<jsonPath;
+    QFile file(jsonPath);
+    bool jsonExisted = false;
+    if(QFileInfo::exists(jsonPath))
+    {
+        jsonExisted = true;
+    }
+
     ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
     QString filePath = ft->getFilePath();
-    runText(filePath);
+    runText(filePath, jsonPath, jsonExisted);
 }
 
 void MainWindow::on_tabWidget_tabCloseRequested(int index)

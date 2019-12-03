@@ -59,7 +59,7 @@ private:
     int saveAsFile();
     void saveFile();
     void compileText(QString filePath);
-    void runText(QString filePath);
+    void runText(QString filePath, QString jsonPath, bool jsonExisted);
     void tabView();
     void tabAdd();
     int tabIsExist(QString fileDir);

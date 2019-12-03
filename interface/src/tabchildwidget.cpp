@@ -81,7 +81,7 @@ void tabchildwidget::setFileType(){
 
 QString tabchildwidget::getFileType(){
     setFileType();
-    return fileType;
+    return fileType;    //"scp" or "jsn"
 }
 
 int tabchildwidget::getLineNum(){
