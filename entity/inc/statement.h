@@ -14,12 +14,11 @@ public:
 	virtual ~Statement();
     virtual ResultState compile() = 0;
     virtual ReturnValue* run() = 0;
-    virtual int getLineNum() {return this->lineNum;}
-    virtual ResultState checkOperand(QString &Qop, Operand& op);
-    virtual ResultState checkTwoOperand(QString &Qop1, Operand& op1, QString &Qop2, Operand& op2, bool notAllow = true, bool checkInit = true);
-    virtual ResultState getResultStateForTwo(ResultState resultState1, ResultState resultState2);
+    int getLineNum() {return this->lineNum;}
 
 protected:
+    virtual ResultState checkVariable(QString& operand, Operand& op, bool checkLiteral = false);
+    ResultState getResultStateForTwoOp(ResultState resultState1, ResultState resultState2);
     QString programName;
     QString statement;
     QMap<QString, std::shared_ptr<Identifier>>& ids;

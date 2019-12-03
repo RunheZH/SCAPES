@@ -48,47 +48,10 @@ ResultState PrintStmt::compile()
 
         instruction = args[0];
         operand1 = args[1];
-        QRegExp num_pattern("^\\-?\\d+\\.?\\d*$");
-        QRegExp array_pattern("\\[[0-9]+\\]");
-        if (operand1.contains(num_pattern)) // it's a literal
-        {
-            // save the value to print out in Operand class only
-            // b/c it is not a variable, nor an element of an array
-            op1.setValue(operand1);
-            op1.setIsLiteral(true);
-        }
-        else if (operand1.contains(QRegExp("\\[\\-[0-9]+\\]"))) // accessing an array using a negative index are not allowed
-            return INDEX_OUT_OF_BOUNDS;
-        else if (operand1.contains(array_pattern)) // an array element
-        {
-            // found variable and index
-            QStringList op1_args = operand1.split(QRegExp("[\\[\\]]"), QString::SkipEmptyParts);
-            QMap<QString, std::shared_ptr<Identifier>>::iterator foundVar_it = ids.find(op1_args[0]);
-            if (foundVar_it != ids.end() && dynamic_cast<Variable*>(foundVar_it.value().get())) // found variable
-            {
-                if (dynamic_cast<Variable*>(foundVar_it.value().get())->getType() != ARRAY)
-                    return DIFF_TYPE_ERROR;
 
-                // make sure the user won't skip initializing an element in this array (e.g. rdi arr[0], rdi arr[1], rdi arr[3])
-                if (op1_args[1].toInt() >= dynamic_cast<Variable*>(foundVar_it.value().get())->getUsedSize())
-                    return ResultState::VARIABLE_NOT_INIT_ERROR;
-
-                op1.setIdentifier(foundVar_it.value().get());
-                op1.setIndex(op1_args[1].toInt());
-            }
-            else
-                return VARIABLE_NOT_FOUND_ERROR;
-        }
-        else // int
-        {
-            if (ids.find(operand1) == ids.end())
-                return VARIABLE_NOT_FOUND_ERROR;
-
-            if (dynamic_cast<Variable*>(ids.find(operand1).value().get())->getType() != INT)
-                return DIFF_TYPE_ERROR;
-
-            op1.setIdentifier(ids.find(operand1).value().get());
-        }
+        ResultState re = checkVariable(operand1, op1, true); // checkLiteral set to true
+        if (re != NO_ERROR)
+            return re;
 
         // add to JSON file
         QJsonObject op1Obj;

@@ -29,7 +29,10 @@ ResultState JLessStmt::compile()
     if(foundLabel == ids.end()){
         return LABEL_NOT_FOUND_ERROR;
     }
-    op1.setIdentifier(foundLabel.value().get());
+    if (dynamic_cast<Label*>(foundLabel->get()))
+        op1.setIdentifier(foundLabel.value().get());
+    else
+        return DIFF_TYPE_ERROR;
 
     // add to JSON file
     QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);

@@ -13,6 +13,7 @@ public:
     ReturnValue* run();
 
 private:
+    ResultState checkVariable(QString &Qop, Operand &op, bool checkLiteral=false); //override
     Operand op1;
 };
 

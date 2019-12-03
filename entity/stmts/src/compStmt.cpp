@@ -27,15 +27,15 @@ ResultState CompStmt::compile()
     QString instruction = args[0];
     QString operand1 = args[1];
     QString operand2 = args[2];
-    JsonHandler jsonHdlr(this->programName);
-    ResultState finalResultSate = checkTwoOperand(operand1, op1, operand2, op2, false);
-    if (finalResultSate == NO_ERROR) {
-        finalResultSate = NO_ERROR;
-    }
-    if (finalResultSate != NO_ERROR) {
-        return finalResultSate;
-    }
 
+    // syntax checking
+    ResultState op1RS = checkVariable(operand1, op1, true); // set checkLiteral to true
+    ResultState op2RS = checkVariable(operand2, op2, true); // set checkLiteral to true
+    ResultState re = getResultStateForTwoOp(op1RS, op2RS);
+    if (re != NO_ERROR)
+        return re;
+
+    JsonHandler jsonHdlr(this->programName);
     QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
     QJsonObject op2Obj = JsonHandler::getJsonObj(OP_2, operand2);
     QJsonObject stmtObj =JsonHandler::getJsonObj(instruction, JsonHandler::appendToEnd(op1Obj, op2Obj));

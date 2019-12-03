@@ -32,8 +32,10 @@ QString ErrorControl::convertErrorMsg(ResultState result)
 {
     switch (result)
     {
+    case NOT_INTEGER_ERROR:
+        return "Must be an integer";
     case DIFF_TYPE_ERROR:
-        return "Different type of operand were provided";
+        return "Different type of operand is provided";
     case FILE_OPEN_ERROR:
         return "Could not open file";
     case INDEX_OUT_OF_BOUNDS:
@@ -50,6 +52,8 @@ QString ErrorControl::convertErrorMsg(ResultState result)
         return "Missing the first and the second operands";
     case OPERAND_NUMBER_EXCEED_ERROR:
         return "Too many arguments have been given to this statement";
+    case EXPECT_INT_OR_ARR_ELM_ERROR:
+        return "Not given an int or an element of an array";
     case VARIABLE_NOT_FOUND_ERROR:
         return "Undefined variable";
     case VARIABLE_ONE_NOT_FOUND_ERROR:
