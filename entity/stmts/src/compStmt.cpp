@@ -14,9 +14,9 @@ ResultState CompStmt::compile()
 
     if (args.size() != 3){
         if(args.size() == 1){
-            return NO_OPERAND_ONE_ERROR;
+            return NO_OPERAND_ONE_AND_TWO_ERROR;
         }
-        if(args.size() == 2){
+        else if(args.size() == 2){
             return NO_OPERAND_TWO_ERROR;
         }
         else {

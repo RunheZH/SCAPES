@@ -23,10 +23,10 @@ ResultState ReadStmt::compile()
 
     QString instruction = args[0];
     QString operand1 = args[1];
-    QRegExp pattern("\\[[0-9]+\\]");
+    QRegExp array_pattern("\\[[0-9]+\\]");
     if (operand1.contains(QRegExp("\\[\\-[0-9]+\\]"))) // accessing an array using a negative index are not allowed
         return INDEX_OUT_OF_BOUNDS;
-    else if (operand1.contains(pattern)) // an array element
+    else if (operand1.contains(array_pattern)) // an array element
     {
         // found variable and index
         QStringList op1_args = operand1.split(QRegExp("[\\[\\]]"), QString::SkipEmptyParts);

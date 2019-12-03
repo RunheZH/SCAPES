@@ -8,7 +8,9 @@ cmp a b[1]
 #if a>b, print a
 jmr L1
 #if a<=b, print b
-prt b
+prt a
+prt b[1]
+prt "hello world!"
 #and jump to end
 jmp L2
 L1: prt a

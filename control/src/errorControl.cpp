@@ -46,6 +46,8 @@ QString ErrorControl::convertErrorMsg(ResultState result)
         return "Missing the first operand";
     case NO_OPERAND_TWO_ERROR:
         return "Missing the second operand";
+    case NO_OPERAND_ONE_AND_TWO_ERROR:
+        return "Missing the first and the second operands";
     case OPERAND_NUMBER_EXCEED_ERROR:
         return "Too many arguments have been given to this statement";
     case VARIABLE_NOT_FOUND_ERROR:

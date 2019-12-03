@@ -13,7 +13,7 @@ ResultState JMoreStmt::compile()
 
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
-    if (args.size() != 2){
+    if (args.size() != 2){ // syntax checking
         if(args.size() == 1){
             return NO_OPERAND_ONE_ERROR;
         }
@@ -33,6 +33,7 @@ ResultState JMoreStmt::compile()
     }
     op1.setIdentifier(foundLabel.value().get());
 
+    // add to JSON file
     QJsonObject op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
     jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);

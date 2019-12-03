@@ -26,7 +26,6 @@ Program::~Program()
 
 ResultState Program::save()
 {
-    qDebug() << "RUNHE: Program::save()";
     QFile file(this->pgmPath);
     int lineNum = 0;
     this->hasEnd = false;
@@ -73,8 +72,6 @@ ResultState Program::loadFromJSON()
 
 ResultState Program::compile()
 {
-    qDebug() << "RUNHE: Program::compile()";
-
     ResultState res;
     res = this->save();
     if (res != NO_ERROR)
@@ -91,8 +88,6 @@ ResultState Program::compile()
         }
         // TODO: if it's cmp, check for at least one of the conditional jump statements
         res = it.value()->compile();
-        qDebug() << ids.keys();
-        qDebug() << ids.size();
         // error recovery
         if (res != NO_ERROR)
         {
@@ -118,7 +113,6 @@ ResultState Program::compile()
 
     for (QMap<int, Statement*>::iterator it = this->jumpStmts.begin(); it != this->jumpStmts.end(); it++){
         res = it.value()->compile();
-        qDebug() << ids.size();
         // error recovery
         if (res != NO_ERROR)
         {

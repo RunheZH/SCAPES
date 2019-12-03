@@ -8,10 +8,11 @@ ResultState EndStmt::compile()
 {
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
-    if (args.size() != 1){
+    if (args.size() != 1){ // syntax checking
         return OPERAND_NUMBER_EXCEED_ERROR;
     }
 
+    // add to JSON file
     QString instruction = args[0];
     JsonHandler jsonHdlr(this->programName);
     QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, END);

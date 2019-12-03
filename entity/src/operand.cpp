@@ -4,6 +4,7 @@
 
 Operand::Operand()
 {
+    isLiteral = false;
     exist_value = false;
     exist_intdex = false;
     value = 0;
@@ -22,7 +23,7 @@ Operand::Operand(Identifier* id)
 Operand::~Operand()
 {
     if (id)
-        delete (id);
+        delete id;
 }
 
 Identifier* Operand::getIdentifier()
@@ -33,7 +34,6 @@ Identifier* Operand::getIdentifier()
 void Operand::setIdentifier(Identifier* newId)
 {
     this->id = newId;
-
 }
 
 void Operand::setValue(int value)
@@ -51,6 +51,11 @@ void Operand::setIndex(int index)
 {
     this->index = index;
     exist_intdex = true;
+}
+
+void Operand::setIsLiteral(bool boolean)
+{
+    isLiteral = boolean;
 }
 
 QString Operand::getValue()
@@ -78,4 +83,9 @@ QString Operand::getValue()
 int Operand::getIndex()
 {
     return this->index;
+}
+
+bool Operand::getIsLiteral()
+{
+    return isLiteral;
 }
