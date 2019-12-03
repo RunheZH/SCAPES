@@ -1,21 +1,15 @@
 #include "../inc/compStmt.h"
 
-CompStmt::CompStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "CompStmt()";
-}
+CompStmt::CompStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 CompStmt::~CompStmt()
 {
     delete (op1.getIdentifier());
     delete (op2.getIdentifier());
-    qDebug() << "~CompStmt()";
 }
 
 ResultState CompStmt::compile()
 {
-    qDebug() << "CompStmt.compile()";
-
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){

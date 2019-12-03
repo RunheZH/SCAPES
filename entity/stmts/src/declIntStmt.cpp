@@ -1,20 +1,14 @@
 #include "../inc/declIntStmt.h"
 
-DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "DeclIntStmt()";
-}
+DeclIntStmt::DeclIntStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 DeclIntStmt::~DeclIntStmt()
 {
     delete (op1.getIdentifier());
-    qDebug() << "~DeclIntStmt()";
 }
 
 ResultState DeclIntStmt::compile()
 {
-    qDebug() << "DeclIntStmt.compile()";
-
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){ // syntax checking

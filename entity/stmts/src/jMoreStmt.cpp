@@ -1,14 +1,10 @@
 #include "../inc/jMoreStmt.h"
 
-JMoreStmt::JMoreStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "JMoreStmt()";
-}
+JMoreStmt::JMoreStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 JMoreStmt::~JMoreStmt()
 {
     delete (op1.getIdentifier());
-    qDebug() << "~JMoreStmt()";
 }
 
 ResultState JMoreStmt::compile()

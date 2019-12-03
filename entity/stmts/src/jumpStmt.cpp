@@ -1,14 +1,10 @@
 #include "../inc/jumpStmt.h"
 
-JumpStmt::JumpStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "JumpStmt()";
-}
+JumpStmt::JumpStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 JumpStmt::~JumpStmt()
 {
     delete (op1.getIdentifier());
-    qDebug() << "~JumpStmt()";
 }
 
 ResultState JumpStmt::compile()

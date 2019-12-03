@@ -1,14 +1,10 @@
 #include "../inc/readStmt.h"
 
-ReadStmt::ReadStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "ReadStmt()";
-}
+ReadStmt::ReadStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 ReadStmt::~ReadStmt()
 {
     delete (op1.getIdentifier());
-    qDebug() << "~ReadStmt()";
 }
 
 ResultState ReadStmt::compile()

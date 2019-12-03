@@ -1,15 +1,10 @@
 #include "../inc/jLessStmt.h"
 
-JLessStmt::JLessStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "JLessStmt()";
-}
+JLessStmt::JLessStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 JLessStmt::~JLessStmt()
 {
-    delete (op1.getIdentifier());
-    qDebug() << "~JLessStmt()";
-}
+    delete (op1.getIdentifier());}
 
 ResultState JLessStmt::compile()
 {

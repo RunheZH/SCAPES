@@ -1,15 +1,11 @@
 #include "../inc/movStmt.h"
 
-MovStmt::MovStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "MovStmt()";
-}
+MovStmt::MovStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 MovStmt::~MovStmt()
 {
     delete (op1.getIdentifier());
     delete (op2.getIdentifier());
-    qDebug() << "~MovStmt()";
 }
 
 ResultState MovStmt::compile()

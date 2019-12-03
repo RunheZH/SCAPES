@@ -1,19 +1,11 @@
 #include "../inc/endStmt.h"
 
-EndStmt::EndStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "EndStmt()";
-}
+EndStmt::EndStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
-EndStmt::~EndStmt()
-{
-    qDebug() << "~EndStmt()";
-}
+EndStmt::~EndStmt(){}
 
 ResultState EndStmt::compile()
 {
-    qDebug() << "EndStmt.compile()";
-
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 1){

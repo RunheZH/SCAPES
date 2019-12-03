@@ -1,14 +1,10 @@
 #include "../inc/jEqStmt.h"
 
-JEqStmt::JEqStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "JEqStmt()";
-}
+JEqStmt::JEqStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 JEqStmt::~JEqStmt()
 {
     delete (op1.getIdentifier());
-    qDebug() << "~JEqStmt()";
 }
 
 ResultState JEqStmt::compile()

@@ -1,20 +1,14 @@
 #include "../inc/declArrStmt.h"
 
-DeclArrStmt::DeclArrStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "DeclArrStmt()";
-}
+DeclArrStmt::DeclArrStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 DeclArrStmt::~DeclArrStmt()
 {
     delete (op1.getIdentifier());
-    qDebug() << "~DeclArrStmt()";
 }
 
 ResultState DeclArrStmt::compile()
 {
-    qDebug() << "DeclArrStmt().compile()";
-
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3) {

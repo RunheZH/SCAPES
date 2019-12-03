@@ -1,14 +1,10 @@
 #include "../inc/printStmt.h"
 
-PrintStmt::PrintStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "PrintStmt()";
-}
+PrintStmt::PrintStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 PrintStmt::~PrintStmt()
 {
     delete (op1.getIdentifier());
-    qDebug() << "~PrintStmt()";
 }
 
 ResultState PrintStmt::compile()

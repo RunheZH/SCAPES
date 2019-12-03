@@ -1,20 +1,15 @@
 #include "../inc/addStmt.h"
 
-AddStmt::AddStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum)
-{
-    qDebug() << "AddStmt()";
-}
+AddStmt::AddStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
 
 AddStmt::~AddStmt()
 {
     delete (op1.getIdentifier());
     delete (op2.getIdentifier());
-    qDebug() << "~AddStmt()";
 }
 
 ResultState AddStmt::compile()
 {
-    qDebug() << "AddStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){
