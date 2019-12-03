@@ -7,13 +7,13 @@
 class ReadStmt : public Statement
 {
 public:
-    ReadStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    ReadStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~ReadStmt();
     ResultState compile();
     ReturnValue* run();
-    ResultState checkOperand(QString &operand, Operand& op);
 
 private:
+    ResultState checkVariable(QString &Qop, Operand &op, bool checkLiteral=false); //override
     Operand op1;
 };
 

@@ -8,7 +8,7 @@
 class AddStmt : public Statement
 {
 public:
-    AddStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    AddStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~AddStmt();
     ResultState compile();
     ReturnValue* run();

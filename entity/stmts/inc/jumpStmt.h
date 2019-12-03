@@ -7,7 +7,7 @@
 class JumpStmt : public Statement
 {
 public:
-    JumpStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    JumpStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~JumpStmt();
     ResultState compile();
     ReturnValue* run();

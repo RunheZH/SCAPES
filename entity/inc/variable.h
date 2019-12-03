@@ -7,12 +7,14 @@
 class Variable : public Identifier
 {
 public:
-    Variable(QString programName, QString variableName, TypeE variableType, int maxSize = 0);
+    Variable(QString programName, QString variableName, TypeE variableType, int maxSize = 1);
     ~Variable();
     QJsonObject toJSON();
     void addToDB();
     TypeE getType();
     int getSize();
+    int getUsedSize();
+    void setUsedSize(int newUsedSize);
     //it will change the value if the user provide the vaild index
     bool setValue(int aValue, int position = 0);
     QVector<int> getValue();
@@ -22,6 +24,7 @@ public:
 private:
     TypeE type;
     int maxSize;
+    int usedSize;
     QVector<int> value;
 };
 

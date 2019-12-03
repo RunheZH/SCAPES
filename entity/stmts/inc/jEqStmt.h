@@ -7,7 +7,7 @@
 class JEqStmt : public Statement
 {
 public:
-    JEqStmt(QString programName, QString statement, Label* label, qint16 lineNum);
+    JEqStmt(QString programName, QString statement, QMap<QString, std::shared_ptr<Identifier>>& ids, int lineNum);
     ~JEqStmt();
     ResultState compile();
     ReturnValue* run();

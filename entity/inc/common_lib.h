@@ -38,14 +38,17 @@ enum StatementId
 enum ResultState
 {
     NO_ERROR,
-    All_LITERAL,
+    NOT_INTEGER_ERROR,
     DIFF_TYPE_ERROR,
     FILE_OPEN_ERROR,
+    INDEX_OUT_OF_BOUNDS,
     INVALID_STATEMENT,
     INVALID_OPERAND,
     NO_OPERAND_ONE_ERROR,
     NO_OPERAND_TWO_ERROR,
+    NO_OPERAND_ONE_AND_TWO_ERROR,
     OPERAND_NUMBER_EXCEED_ERROR,
+    EXPECT_INT_OR_ARR_ELM_ERROR,
     VARIABLE_NOT_FOUND_ERROR,
     VARIABLE_ONE_NOT_FOUND_ERROR,
     VARIABLE_TWO_NOT_FOUND_ERROR,
@@ -73,16 +76,16 @@ enum TypeE
 class ReturnValue
 {
 public:
-    ReturnValue(ResultState result, qint16 jumpTo=NO_JUMP, qint16 compareR=NO_CMP) : error(result), jumpToLine(jumpTo), compareResult(compareR){}
+    ReturnValue(ResultState result, int jumpTo=NO_JUMP, int compareR=NO_CMP) : error(result), jumpToLine(jumpTo), compareResult(compareR){}
     ~ReturnValue(){}
     ResultState getResultState(){return this->error;}
-    qint16 getJumpToLine(){return this->jumpToLine;}
-    qint16 getCompareResult(){return this->compareResult;}
+    int getJumpToLine(){return this->jumpToLine;}
+    int getCompareResult(){return this->compareResult;}
 
 private:
     ResultState error;
-    qint16 jumpToLine;
-    qint16 compareResult;
+    int jumpToLine;
+    int compareResult;
 };
 
 #endif

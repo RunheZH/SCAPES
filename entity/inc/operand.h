@@ -15,7 +15,10 @@ public:
     void setValue(int value);
     void setValue(QString pValue);
     void setIndex(int index);
+    void setIsLiteral(bool boolean);
     QString getValue();
+    int getIndex();
+    bool getIsLiteral();
 
 private:
     Identifier* id;
@@ -23,6 +26,7 @@ private:
     bool exist_intdex;
     int value;
     int index;
+    bool isLiteral;
     QString pValue;
 };
 

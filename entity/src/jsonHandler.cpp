@@ -132,16 +132,13 @@ ResultState JsonHandler::findInitArrayValue(QString variableName, int position)
         if (variableObj.contains(variableName)) {
             if (variableObj[variableName].toObject()["initialized?"].toObject().contains(QString::number(position))) {
                 if (variableObj[variableName].toObject()["initialized?"].toObject().value(QString::number(position)).toString().toInt()) {
-                    qDebug() << "NO_ERROR";
                     return NO_ERROR;
                 }  else {
-                    qDebug() << "VARIABLE_NOT_INIT_ERROR";
                     return VARIABLE_NOT_INIT_ERROR;
                 }
             }
         }
     }
-    qDebug() << "VARIABLE_NOT_FOUND_ERROR";
     return  VARIABLE_NOT_FOUND_ERROR;
 }
 
@@ -152,15 +149,12 @@ ResultState JsonHandler::findInitIntValue(QString variableName)
         QJsonObject variableObj = m_currentJsonObject[VAR].toObject();
         if (variableObj.contains(variableName)) {
             if (variableObj[variableName].toObject().contains("initialized?")){
-                qDebug() << "NO_ERROR";
                 return NO_ERROR;
             } else {
-                qDebug() << "VARIABLE_NOT_INIT_ERROR";
                 return VARIABLE_NOT_INIT_ERROR;
             }
         }
     }
-    qDebug() << "VARIABLE_NOT_FOUND_ERROR";
     return  VARIABLE_NOT_FOUND_ERROR;
 }
 

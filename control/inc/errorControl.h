@@ -15,7 +15,7 @@ public:
     void printToConsole(QString message);
     void printErrorMsg(ResultState result);
     void printErrorMsg(QString errorMsg);
-    void printErrorMsgAtLine(ResultState result, qint16 lineNum);
+    void printErrorMsgAtLine(ResultState result, int lineNum);
 
 private:
     QString convertErrorMsg(ResultState result);

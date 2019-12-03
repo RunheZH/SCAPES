@@ -14,17 +14,14 @@ void DBManager::createDB()
         QFile dbFile(this->dbName);
         dbFile.remove();
     }
-    qDebug() << "creating DB...";
     this->createAConnection();
     this->createVariableTable();
     this->createLabelTable();
     this->closeDB();
-    qDebug() << "DB created successfully!";
 }
 
 void DBManager::addLabel(QString labelName, int lineNum)
 {
-    qDebug() << "adding a new label...";
     this->createAConnection();
     QSqlQuery query(QSqlDatabase::database());
     query.exec("INSERT INTO label VALUES( '" + labelName + "', " + QString::number(lineNum) +")");
@@ -33,7 +30,6 @@ void DBManager::addLabel(QString labelName, int lineNum)
 
 void DBManager::addVariable(QString variableName, TypeE type)
 {
-    qDebug() << "adding a new variable...";
     this->createAConnection();
     QSqlQuery query(QSqlDatabase::database());
     query.exec("INSERT INTO variable VALUES( '" + variableName + "', -1, '" + QString::number(type) + "')");
@@ -82,14 +78,12 @@ void DBManager::removeLabel(QString labelName)
 
 void DBManager::createVariableTable()
 {
-    qDebug() << "creating variable table...";
     QSqlQuery query(QSqlDatabase::database());
     query.exec("CREATE TABLE variable (varName CHAR(256) PRIMARY KEY, value INT, type CHAR(5))");
 }
 
 void DBManager::createLabelTable()
 {
-    qDebug() << "creating label table...";
     QSqlQuery query(QSqlDatabase::database());
     query.exec("CREATE TABLE label (labelName CHAR(256) PRIMARY KEY, lineNum INT)");
 }
