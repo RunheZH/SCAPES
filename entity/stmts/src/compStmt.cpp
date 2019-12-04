@@ -48,12 +48,37 @@ ReturnValue* CompStmt::run()
 {
     qDebug() << "CompStmt.run()";
 
-    Variable* variable1 = static_cast<Variable*>(op1.getIdentifier());
-    Variable* variable2 = static_cast<Variable*>(op2.getIdentifier());
-    //int result = variable1 - variable2;
-                //variable 1 bigger: result>0
-                //variable 2 bigger: result<0
-                //var1=var2:         reuslt=0
+    int operand1;
+    int operand2;
+    if (op1.getIsLiteral())
+        operand1 = op1.getValue();
+    else
+    {
+        Variable* op1Var = dynamic_cast<Variable*>(op1.getIdentifier());
+        TypeE op1Type = op1Var->getType();
+        if (op1Type == INT)
+            operand1 = op1Var->getValue(0);
+        else // array element
+            operand1 = op1Var->getValue(op1.getIndex());
+    }
+    if (op2.getIsLiteral())
+        operand2 = op2.getValue();
+    else
+    {
+        Variable* op2Var = dynamic_cast<Variable*>(op2.getIdentifier());
+        TypeE op2Type = op2Var->getType();
+        if (op2Type == INT)
+            operand2 = op2Var->getValue(0);
+        else // array element
+            operand2 = op2Var->getValue(op2.getIndex());
+    }
+    int result = NO_CMP;
+    if (operand1 < operand2)
+        result = -1;
+    else if (operand1 == operand2)
+        result = 0;
+    else
+        result = 1;
 
-    return new ReturnValue(NO_ERROR, NO_JUMP, 0);
+    return new ReturnValue(NO_ERROR, NO_JUMP, result);
 }

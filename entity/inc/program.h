@@ -30,6 +30,7 @@ public:
     ResultState loadFromJSON();
     ResultState compile();
     ResultState run();
+    void printIdentifiers();
 
 private:
     ErrorControl* errorControl;

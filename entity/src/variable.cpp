@@ -82,45 +82,10 @@ bool Variable::setValue(int aValue, int position)
 
 QVector<int> Variable::getValue()
 {
-    // get value from the DB
-    //DBManager db(this->programName);
-    // NOTE : not sure if we need DB after restructure
-    //QVector<int> varValue = db.getVariableValue(this->getName());
-
-    // set this variable's value as the varValue
-    // do we need this ?
-    //this->value = varValue;
-  
-    /*QString aValue;
-    if (value.size()==0) {
-        aValue = "undefined";
-    } else if (value.size()==1) {
-        aValue = QString::number(value[0]);
-    } else {
-        aValue += "[" + QString::number(value[0]);
-        for(int i = 1; i < value.size(); ++i) {
-            aValue += ", " + QString::number(value[i]);
-        }
-        aValue += "]";
-    }
-    return aValue;*/
     return value;
 }
 
-QString Variable::getValue(int position)
+int Variable::getValue(int position)
 {
-    // NOTE : not sure if we need DB after restructure
-    // get value from the DB
-    //DBManager db(this->programName);
-    //QVector<int> varValue = db.getVariableValue(this->getName());
-
-    // set this variable's value as the varValue
-    // do we need this ?
-    // if we do, we can call getValue() directly
-    //this->value = varValue;
-    if (value.size() < position) {
-        return "undefined";
-    }
-
-    return QString::number(value[position]);
+    return value[position];
 }

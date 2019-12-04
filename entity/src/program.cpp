@@ -77,16 +77,15 @@ ResultState Program::compile()
     if (res != NO_ERROR)
         return res;
 
+    this->jumpStmts.clear();
     QFile tmpFile(this->tempFileName + ".json");
 
-    this->jumpStmts.clear();
     for(QMap<int, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++){
         if (isJumpStmt(it.value()))
         {
             this->jumpStmts.insert(it.key(), it.value());
             continue;
         }
-        // TODO: if it's cmp, check for at least one of the conditional jump statements
         res = it.value()->compile();
         // error recovery
         if (res != NO_ERROR)
@@ -136,50 +135,31 @@ ResultState Program::compile()
 ResultState Program::run()
 {
     qDebug() << "RUNHE: Program::run()";
-    // init DB
-    DBManager db(this->tempFileName);
-    db.createDB();
 
-    // adding labels to DB
-    for (QMap<QString, std::shared_ptr<Identifier>>::iterator it = ids.begin(); it != ids.end(); it++)
-    {
-        it.value()->addToDB();
-    }
-
+    if (this->statements.isEmpty()) return RUNTIME_ERROR;
     ReturnValue* runResult;
     for (QMap<int, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
     {
         // has reached 'end'
         if (isEndStmt(it.value())) break;
 
+        // TODO: jmr, jls, jeq
+
         runResult = it.value()->run();
         if (runResult->getResultState() != NO_ERROR)
         {
             this->errorControl->printErrorMsgAtLine(runResult->getResultState(), it.key());
+            delete runResult;
             return RUNTIME_ERROR;
         }
         if (runResult->getJumpToLine() != NO_JUMP) // NO_ERROR
         {
             // jump to the given line
             it = this->statements.find(runResult->getJumpToLine());
-            continue;
         }
         if (runResult->getCompareResult() != NO_CMP)
         {
             this->cmpResult = runResult->getCompareResult();
-            switch (runResult->getCompareResult()) {
-            case -1:
-                //this->jumpToJls();
-                break;
-            case 0:
-                //this->jumpToJeq();
-                break;
-            case 1:
-                //this->jumpToJmr();
-                break;
-            default:
-                errorControl->printErrorMsg("CMP returned wrong value: " + QString::number(runResult->getCompareResult()));
-            }
         }
         delete runResult; // avoid memory leak
     }
@@ -233,10 +213,10 @@ ResultState Program::addStmt(QString stmt, int lineNum)
         newStmt = new MovStmt(this->tempFileName, stmt, this->ids, lineNum);
         break;
     case PRT_STMT:
-        newStmt = new PrintStmt(this->tempFileName, stmt, this->ids, lineNum);
+        newStmt = new PrintStmt(this->tempFileName, stmt, this->ids, lineNum, errorControl);
         break;
     case RDI_STMT:
-        newStmt = new ReadStmt(this->tempFileName, stmt, this->ids, lineNum);
+        newStmt = new ReadStmt(this->tempFileName, stmt, this->ids, lineNum, errorControl);
         break;
     case INVALID_STMT:
         return INVALID_STATEMENT;

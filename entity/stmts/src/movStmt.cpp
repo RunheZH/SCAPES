@@ -52,5 +52,28 @@ ResultState MovStmt::compile()
 ReturnValue* MovStmt::run()
 {
     qDebug() << "MovStmt.run()";
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+    int operand1;
+    if (op1.getIsLiteral())
+        operand1 = op1.getValue();
+    else
+    {
+        Variable* op1Var = dynamic_cast<Variable*>(op1.getIdentifier());
+        TypeE op1Type = op1Var->getType();
+        if (op1Type == INT)
+            operand1 = op1Var->getValue(0);
+        else // array element
+            operand1 = op1Var->getValue(op1.getIndex());
+    }
+
+    Variable* op2Var = dynamic_cast<Variable*>(op2.getIdentifier());
+    TypeE op2Type = op2Var->getType();
+    int op2Pos = 0; // int
+    if(op2Type == ARRAY)
+    {
+        op2Pos = op2.getIndex();
+    }
+
+    // replace operand2's old value with operand1's value
+    dynamic_cast<Variable*>(op2.getIdentifier())->setValue(operand1, op2Pos);
+    return new ReturnValue(NO_ERROR);
 }

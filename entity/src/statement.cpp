@@ -32,7 +32,7 @@ ResultState Statement::checkVariable(QString& operand, Operand& op, bool checkLi
         if (operand.contains(int_pattern)){
             // save the value to print out in Operand class only
             // b/c it is not a variable, nor an element of an array
-            op.setValue(operand);
+            op.setValue(operand.toInt());
             op.setIsLiteral(true);
         }
         else

@@ -3,6 +3,7 @@
 
 #include "../../interface/inc/outputtabwidget.h"
 #include "../../entity/inc/common_lib.h"
+#include "../../interface/inc/inputwindow.h"
 
 class MainWindow;
 
@@ -16,6 +17,7 @@ public:
     void printErrorMsg(ResultState result);
     void printErrorMsg(QString errorMsg);
     void printErrorMsgAtLine(ResultState result, int lineNum);
+    int  getUserInput(QString variableName);
 
 private:
     QString convertErrorMsg(ResultState result);
