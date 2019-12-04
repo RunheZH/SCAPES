@@ -6,6 +6,7 @@
 #include "label.h"
 #include "jsonHandler.h"
 #include "variable.h"
+#include <memory>
 
 class Statement
 {
