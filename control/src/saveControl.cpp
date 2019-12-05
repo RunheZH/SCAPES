@@ -22,8 +22,10 @@ Program* SaveControl::save()
 Program* SaveControl::loadFromJSON()
 {
     consoleTab->clearText();
+    if (pgmPath.contains(".json"))
+        pgmPath = pgmPath.split(".json")[0];
     Program* pgm = new Program(pgmPath, consoleTab, errorTab);
     pgm->loadFromJSON();
-    consoleTab->addText("Saved successfully.");
+    consoleTab->addText("Loaded successfully.");
     return pgm;
 }

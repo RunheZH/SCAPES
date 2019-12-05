@@ -28,7 +28,7 @@ public:
     ~Program();
     ResultState save();
     ResultState loadFromJSON();
-    ResultState compile();
+    ResultState compile(bool isLoadFromJSON = false);
     ResultState run();
     void printIdentifiers();
 
