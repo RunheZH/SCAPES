@@ -23,6 +23,8 @@ private:
     QVector<HighlightingRule> highlightingRules;
 
     QTextCharFormat keywordFormat;
+    QTextCharFormat stringFormat;
+    QTextCharFormat numberFormat;
     QTextCharFormat labelFormat;
     QTextCharFormat singleLineCommentFormat;
 };
