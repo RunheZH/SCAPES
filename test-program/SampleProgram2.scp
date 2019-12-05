@@ -1,0 +1,95 @@
+# declare an integer with variable name "arraySize"
+dci arraySize
+
+# ------ Label 1 ------
+# read/get integer from user as the value of "arraySize"
+# loop until the value of "arraySize" is >= 1 and <= 10
+L1: prt "please input array size between the interval 1 to 10 (inclusive)"
+rdi arraySize
+# when the value of "arraySize" < 0 or > 10, jump to Label 1
+cmp arraySize 1
+prt "jumped to Label 1, since input is smaller than 1"
+jls L1
+cmp arraySize 10
+prt "jumped to Label 1, since input is bigger than 10"
+jmr L1
+
+# declare an array with name "anArray" and with size "arraySize"
+dca anArray arraySize
+
+# declare an integer with variable name "arraySizeTemp"
+# set the value of "arraySizeTemp" equal to the value of "arraySize"
+dci arraySizeTemp
+mov arraySize arraySizeTemp
+
+# declare an integer with variable name "arraySizeTemp2"
+dci arraySizeTemp2
+
+
+# ------ Label 3 ------
+# when the "anArray" is not full, continue read user input
+# when the "anArray" is full, end the program
+L3: prt "jumped to Label 3: read new integer if the array is not full, end the program otherwise"
+
+# let "arraySizeTemp" - 1 every time, "anArray" is full when "arraySizeTemp" < 0
+# let "arraySizeTemp2" always equal to "arraySizeTemp" + 1
+add -1 arraySizeTemp
+mov arraySizeTemp arraySizeTemp2
+add 1 arraySizeTemp2
+
+# jump to Label 6 when the spaces in "anArray" is full ("arraySizeTemp" < 0)
+cmp arraySizeTemp 0
+prt "jumped to Label 6: end the program since the array is full"
+jls L6
+
+# declare an integer with variable name "element"
+dci element
+
+# read/get the integer from user by unconditionally jumping to Label 2
+prt "jumped to Label 2: read the integer from user as a array element"
+jmp L2
+
+
+# ------ Label 2 ------
+# read/get integer from user, store it as the value of each element in "anArray"
+# keep asking until all the spaces in the "anArray" are filled with certain value
+L2: prt "please input an integer as a array element (will not store same integer)"
+rdi element
+
+
+# ------ Label 4 ------
+# checking if the input element has the same value as the elements already in the "anArray"
+# if not, store the value
+# if it's already exist, ask user a new value, until there's no duplications
+L4: add 1 arraySizeTemp2
+cmp arraySizeTemp2 arraySize
+prt "jumped to Label 5: store the element into the array, since the input integer isn't exists in the array"
+jeq L5
+cmp element anArray[arraySizeTemp2]
+prt "jumped to Label 2: let user input another integer, since the input integer is already exists in the array"
+jeq L2
+prt "jumped to Label 4: continue checking if the input integer is already exists in the array or not..."
+jmp L4
+
+
+# ------ Label 5 ------
+# store each input element to this array, in a traverse order
+L5: mov element anArray[arraySizeTemp]
+# unconditional jump to Label 3
+jmp L3
+
+
+# ------ Label 6 ------
+# print all the variables and array
+# end the program
+L6: prt "the program will end"
+prt "all the variables will be printed"
+prt "arraySize with value:"
+prt arraySize
+prt "arraySizeTemp with value:"
+prt arraySizeTemp
+prt "arraySizeTemp2 with value:"
+prt arraySizeTemp2
+prt "anArray with value:"
+prt anArray
+end
