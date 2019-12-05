@@ -18,15 +18,15 @@ rdi int_b
 cmp int_a int_b
 
 # jump to L1 when "int_a" and "int_b" are equal
-prt "(jeq) Jump to Label 1, since two inputs are equal"
+prt "<---------------- (jeq) Jump to Label 1, since two inputs are equal ---------------->"
 jeq L1
 
 # jump to L2 when "int_a" is smaller than "int_b"
-prt "(jls) Jump to Label 2, since first input is smaller"
+prt "<---------------- (jls) Jump to Label 2, since first input is smaller ---------------->"
 jls L2
 
 # jump to L3 when "int_a" is bigger than "int_b"
-prt "(jmr) Jump to Label 3, since first input is larger"
+prt "<---------------- (jmr) Jump to Label 3, since first input is larger ---------------->"
 jmr L3
 
 # Label 2: store the integer "int_a" as the first element of the "array"
@@ -34,7 +34,7 @@ jmr L3
 L2: mov int_a array[0]
 mov int_b array[1]
 # unconditional jump to Label 4
-prt "(jmp) Unconditionally jumped to Label 4"
+prt "<---------------- (jmp) Unconditionally jumped to Label 4: calculate the sum of the two input integers ---------------->"
 jmp L4
 
 # Label 3: store the integer "int_b" as the first element of the "array"
@@ -42,7 +42,7 @@ jmp L4
 L3: mov int_b array[0]
 mov int_a array[1]
 # unconditional jump to Label 4
-prt "(jmp) Unconditionally jumped to Label 4"
+prt "<---------------- (jmp) Unconditionally jumped to Label 4: calculate the sum of the two input integers ---------------->"
 jmp L4
 
 # Label 4: store "int_a" as the third element of the "array"
@@ -56,7 +56,7 @@ prt "Variable int_a with value"
 prt int_a
 prt "Variable int_b with value"
 prt int_b
-prt "Variable array with value"
+prt "Variable array with values (int_a, int_b, and sum of int_a and int_b)"
 prt array[0]
 prt array[1]
 prt array[2]
