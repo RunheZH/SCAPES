@@ -10,8 +10,6 @@ MovStmt::~MovStmt()
 
 ResultState MovStmt::compile()
 {
-    qDebug() << "MovStmt.compile()";
-
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){ // syntax checking
@@ -31,7 +29,7 @@ ResultState MovStmt::compile()
     QString operand2 = args[2];
 
     // syntax checking
-    ResultState op1RS = checkVariable(operand1, op1, true); // set checkLiteral to true
+    ResultState op1RS = Statement::checkVariable(operand1, op1, true); // set checkLiteral to true
     ResultState op2RS = checkVariable(operand2, op2, true);
     if (op2.getIsLiteral() || op2RS == NOT_INTEGER_ERROR)
         op2RS = EXPECT_INT_OR_ARR_ELM_ERROR;
@@ -51,7 +49,6 @@ ResultState MovStmt::compile()
 
 ReturnValue* MovStmt::run()
 {
-    qDebug() << "MovStmt.run()";
     int operand1;
     if (op1.getIsLiteral())
         operand1 = op1.getValue();
@@ -76,4 +73,49 @@ ReturnValue* MovStmt::run()
     // replace operand2's old value with operand1's value
     dynamic_cast<Variable*>(op2.getIdentifier())->setValue(operand1, op2Pos);
     return new ReturnValue(NO_ERROR);
+}
+
+ResultState MovStmt::checkVariable(QString& operand, Operand& op, bool checkLiteral)
+{
+    QRegExp num_pattern("^\\-?\\d+\\.?\\d*$");
+    QRegExp array_pattern("\\[[0-9]+\\]");
+    if (operand.contains(num_pattern) && checkLiteral) // it's a literal
+        return EXPECT_INT_OR_ARR_ELM_ERROR;
+    else if (operand.contains(QRegExp("\\[\\-[0-9]+\\]"))) // accessing an array using a negative index are not allowed
+        return INDEX_OUT_OF_BOUNDS;
+    else if (operand.contains(array_pattern)) // an array element
+    {
+        // found variable and index
+        QStringList op_args = operand.split(QRegExp("[\\[\\]]"), QString::SkipEmptyParts);
+        QMap<QString, std::shared_ptr<Identifier>>::iterator foundVar_it = ids.find(op_args[0]);
+        if (foundVar_it != ids.end() && dynamic_cast<Variable*>(foundVar_it.value().get())) // found variable
+        {
+            if (dynamic_cast<Variable*>(foundVar_it.value().get())->getType() != ARRAY)
+                return DIFF_TYPE_ERROR;
+
+            // NOTE: different from Statement::checkOperand(...)
+            // make sure the user won't skip initializing an element in this array (e.g. rdi arr[0], rdi arr[1], rdi arr[3])
+            if ((op_args[1].toInt() > dynamic_cast<Variable*>(foundVar_it.value().get())->getUsedSize()) ||
+                    // and won't go over the max size of the array
+                    (op_args[1].toInt() >= dynamic_cast<Variable*>(foundVar_it.value().get())->getSize()))
+                return INDEX_OUT_OF_BOUNDS;
+
+            op.setIdentifier(foundVar_it.value().get());
+            op.setIndex(op_args[1].toInt());
+            dynamic_cast<Variable*>(op.getIdentifier())->setUsedSize(dynamic_cast<Variable*>(op.getIdentifier())->getUsedSize() + 1);
+        }
+        else
+            return VARIABLE_NOT_FOUND_ERROR;
+    }
+    else // int
+    {
+        if (ids.find(operand) == ids.end())
+            return VARIABLE_NOT_FOUND_ERROR;
+
+        if (dynamic_cast<Variable*>(ids.find(operand).value().get())->getType() != INT)
+            return DIFF_TYPE_ERROR;
+
+        op.setIdentifier(ids.find(operand).value().get());
+    }
+    return NO_ERROR;
 }

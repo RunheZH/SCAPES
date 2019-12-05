@@ -52,12 +52,14 @@ L4: mov int_a array[2]
 add int_b array[2]
 
 # print all the variables and array
-prt "Variable int_a with value:"
+prt "Variable int_a with value"
 prt int_a
-prt "Variable int_b with value:"
+prt "Variable int_b with value"
 prt int_b
-prt "Variable array with value:"
-prt array
+prt "Variable array with value"
+prt array[0]
+prt array[1]
+prt array[2]
 
 # end the program
 end

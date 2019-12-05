@@ -1,95 +1,111 @@
-# declare an integer with variable name "arraySize"
-dci arraySize
+prt "declare a secret number"
+dci secretNum
+mov 10 secretNum
 
-# ------ Label 1 ------
-# read/get integer from user as the value of "arraySize"
-# loop until the value of "arraySize" is >= 1 and <= 10
-L1: prt "please input array size between the interval 1 to 10 (inclusive)"
-rdi arraySize
-# when the value of "arraySize" < 0 or > 10, jump to Label 1
-cmp arraySize 1
-prt "jumped to Label 1, since input is smaller than 1"
-jls L1
-cmp arraySize 10
-prt "jumped to Label 1, since input is bigger than 10"
+prt "declare 'guess' and ''numChances"
+dci guess
+dci numChances
+
+# store numbers in an array
+dca arr 5
+
+L11: prt "A new game started"
+# initialize the array
+mov -1 arr[0]
+mov -1 arr[1]
+mov -1 arr[2]
+mov -1 arr[3]
+mov -1 arr[4]
+
+prt "Only 5 chances to guess the correct number"
+mov 5 numChances
+
+L1: prt "numChances remaining..."
+prt numChances
+
+# only one chance remaining, jump to L8
+cmp numChances 1
+jeq L8
+
+# only two chances remaining, jump to L7
+cmp numChances 3
+jls L7
+# only three chances remaining, jump to L6
+jeq L6
+
+# only four chances remaining, jump to L5
+cmp numChances 4
+jeq L5
+
+# only five chances remaining, jump to L3
+jmr L3
+
+# jump to L9 for comparison
+jmp L9
+
+L3: prt "Please enter your first guess"
+rdi arr[0]
+mov arr[0] guess
+add -1 numChances
+jmp L9
+
+L5: prt "Please enter your second guess"
+rdi arr[1]
+mov arr[1] guess
+add -1 numChances
+jmp L9
+
+L6: prt "Please enter your third guess"
+rdi arr[2]
+mov arr[2] guess
+add -1 numChances
+jmp L9
+
+L7: prt "Please enter your fourth guess"
+rdi arr[3]
+mov arr[3] guess
+add -1 numChances
+jmp L9
+
+L8: prt "Please enter your fifth guess"
+rdi arr[4]
+mov arr[4] guess
+add -1 numChances
+
+prt "Comparing your guess with the secret number..."
+L9: cmp guess secretNum
+jeq L12
+
+prt "Wrong number"
+# no more chances
+cmp numChances 0
+jeq L10
+
+# jump to the beginning
 jmr L1
 
-# declare an array with name "anArray" and with size "arraySize"
-dca anArray arraySize
+L12: prt "You win!"
+jmp L13
+L10: prt "You've used all of your chances"
+L13: prt "Would you like to try again? (1 for yes, 0 for no)"
+dci option
+rdi option
+prt "Your option was ..."
+prt option
+cmp option 0
+# start over
+jmr L11
 
-# declare an integer with variable name "arraySizeTemp"
-# set the value of "arraySizeTemp" equal to the value of "arraySize"
-dci arraySizeTemp
-mov arraySize arraySizeTemp
+prt "Your guesses were..."
+prt arr[0]
+prt arr[1]
+prt arr[2]
+prt arr[3]
+prt arr[4]
 
-# declare an integer with variable name "arraySizeTemp2"
-dci arraySizeTemp2
+prt "The secret number is ..."
+prt secretNum
 
-
-# ------ Label 3 ------
-# when the "anArray" is not full, continue read user input
-# when the "anArray" is full, end the program
-L3: prt "jumped to Label 3: read new integer if the array is not full, end the program otherwise"
-
-# let "arraySizeTemp" - 1 every time, "anArray" is full when "arraySizeTemp" < 0
-# let "arraySizeTemp2" always equal to "arraySizeTemp" + 1
-add -1 arraySizeTemp
-mov arraySizeTemp arraySizeTemp2
-add 1 arraySizeTemp2
-
-# jump to Label 6 when the spaces in "anArray" is full ("arraySizeTemp" < 0)
-cmp arraySizeTemp 0
-prt "jumped to Label 6: end the program since the array is full"
-jls L6
-
-# declare an integer with variable name "element"
-dci element
-
-# read/get the integer from user by unconditionally jumping to Label 2
-prt "jumped to Label 2: read the integer from user as a array element"
-jmp L2
-
-
-# ------ Label 2 ------
-# read/get integer from user, store it as the value of each element in "anArray"
-# keep asking until all the spaces in the "anArray" are filled with certain value
-L2: prt "please input an integer as a array element (will not store same integer)"
-rdi element
-
-
-# ------ Label 4 ------
-# checking if the input element has the same value as the elements already in the "anArray"
-# if not, store the value
-# if it's already exist, ask user a new value, until there's no duplications
-L4: add 1 arraySizeTemp2
-cmp arraySizeTemp2 arraySize
-prt "jumped to Label 5: store the element into the array, since the input integer isn't exists in the array"
-jeq L5
-cmp element anArray[arraySizeTemp2]
-prt "jumped to Label 2: let user input another integer, since the input integer is already exists in the array"
-jeq L2
-prt "jumped to Label 4: continue checking if the input integer is already exists in the array or not..."
-jmp L4
-
-
-# ------ Label 5 ------
-# store each input element to this array, in a traverse order
-L5: mov element anArray[arraySizeTemp]
-# unconditional jump to Label 3
-jmp L3
-
-
-# ------ Label 6 ------
-# print all the variables and array
-# end the program
-L6: prt "the program will end"
-prt "all the variables will be printed"
-prt "arraySize with value:"
-prt arraySize
-prt "arraySizeTemp with value:"
-prt arraySizeTemp
-prt "arraySizeTemp2 with value:"
-prt arraySizeTemp2
-prt "anArray with value:"
-prt anArray
+prt "Your last guess was ..."
+prt guess
 end

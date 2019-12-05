@@ -6,7 +6,6 @@ EndStmt::~EndStmt(){}
 
 ResultState EndStmt::compile()
 {
-    qDebug() << "EndStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 1){ // syntax checking
@@ -24,9 +23,5 @@ ResultState EndStmt::compile()
 
 ReturnValue* EndStmt::run()
 {
-    qDebug() << "EndStmt.run()";
-
-    // return end;
-
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+    return new ReturnValue(NO_ERROR);
 }

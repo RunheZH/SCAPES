@@ -9,7 +9,6 @@ DeclIntStmt::~DeclIntStmt()
 
 ResultState DeclIntStmt::compile()
 {
-    qDebug() << "DeclIntStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){ // syntax checking
@@ -24,6 +23,9 @@ ResultState DeclIntStmt::compile()
     // declare a new int
     QString instruction = args[0];
     QString varName = args[1];
+    // check if the variable has already been declared
+    if (ids.find(varName) != ids.end())
+        return REDECLARE_VAR_ERROR;
     Variable* newVar = new Variable(this->programName, varName, INT);
     op1.setIdentifier(newVar);
     ids.insert(newVar->getName(), std::shared_ptr<Variable>(newVar));
@@ -41,7 +43,6 @@ ResultState DeclIntStmt::compile()
 
 ReturnValue* DeclIntStmt::run()
 {
-    qDebug() << "DeclIntStmt.run()";
     // new int has already been added to ids, do nothing
     return new ReturnValue(NO_ERROR);
 }

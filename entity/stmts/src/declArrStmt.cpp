@@ -9,7 +9,6 @@ DeclArrStmt::~DeclArrStmt()
 
 ResultState DeclArrStmt::compile()
 {
-    qDebug() << "DeclArrStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3) { // syntax checking
@@ -29,6 +28,9 @@ ResultState DeclArrStmt::compile()
     QString instruction = args[0];
     QString varName = args[1];
     QString arrSize = args[2];
+    // check if the variable has already been declared
+    if (ids.find(varName) != ids.end())
+        return REDECLARE_VAR_ERROR;
     int maxSize = arrSize.toInt(&vaildSize);
     if (!vaildSize || maxSize < 1) {
         return INVALID_OPERAND;
@@ -53,7 +55,6 @@ ResultState DeclArrStmt::compile()
 
 ReturnValue* DeclArrStmt::run()
 {
-    qDebug() << "DeclArrStmt().run()";
     // new array has already been added to ids, do nothing
     return new ReturnValue(NO_ERROR);
 }

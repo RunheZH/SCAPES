@@ -11,7 +11,6 @@ AddStmt::~AddStmt()
 
 ResultState AddStmt::compile()
 {
-    qDebug() << "AddStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){ // syntax checking
@@ -50,7 +49,6 @@ ResultState AddStmt::compile()
 
 ReturnValue* AddStmt::run()
 {
-    qDebug() << "AddStmt.run()";
     int operand1;
     int operand2;
     if (op1.getIsLiteral())

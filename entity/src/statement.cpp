@@ -26,7 +26,7 @@ ResultState Statement::checkVariable(QString& operand, Operand& op, bool checkLi
 {
     QRegExp num_pattern("^\\-?\\d+\\.?\\d*$");
     QRegExp int_pattern("^\\-?\\d+$");
-    QRegExp array_pattern("\\[[0-9]+\\]");
+    QRegExp array_pattern("\\[\\w+\\]");
     if (operand.contains(num_pattern) && checkLiteral) // it's a literal
     {
         if (operand.contains(int_pattern)){
@@ -50,12 +50,20 @@ ResultState Statement::checkVariable(QString& operand, Operand& op, bool checkLi
             if (dynamic_cast<Variable*>(foundVar_it.value().get())->getType() != ARRAY)
                 return DIFF_TYPE_ERROR;
 
+            QString posStr = op_args[1];
+            bool isInt = false;
+            int posInt = posStr.toInt(&isInt);
+            if (!isInt)
+                posInt = 0;
+            if (posInt < 0) {
+                return INVALID_OPERAND;
+            }
             // make sure the user won't skip initializing an element in this array (e.g. rdi arr[0], rdi arr[1], rdi arr[3])
-            if (op_args[1].toInt() >= dynamic_cast<Variable*>(foundVar_it.value().get())->getUsedSize())
+            if (posInt >= dynamic_cast<Variable*>(foundVar_it.value().get())->getUsedSize())
                 return VARIABLE_NOT_INIT_ERROR;
 
             op.setIdentifier(foundVar_it.value().get());
-            op.setIndex(op_args[1].toInt());
+            op.setIndex(posInt);
         }
         else
             return VARIABLE_NOT_FOUND_ERROR;

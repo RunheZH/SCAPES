@@ -13,8 +13,6 @@ PrintStmt::~PrintStmt()
 
 ResultState PrintStmt::compile()
 {
-    qDebug() << "PrintStmt.compile()";
-
     JsonHandler jsonHdlr(this->programName);
     QString instruction;
     QString operand1;
@@ -32,6 +30,7 @@ ResultState PrintStmt::compile()
             }
         }
         instruction = args_str[0];
+        operand1 = "\"" + args_str[1] + "\"";
         // save the value to print out in Operand class only
         // b/c it is not a variable, nor an element of an array
         op1.setValue(args_str[1]);
@@ -57,22 +56,20 @@ ResultState PrintStmt::compile()
         ResultState re = checkVariable(operand1, op1, true); // checkLiteral set to true
         if (re != NO_ERROR)
             return re;
-
-        // add to JSON file
-        QJsonObject op1Obj;
-        op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
-
-        QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
-        jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
     }
+
+    // add to JSON file
+    QJsonObject op1Obj;
+    op1Obj = JsonHandler::getJsonObj(OP_1, operand1);
+
+    QJsonObject stmtObj = JsonHandler::getJsonObj(instruction, op1Obj);
+    jsonHdlr.addElement(STMT, QString::number(lineNum), stmtObj);
 
     return NO_ERROR;
 }
 
 ReturnValue* PrintStmt::run()
 {
-    qDebug() << "PrintStmt.run()";
-
     if (op1.getIsLiteral())
     {
         if (op1.getIsStr()) // string
