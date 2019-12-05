@@ -33,6 +33,17 @@ Highlighter::Highlighter(QTextDocument *parent)
     rule.format = labelFormat;
     highlightingRules.append(rule);
 
+    stringFormat.setFontItalic(true);
+    stringFormat.setForeground(Qt::darkCyan);
+    rule.pattern = QRegularExpression(QStringLiteral("([\"])([a-z A-Z 0-9 \\W]+)([\"])"));
+    rule.format = stringFormat;
+    highlightingRules.append(rule);
+
+    numberFormat.setForeground(Qt::blue);
+    rule.pattern = QRegularExpression(QStringLiteral("\\s([0-9]+)\\s"));
+    rule.format = numberFormat;
+    highlightingRules.append(rule);
+
     singleLineCommentFormat.setForeground(QColor(96,163,78));
     rule.pattern = QRegularExpression(QStringLiteral("#[^\n]*"));
     rule.format = singleLineCommentFormat;
