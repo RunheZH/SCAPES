@@ -97,7 +97,6 @@ ResultState Program::loadFromJSON()
         QJsonObject stmtObj = statementObj.find(QString::number(*it)).value().toObject();
         QString instruction = stmtObj.keys().begin()[0];
         QString op1 = stmtObj[instruction].toObject()[OP_1].toString();
-        qDebug() << op1;
         QString op2 = stmtObj[instruction].toObject()[OP_2].toString();
 
         // add current statement
@@ -189,7 +188,6 @@ ResultState Program::run()
     ReturnValue* runResult;
     for (QMap<int, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
     {
-        qDebug() << "currently at line: " << it.key();
         // has reached 'end'
         if (isEndStmt(it.value())) break;
 
@@ -214,7 +212,6 @@ ResultState Program::run()
             else
                 this->jumpToLineNum = (it+1).key();
 
-            qDebug() << "jumping to ..." << this->jumpToLineNum;
             it = this->statements.find(this->jumpToLineNum);
             it--;
             delete runResult;

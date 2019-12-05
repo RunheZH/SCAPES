@@ -10,8 +10,6 @@ MovStmt::~MovStmt()
 
 ResultState MovStmt::compile()
 {
-    qDebug() << "MovStmt.compile()";
-
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){ // syntax checking
@@ -51,7 +49,6 @@ ResultState MovStmt::compile()
 
 ReturnValue* MovStmt::run()
 {
-    qDebug() << "MovStmt.run()";
     int operand1;
     if (op1.getIsLiteral())
         operand1 = op1.getValue();

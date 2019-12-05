@@ -9,7 +9,6 @@ DeclIntStmt::~DeclIntStmt()
 
 ResultState DeclIntStmt::compile()
 {
-    qDebug() << "DeclIntStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){ // syntax checking
@@ -44,7 +43,6 @@ ResultState DeclIntStmt::compile()
 
 ReturnValue* DeclIntStmt::run()
 {
-    qDebug() << "DeclIntStmt.run()";
     // new int has already been added to ids, do nothing
     return new ReturnValue(NO_ERROR);
 }

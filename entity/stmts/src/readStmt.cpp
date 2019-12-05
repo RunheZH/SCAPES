@@ -13,7 +13,6 @@ ReadStmt::~ReadStmt()
 
 ResultState ReadStmt::compile()
 {
-    qDebug() << "ReadStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){ // syntax checking
@@ -49,8 +48,6 @@ ResultState ReadStmt::compile()
 
 ReturnValue* ReadStmt::run()
 {
-    qDebug() << "ReadStmt.run()";
-
     Variable* aVariable = dynamic_cast<Variable*>(op1.getIdentifier());
     TypeE variableType = aVariable->getType();
 

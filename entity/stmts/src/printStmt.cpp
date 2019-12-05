@@ -13,8 +13,6 @@ PrintStmt::~PrintStmt()
 
 ResultState PrintStmt::compile()
 {
-    qDebug() << "PrintStmt.compile()";
-
     JsonHandler jsonHdlr(this->programName);
     QString instruction;
     QString operand1;
@@ -72,8 +70,6 @@ ResultState PrintStmt::compile()
 
 ReturnValue* PrintStmt::run()
 {
-    qDebug() << "PrintStmt.run()";
-
     if (op1.getIsLiteral())
     {
         if (op1.getIsStr()) // string

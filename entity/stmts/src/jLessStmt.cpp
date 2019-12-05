@@ -8,7 +8,6 @@ JLessStmt::~JLessStmt()
 
 ResultState JLessStmt::compile()
 {
-    qDebug() << "JLessStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){ // syntax checking
@@ -44,8 +43,6 @@ ResultState JLessStmt::compile()
 
 ReturnValue* JLessStmt::run()
 {
-    qDebug() << "JLessStmt.run()";
-
     Label* aLabel = dynamic_cast<Label*>(op1.getIdentifier());
     int lineNum = aLabel->getLineNum();
 

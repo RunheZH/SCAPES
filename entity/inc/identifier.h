@@ -3,7 +3,6 @@
 
 #include <QJsonObject>
 #include "common_lib.h"
-#include "../../control/inc/DBManager.h"
 
 class Identifier
 {
