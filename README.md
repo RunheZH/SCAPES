@@ -1,5 +1,5 @@
 COMP 3004 - 2019 Fall
-Team Do-while
+02 - Team Do-while
 
 Runhe Zhong     101016659
 Jie Ji          101022463
@@ -19,10 +19,14 @@ ALTERNATIVE PROCESS:
 5. type ./SCAPES
 
 Description:
-This SCAPES software allowed the user to create, load, save, compile, and run a program that was written by SCAPES language. The strategy pattern is used for handling different kinds of statements. This pattern allows choosing a specific algorithm during the runtime. It is included context class, strategy class, and different concrete strategy classes. The context class will refer to the strategy API for performing a certain algorithm. The strategy class will have some virtual functions that different concrete strategy classes that are inherited from it could assign their functions. In our program, the program class is context class, the statement class is the strategy class, and different statement classes are different concrete strategy classes. When the user tried to compile or run a SCAPES program, the statement could be determined during the software run time. Apart from it, each statement's behavior could be modified easily. It means that only one class needs to be edit. It is not necessary to understand other's statement in this situation.
+This SCAPES software allowed the user to create, load, save, compile, and run a program that was written by SCAPES language.
+The strategy pattern is used for handling different kinds of statements. This pattern allows choosing a specific algorithm during the runtime. It includes context class, strategy class, and different concrete strategy classes.
+The context class will refer to the strategy API for performing a certain algorithm. The strategy class will have some virtual functions that different concrete strategy classes that are inherited from it could assign their functions.
+In our program, the program class is context class, the statement class is the strategy class, and different statement classes are different concrete strategy classes. When the user tried to compile or run a SCAPES program, the type of a statement could be determined during the software run time.
+Apart from it, each statement's behavior could be modified easily. It means that we can add or remove or edit a class without touching other classes.
 
 
-Test-Program (for Delierable 1, in the folder "test-program"):
+Test-Program (for Delierable 1, in the folder "test-program/D1"):
 1. largeNumberPrint.scp - 
     Allow user to input two numbers, and the program will print the large number.
 
@@ -30,7 +34,7 @@ Test-Program (for Delierable 1, in the folder "test-program"):
     Allow one user to input a secret number, and then second user to input a number to guess the secret number, the loop will keep going on until the second user's number is larger than the first user's.
 
 
-Sample-Program (for Delierable 2, in the folder "samplePrograms"):
+Sample-Program (for Delierable 2, in the folder "test-program/D2"):
 1. SP1.scp - 
     Allow user to input two integers, keep asking until the two inputs are not equal.
     Output is an array: the first element is the smaller input integer, the second element is the larger input integer, the third element is the sum of these two integers
