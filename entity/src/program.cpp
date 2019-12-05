@@ -78,7 +78,6 @@ ResultState Program::loadFromJSON()
         JsonHandler jsonHdlr(this->tempFileName);
         jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
     }
-    qDebug() << ids.keys();
 
     // load statements
     QJsonObject statementObj = jsonObj[STMT].toObject();
@@ -98,6 +97,7 @@ ResultState Program::loadFromJSON()
         QJsonObject stmtObj = statementObj.find(QString::number(*it)).value().toObject();
         QString instruction = stmtObj.keys().begin()[0];
         QString op1 = stmtObj[instruction].toObject()[OP_1].toString();
+        qDebug() << op1;
         QString op2 = stmtObj[instruction].toObject()[OP_2].toString();
 
         // add current statement
@@ -189,10 +189,10 @@ ResultState Program::run()
     ReturnValue* runResult;
     for (QMap<int, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
     {
+        qDebug() << "currently at line: " << it.key();
         // has reached 'end'
         if (isEndStmt(it.value())) break;
 
-        this->jumpToLineNum = it.key();
         runResult = it.value()->run();
         if (runResult->getResultState() != NO_ERROR)
         {
@@ -211,12 +211,20 @@ ResultState Program::run()
                 this->jumpToLineNum = runResult->getJumpToLine();
             else if (dynamic_cast<JumpStmt*>(it.value()))
                 this->jumpToLineNum = runResult->getJumpToLine();
+            else
+                this->jumpToLineNum = (it+1).key();
+
+            qDebug() << "jumping to ..." << this->jumpToLineNum;
+            it = this->statements.find(this->jumpToLineNum);
+            it--;
+            delete runResult;
+            continue;
         }
         if (runResult->getCompareResult() != NO_CMP)
         {
             this->cmpResult = runResult->getCompareResult();
         }
-        it = this->statements.find(this->jumpToLineNum);
+
         delete runResult; // avoid memory leak
     }
     return NO_ERROR;

@@ -16,6 +16,8 @@ jmr L1
 
 # declare an array with name "anArray" and with size "arraySize"
 dca anArray arraySize
+dci tmpSize
+mov arraySize tmpSize
 
 # declare an integer with variable name "arraySizeTemp"
 # set the value of "arraySizeTemp" equal to the value of "arraySize"
@@ -24,7 +26,6 @@ mov arraySize arraySizeTemp
 
 # declare an integer with variable name "arraySizeTemp2"
 dci arraySizeTemp2
-
 
 # ------ Label 3 ------
 # when the "anArray" is not full, continue read user input
@@ -49,13 +50,17 @@ dci element
 prt "jumped to Label 2: read the integer from user as a array element"
 jmp L2
 
-
 # ------ Label 2 ------
 # read/get integer from user, store it as the value of each element in "anArray"
 # keep asking until all the spaces in the "anArray" are filled with certain value
 L2: prt "please input an integer as a array element (will not store same integer)"
 rdi element
 
+# ------ Label 5 ------
+# store each input element to this array, in a traverse order
+L5: mov element anArray[arraySizeTemp]
+# unconditional jump to Label 3
+jmp L3
 
 # ------ Label 4 ------
 # checking if the input element has the same value as the elements already in the "anArray"
@@ -71,14 +76,6 @@ jeq L2
 prt "jumped to Label 4: continue checking if the input integer is already exists in the array or not..."
 jmp L4
 
-
-# ------ Label 5 ------
-# store each input element to this array, in a traverse order
-L5: mov element anArray[arraySizeTemp]
-# unconditional jump to Label 3
-jmp L3
-
-
 # ------ Label 6 ------
 # print all the variables and array
 # end the program
@@ -90,6 +87,13 @@ prt "arraySizeTemp with value:"
 prt arraySizeTemp
 prt "arraySizeTemp2 with value:"
 prt arraySizeTemp2
+prt "tmpSize with value:"
+prt tmpSize
 prt "anArray with value:"
-prt anArray
+L7: prt "jump to Label 7 to print out anArray"
+add -1 tmpSize
+prt anArray[tmpSize]
+cmp 0 tmpSize
+jls L7
+
 end

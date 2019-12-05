@@ -11,6 +11,7 @@ public:
     ~MovStmt();
     ResultState compile();
     ReturnValue* run();
+    ResultState checkVariable(QString &operand, Operand &op, bool checkLiteral = false);
 
 private:
     Operand op1;

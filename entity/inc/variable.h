@@ -10,7 +10,6 @@ public:
     Variable(QString programName, QString variableName, TypeE variableType, int maxSize = 1);
     ~Variable();
     QJsonObject toJSON();
-    void addToDB();
     TypeE getType();
     int getSize();
     int getUsedSize();

@@ -34,12 +34,6 @@ QJsonObject Variable::toJSON()
     return varObj;
 }
 
-void Variable::addToDB()
-{
-    DBManager db(this->programName);
-    db.addVariable(this->getName(), INT);
-}
-
 TypeE Variable::getType()
 {
     return type;
@@ -77,10 +71,6 @@ bool Variable::setValue(int aValue, int position)
     } else {
         value[position] = aValue;
     }
-
-    // pass the new value to the DB
-    DBManager db(this->programName);
-    db.setVariable(this->getName(),this->getType(),value);
 
     return true;
 }

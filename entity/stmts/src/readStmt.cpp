@@ -88,8 +88,8 @@ ResultState ReadStmt::checkVariable(QString& operand, Operand& op, bool checkLit
     else if (operand.contains(array_pattern)) // an array element
     {
         // found variable and index
-        QStringList op1_args = operand.split(QRegExp("[\\[\\]]"), QString::SkipEmptyParts);
-        QMap<QString, std::shared_ptr<Identifier>>::iterator foundVar_it = ids.find(op1_args[0]);
+        QStringList op_args = operand.split(QRegExp("[\\[\\]]"), QString::SkipEmptyParts);
+        QMap<QString, std::shared_ptr<Identifier>>::iterator foundVar_it = ids.find(op_args[0]);
         if (foundVar_it != ids.end() && dynamic_cast<Variable*>(foundVar_it.value().get())) // found variable
         {
             if (dynamic_cast<Variable*>(foundVar_it.value().get())->getType() != ARRAY)
@@ -97,13 +97,13 @@ ResultState ReadStmt::checkVariable(QString& operand, Operand& op, bool checkLit
 
             // NOTE: different from Statement::checkOperand(...)
             // make sure the user won't skip initializing an element in this array (e.g. rdi arr[0], rdi arr[1], rdi arr[3])
-            if ((op1_args[1].toInt() > dynamic_cast<Variable*>(foundVar_it.value().get())->getUsedSize()) ||
+            if ((op_args[1].toInt() > dynamic_cast<Variable*>(foundVar_it.value().get())->getUsedSize()) ||
                     // and won't go over the max size of the array
-                    (op1_args[1].toInt() >= dynamic_cast<Variable*>(foundVar_it.value().get())->getSize()))
+                    (op_args[1].toInt() >= dynamic_cast<Variable*>(foundVar_it.value().get())->getSize()))
                 return INDEX_OUT_OF_BOUNDS;
 
             op.setIdentifier(foundVar_it.value().get());
-            op.setIndex(op1_args[1].toInt());
+            op.setIndex(op_args[1].toInt());
             dynamic_cast<Variable*>(op.getIdentifier())->setUsedSize(dynamic_cast<Variable*>(op.getIdentifier())->getUsedSize() + 1);
         }
         else

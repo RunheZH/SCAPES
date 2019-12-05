@@ -46,10 +46,6 @@ ReturnValue* JLessStmt::run()
 {
     qDebug() << "JLessStmt.run()";
 
-//    Label aLabel = DBM.getLable(op1->getIdentifier()->getName());
-//    int lineNum = aLabel.getStmtLineNum();
-//    return lineNum;
-
     Label* aLabel = dynamic_cast<Label*>(op1.getIdentifier());
     int lineNum = aLabel->getLineNum();
 
