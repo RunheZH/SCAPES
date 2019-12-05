@@ -38,6 +38,7 @@ enum StatementId
 enum ResultState
 {
     NO_ERROR,
+    NO_USER_INPUT,
     NOT_INTEGER_ERROR,
     DIFF_TYPE_ERROR,
     FILE_OPEN_ERROR,
