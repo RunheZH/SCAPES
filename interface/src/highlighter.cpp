@@ -17,7 +17,7 @@ Highlighter::Highlighter(QTextDocument *parent)
         QStringLiteral("\\bcmp\\b"),
         QStringLiteral("\\bjls\\b"),
         QStringLiteral("\\bjmr\\b"),
-        QStringLiteral("\\bjep\\b"),
+        QStringLiteral("\\bjeq\\b"),
         QStringLiteral("\\bjmp\\b"),
         QStringLiteral("\\bend\\b"),
     };

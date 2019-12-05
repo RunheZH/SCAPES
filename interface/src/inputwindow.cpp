@@ -6,6 +6,7 @@ InputWindow::InputWindow(QWidget *parent) :
     ui(new Ui::InputWindow)
 {
     ui->setupUi(this);
+//    this->setWindowFlags ( Qt::CustomizeWindowHint | Qt::WindowTitleHint);
 }
 
 InputWindow::~InputWindow()
@@ -21,6 +22,7 @@ int InputWindow::readValue(QString variableName){
     QEventLoop loop;
     connect(this, SIGNAL(okayClicked()), &loop, SLOT(quit()));
     connect(this, SIGNAL(cancelClicked()), &loop, SLOT(quit()));
+    connect(this, SIGNAL(windowClose()), &loop, SLOT(quit()));
     loop.exec();
     int value = -1000000;   //default value is out of input range, check if the value has input
     if(whichClicked == 1){
@@ -30,6 +32,9 @@ int InputWindow::readValue(QString variableName){
     return value;
 }
 
+void InputWindow::closeEvent(QCloseEvent *event){
+   emit windowClose();
+}
 
 
 void InputWindow::on_okayButton_clicked()

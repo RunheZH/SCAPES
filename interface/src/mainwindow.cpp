@@ -145,7 +145,7 @@ int MainWindow::openFile(){
     QTextStream in(&file);
     QString text = in.readAll();
     tabchildwidget * ft = static_cast<tabchildwidget*>(ui->tabWidget->currentWidget());
-    qDebug()<<"open file dir - " <<filePath;
+//    qDebug()<<"open file dir - " <<filePath;
     //open the file already shown in the tab
     int tabIndex = tabIsExist(filePath);
 //    qDebug()<<"file tab index at - " <<tabIndex;
@@ -232,19 +232,19 @@ int MainWindow::saveAsFile(){
     SaveControl* savecontrol = new SaveControl(ft->getFilePath(), consoleTab, errorTab);
     Program* pgm = savecontrol->save();
 
-    qDebug() << "filePath save as: " << filePath;
+//    qDebug() << "filePath save as: " << filePath;
     if(programList.size()==0){
         programList.push_back({filePath,pgm});
-        qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
+//        qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
     }else {
         for(int i=0; i<programList.size(); i++){
             if(programList[i].first==filePath){
                 programList[i].second = pgm;
-                qDebug() << "programList replace existed: {" << filePath << "," << pgm << "}";
+//                qDebug() << "programList replace existed: {" << filePath << "," << pgm << "}";
                 break;
             }else if (i==programList.size()-1) {
                 programList.push_back({filePath,pgm});
-                qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
+//                qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
                 break;
             }
         }
@@ -280,19 +280,19 @@ void MainWindow::saveFile(){
         //save control part
         SaveControl* sc = new SaveControl(ft->getFilePath(), consoleTab, errorTab);
         Program* pgm = sc->save();
-        qDebug() << "filePath save as: " << filePath;
+//        qDebug() << "filePath save as: " << filePath;
         if(programList.size()==0){
             programList.push_back({filePath, pgm});
-            qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
+//            qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
         }else {
             for(int i=0; i<programList.size(); i++){
                 if(programList[i].first==filePath){
                     programList[i].second = pgm;
-                    qDebug() << "programList replace existed: {" << filePath << "," << pgm << "}";
+//                    qDebug() << "programList replace existed: {" << filePath << "," << pgm << "}";
                     break;
                 }else if (i==programList.size()-1) {
                     programList.push_back({filePath, pgm});
-                    qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
+//                    qDebug() << "programList add new: {" << filePath << "," << pgm << "}";
                     break;
                 }
             }
@@ -390,7 +390,7 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
             {
                 sc = new SaveControl(jsonPath, consoleTab, errorTab);
                 pgm = sc->loadFromJSON();
-                qDebug()<<"not yet implemented - loadFromJSON()";
+//                qDebug()<<"not yet implemented - loadFromJSON()";
                 break;
             }
             case QMessageBox::Cancel:
@@ -398,7 +398,7 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
                 return;
             default:
             // should never be reached
-                qDebug()<<"run encounter error";
+//                qDebug()<<"run encounter error";
                 return;
         }
         delete(sc);
@@ -451,7 +451,7 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
         }
         delete(sc);
     }else {
-        qDebug()<<"the open file is not valid type";
+//        qDebug()<<"the open file is not valid type";
         errorTab->addText("The opened file is not valid type used to run");
         return;
     }
