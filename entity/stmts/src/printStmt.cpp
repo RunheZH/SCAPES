@@ -73,7 +73,6 @@ ReturnValue* PrintStmt::run()
 {
     qDebug() << "PrintStmt.run()";
 
-    Variable* aVariable = dynamic_cast<Variable*>(op1.getIdentifier());
     if (op1.getIsLiteral())
     {
         if (op1.getIsStr()) // string
@@ -81,10 +80,10 @@ ReturnValue* PrintStmt::run()
         else // number
             errorControl->printToConsole(QString::number(op1.getValue()));
     }
-    else if (aVariable->getType() == ARRAY) // array element
-        errorControl->printToConsole(QString::number(aVariable->getValue(op1.getIndex())));
+    else if (dynamic_cast<Variable*>(op1.getIdentifier())->getType() == ARRAY) // array element
+        errorControl->printToConsole(QString::number(dynamic_cast<Variable*>(op1.getIdentifier())->getValue(op1.getIndex())));
     else // int
-        errorControl->printToConsole(QString::number(aVariable->getValue(0)));
+        errorControl->printToConsole(QString::number(dynamic_cast<Variable*>(op1.getIdentifier())->getValue(0)));
 
     return new ReturnValue(NO_ERROR);
 }

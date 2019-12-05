@@ -11,6 +11,7 @@ AddStmt::~AddStmt()
 
 ResultState AddStmt::compile()
 {
+    qDebug() << "AddStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){ // syntax checking

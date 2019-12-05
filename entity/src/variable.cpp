@@ -55,6 +55,11 @@ int Variable::getUsedSize()
     return usedSize;
 }
 
+void Variable::setSize(int newSize)
+{
+    maxSize = newSize;
+}
+
 void Variable::setUsedSize(int newUsedSize)
 {
     usedSize = newUsedSize;

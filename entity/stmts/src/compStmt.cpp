@@ -10,6 +10,7 @@ CompStmt::~CompStmt()
 
 ResultState CompStmt::compile()
 {
+    qDebug() << "CompStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 3){

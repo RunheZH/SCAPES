@@ -9,6 +9,7 @@ DeclIntStmt::~DeclIntStmt()
 
 ResultState DeclIntStmt::compile()
 {
+    qDebug() << "DeclIntStmt.compile()";
     QStringList args = this->statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args.size() != 2){ // syntax checking

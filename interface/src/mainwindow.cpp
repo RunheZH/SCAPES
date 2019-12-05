@@ -363,6 +363,7 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
         SaveControl* sc = nullptr;
         switch (ret) {
             case QMessageBox::Save: //recompile and run
+            {
                 for(int i=0; i<programList.size();i++){
                     if(programList[i].first==filePath){
                         pgm = programList[i].second;
@@ -376,12 +377,22 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
                         }
                     }
                 }
+                CompileControl* compileControl = new CompileControl(pgm);
+                ResultState res = compileControl->compile();
+                if (res == NO_ERROR)
+                    outToConsole("Compiled Successfully.");
+                else
+                    outToConsole("Compilation Failed.");
+                delete(compileControl);
                 break;
-            case QMessageBox::Ignore:
+            }
+            case QMessageBox::Ignore: // run last compilation
+            {
                 sc = new SaveControl(jsonPath, consoleTab, errorTab);
-//                pgm = sc->loadFromJSON();  //wait to be implement
+                pgm = sc->loadFromJSON();
                 qDebug()<<"not yet implemented - loadFromJSON()";
                 break;
+            }
             case QMessageBox::Cancel:
             // Cancel was clicked
                 return;
@@ -416,7 +427,7 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
                 qDebug()<<"run encounter error";
                 return;
         }
-    }else if(ft->getFileType()=="jsn") {    //------json file is open------//
+    }else if(ft->getFileType()=="json") {    //------json file is open------//
         QMessageBox msgBox;
         msgBox.setText("The file " + ft->getFileName() + " is ready to run.");
         msgBox.setInformativeText("Do you want to run the file?");
@@ -428,7 +439,7 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
         switch (ret) {
             case QMessageBox::Save: //recompile and run
                 sc = new SaveControl(jsonPath, consoleTab, errorTab);
-//                pgm = sc->loadFromJSON();  //uncomment following after done
+                pgm = sc->loadFromJSON();  //uncomment following after done
                 break;
             case QMessageBox::Cancel:
             // Cancel was clicked

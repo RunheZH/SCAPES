@@ -10,7 +10,7 @@ Statement::Statement(QString programName, QString statement, QMap<QString, std::
     QStringList args = statement.split(QRegExp("\\s+"), QString::SkipEmptyParts);
 
     if (args[0].endsWith(":")){
-        //qDebug() << "RUNHE: detected label";
+        // detect a label
         this->label = new Label(this->programName, args[0].left(args[0].lastIndexOf(":")), lineNum);
         ids.insert(this->label->getName(), std::shared_ptr<Label>(this->label));
         JsonHandler jsonHdlr(this->programName);

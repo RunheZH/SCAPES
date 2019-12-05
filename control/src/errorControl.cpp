@@ -31,7 +31,9 @@ void ErrorControl::printErrorMsgAtLine(ResultState result, int lineNum)
 int ErrorControl::getUserInput(QString variableName)
 {
     InputWindow* inputWindow = new InputWindow(nullptr);
-    return inputWindow->readValue(variableName);
+    int re = inputWindow->readValue(variableName);
+    delete inputWindow;
+    return re;
 }
 
 QString ErrorControl::convertErrorMsg(ResultState result)

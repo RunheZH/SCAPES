@@ -14,6 +14,7 @@ public:
     TypeE getType();
     int getSize();
     int getUsedSize();
+    void setSize(int newSize);
     void setUsedSize(int newUsedSize);
     //it will change the value if the user provide the vaild index
     bool setValue(int aValue, int position = 0);

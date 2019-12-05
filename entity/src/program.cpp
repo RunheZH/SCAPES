@@ -31,6 +31,7 @@ ResultState Program::save()
     this->hasEnd = false;
     this->hasError = false;
     this->statements.clear();
+    this->jumpStmts.clear();
     this->ids.clear();
 
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -60,22 +61,68 @@ ResultState Program::save()
 
 ResultState Program::loadFromJSON()
 {
-    QFile jsonFile(this->pgmName + ".json");
+    this->statements.clear();
+    this->jumpStmts.clear();
+    this->ids.clear();
+
     JsonHandler jsonHdlr(this->pgmName);
+    QJsonObject jsonObj = jsonHdlr.read();
 
-    //QJsonObject jsonObj = jsonHdlr.read();
+    // load labels
+    QJsonObject labelObj = jsonObj[LABEL].toObject();
+    for (QJsonObject::iterator it = labelObj.begin(); it != labelObj.end(); it++)
+    {
+        int lineNum = it.value().toObject().begin().value().toString().toInt();
+        Label* label = new Label(this->tempFileName, it.key(), lineNum);
+        ids.insert(it.key(), std::shared_ptr<Label>(label));
+        JsonHandler jsonHdlr(this->tempFileName);
+        jsonHdlr.addElement(LABEL, label->getName(), label->toJSON());
+    }
+    qDebug() << ids.keys();
 
-    //TODO: convert json to statements
+    // load statements
+    QJsonObject statementObj = jsonObj[STMT].toObject();
+
+    // sorting by line number
+    QStringList keys = statementObj.keys();
+    QVector<int> keysToInt;
+    for (int i = 0; i < keys.size(); i++)
+    {
+        keysToInt.append(keys[i].toInt());
+    }
+    std::sort(keysToInt.begin(), keysToInt.end());
+
+    // compile
+    for (QVector<int>::iterator it = keysToInt.begin(); it != keysToInt.end(); it++)
+    {
+        QJsonObject stmtObj = statementObj.find(QString::number(*it)).value().toObject();
+        QString instruction = stmtObj.keys().begin()[0];
+        QString op1 = stmtObj[instruction].toObject()[OP_1].toString();
+        QString op2 = stmtObj[instruction].toObject()[OP_2].toString();
+
+        // add current statement
+        QString stmt = instruction + " " + op1 + " " + op2;
+        ResultState re = addStmt(stmt, statementObj.find(QString::number(*it)).key().toInt());
+        if (re != NO_ERROR)
+        {
+            errorControl->printErrorMsgAtLine(re, statementObj.find(QString::number(*it)).key().toInt());
+        }
+    }
+
+    compile(true);
 
     return NO_ERROR;
 }
 
-ResultState Program::compile()
+ResultState Program::compile(bool isLoadFromJSON)
 {
     ResultState res;
-    res = this->save();
-    if (res != NO_ERROR)
-        return res;
+    if (!isLoadFromJSON)
+    {
+        res = this->save();
+        if (res != NO_ERROR)
+            return res;
+    }
 
     this->jumpStmts.clear();
     QFile tmpFile(this->tempFileName + ".json");
@@ -134,9 +181,11 @@ ResultState Program::compile()
 
 ResultState Program::run()
 {
-    qDebug() << "RUNHE: Program::run()";
-
-    if (this->statements.isEmpty()) return RUNTIME_ERROR;
+    if (this->statements.isEmpty())
+    {
+        errorControl->printErrorMsg("Program has not been compiled yet.");
+        return RUNTIME_ERROR;
+    }
     ReturnValue* runResult;
     for (QMap<int, Statement*>::iterator it = this->statements.begin(); it != this->statements.end(); it++)
     {
@@ -162,8 +211,6 @@ ResultState Program::run()
                 this->jumpToLineNum = runResult->getJumpToLine();
             else if (dynamic_cast<JumpStmt*>(it.value()))
                 this->jumpToLineNum = runResult->getJumpToLine();
-            // TODO: remove qDebug()
-            qDebug() << "jump to ..." << this->jumpToLineNum;
         }
         if (runResult->getCompareResult() != NO_CMP)
         {
