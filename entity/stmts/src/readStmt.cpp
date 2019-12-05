@@ -60,6 +60,9 @@ ReturnValue* ReadStmt::run()
         newValue = errorControl->getUserInput(newVarName);
     }
 
+    // user stopped entering value
+    if (newValue == -1000000) return new ReturnValue(NO_USER_INPUT);
+
     // if we set value to a int
     if (variableType == TypeE::INT)
     {

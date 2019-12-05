@@ -40,6 +40,8 @@ QString ErrorControl::convertErrorMsg(ResultState result)
 {
     switch (result)
     {
+    case NO_USER_INPUT:
+        return "No user input";
     case NOT_INTEGER_ERROR:
         return "Must be an integer";
     case DIFF_TYPE_ERROR:
