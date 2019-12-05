@@ -24,6 +24,9 @@ ResultState DeclIntStmt::compile()
     // declare a new int
     QString instruction = args[0];
     QString varName = args[1];
+    // check if the variable has already been declared
+    if (ids.find(varName) != ids.end())
+        return REDECLARE_VAR_ERROR;
     Variable* newVar = new Variable(this->programName, varName, INT);
     op1.setIdentifier(newVar);
     ids.insert(newVar->getName(), std::shared_ptr<Variable>(newVar));

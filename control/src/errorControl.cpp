@@ -84,6 +84,8 @@ QString ErrorControl::convertErrorMsg(ResultState result)
         return "Unintialized first variable and undefined second variable";
     case LABEL_NOT_FOUND_ERROR:
         return "Undefined label";
+    case REDECLARE_VAR_ERROR:
+        return "Redeclare variable";
     case COMPILATION_ERROR:
         return "Compilation error";
     case RUNTIME_ERROR:
