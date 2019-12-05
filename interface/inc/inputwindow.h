@@ -20,6 +20,9 @@ public:
     int readValue(QString variableName);
     ~InputWindow();
 
+protected:
+    void closeEvent(QCloseEvent *event) override;
+
 private slots:
     void on_okayButton_clicked();
 
@@ -32,6 +35,7 @@ private:
 signals:
     void okayClicked();
     void cancelClicked();
+    void windowClose();
 };
 
 #endif // INPUTWINDOW_H

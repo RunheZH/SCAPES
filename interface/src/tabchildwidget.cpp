@@ -13,7 +13,7 @@ tabchildwidget::tabchildwidget(QWidget *parent) :
 
 tabchildwidget::~tabchildwidget()
 {
-    qDebug()<<"~tabchildwidget() -"<<fileName;
+//    qDebug()<<"~tabchildwidget() -"<<fileName;
     delete ui;
 }
 
