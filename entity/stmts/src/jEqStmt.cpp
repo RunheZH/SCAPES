@@ -48,12 +48,8 @@ ReturnValue* JEqStmt::run()
 {
     qDebug() << "JEqStmt.run()";
 
-//    Label aLabel = DBM.getLable(op1->getIdentifier()->getName());
-//    int lineNum = aLabel.getStmtLineNum();
-//    return lineNum;
-
-    Label* aLabel = static_cast<Label*>(op1.getIdentifier());
+    Label* aLabel = dynamic_cast<Label*>(op1.getIdentifier());
     int lineNum = aLabel->getLineNum();
 
-    return new ReturnValue(NO_ERROR, lineNum, NO_CMP);
+    return new ReturnValue(NO_ERROR, lineNum);
 }

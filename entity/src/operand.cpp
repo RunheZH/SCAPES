@@ -5,8 +5,7 @@
 Operand::Operand()
 {
     isLiteral = false;
-    exist_value = false;
-    exist_intdex = false;
+    isStr = false;
     value = 0;
     index = 0;
 }
@@ -14,8 +13,8 @@ Operand::Operand()
 Operand::Operand(Identifier* id)
 {
     this->id = id;
-    exist_value = false;
-    exist_intdex = false;
+    isStr = false;
+    isLiteral = false;
     value = 0;
     index = 0;
 }
@@ -39,7 +38,6 @@ void Operand::setIdentifier(Identifier* newId)
 void Operand::setValue(int value)
 {
     this->value = value;
-    exist_value = true;
 }
 
 void Operand::setValue(QString pValue)
@@ -50,7 +48,6 @@ void Operand::setValue(QString pValue)
 void Operand::setIndex(int index)
 {
     this->index = index;
-    exist_intdex = true;
 }
 
 void Operand::setIsLiteral(bool boolean)
@@ -58,26 +55,19 @@ void Operand::setIsLiteral(bool boolean)
     isLiteral = boolean;
 }
 
-QString Operand::getValue()
+void Operand::setIsStr(bool boolean)
 {
-    QString str;
-    /*
-    if (exist_value) {
-        str = QString::number(value, 10);
-    }else if (!exist_intdex && id != nullptr){
-        if ( Variable * v = dynamic_cast<Variable*>(id)) {
-           str = v->getValue();
-        } else if (Label * l = dynamic_cast<Label*>(id)){
-           str.setNum(l->getLineNum());
-        }
-    } else if (id != nullptr){
-        if ( Variable * v = dynamic_cast<Variable*>(id)) {
-           str = v->getValue(index);
-        }
-    } else if (!exist_intdex && id == nullptr){
-        return pValue;
-    }*/
-    return str;
+    isStr = boolean;
+}
+
+int Operand::getValue()
+{
+    return value;
+}
+
+QString Operand::getPValue()
+{
+    return pValue;
 }
 
 int Operand::getIndex()
@@ -88,4 +78,9 @@ int Operand::getIndex()
 bool Operand::getIsLiteral()
 {
     return isLiteral;
+}
+
+bool Operand::getIsStr()
+{
+    return isStr;
 }

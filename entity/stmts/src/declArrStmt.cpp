@@ -53,5 +53,6 @@ ResultState DeclArrStmt::compile()
 ReturnValue* DeclArrStmt::run()
 {
     qDebug() << "DeclArrStmt().run()";
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+    // new array has already been added to ids, do nothing
+    return new ReturnValue(NO_ERROR);
 }

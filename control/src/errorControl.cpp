@@ -28,6 +28,12 @@ void ErrorControl::printErrorMsgAtLine(ResultState result, int lineNum)
     this->errorTab->addText(convertErrorMsg(result) + " at line " + QString::number(lineNum));
 }
 
+int ErrorControl::getUserInput(QString variableName)
+{
+    InputWindow* inputWindow = new InputWindow(nullptr);
+    return inputWindow->readValue(variableName);
+}
+
 QString ErrorControl::convertErrorMsg(ResultState result)
 {
     switch (result)

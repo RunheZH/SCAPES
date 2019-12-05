@@ -16,14 +16,16 @@ public:
     void setValue(QString pValue);
     void setIndex(int index);
     void setIsLiteral(bool boolean);
-    QString getValue();
+    void setIsStr(bool boolean);
+    int getValue();
+    QString getPValue();
     int getIndex();
     bool getIsLiteral();
+    bool getIsStr();
 
 private:
     Identifier* id;
-    bool exist_value;
-    bool exist_intdex;
+    bool isStr;
     int value;
     int index;
     bool isLiteral;

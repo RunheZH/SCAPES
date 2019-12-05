@@ -19,7 +19,7 @@ public:
     bool setValue(int aValue, int position = 0);
     QVector<int> getValue();
     //it will return the last value if position bigger than size
-    QString getValue(int position);
+    int getValue(int position);
 
 private:
     TypeE type;

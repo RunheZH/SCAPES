@@ -446,13 +446,13 @@ void MainWindow::runText(QString filePath, QString jsonPath, bool jsonExisted){
     }
 
     //uncomment following after done savecontrol->loadFromJSON(QString jsonPath, consoleTab, errorTab);
-//    RunControl* rc = new RunControl(pgm);
-//    ResultState res = rc->run();
-//    if (res == NO_ERROR)
-//        outToConsole("Run successfully");
-//    else
-//        outToConsole("Run failed");
-//    delete(rc);
+    RunControl* rc = new RunControl(pgm);
+    ResultState res = rc->run();
+    if (res == NO_ERROR)
+        outToConsole("Run successfully");
+    else
+        outToConsole("Run failed");
+    delete(rc);
 }
 
 //ACTION BUTTON TRIGGER

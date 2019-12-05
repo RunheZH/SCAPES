@@ -1,6 +1,10 @@
 #include "../inc/readStmt.h"
 
-ReadStmt::ReadStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib, int lnNum) : Statement(pgmName, stmt, idsLib, lnNum){}
+ReadStmt::ReadStmt(QString pgmName, QString stmt, QMap<QString, std::shared_ptr<Identifier>>& idsLib,
+                   int lnNum, ErrorControl* errorControl) : Statement(pgmName, stmt, idsLib, lnNum)
+{
+    this->errorControl = errorControl;
+}
 
 ReadStmt::~ReadStmt()
 {
@@ -47,33 +51,30 @@ ReturnValue* ReadStmt::run()
 {
     qDebug() << "ReadStmt.run()";
 
-    // Variable aVariable = DBM.getVariable(op1->getIdentifier()->getName());
-    // Value newValue = UI.popRead(); OR Value newValue = controller.readValue();
-    // aVariable.setValue(newValue);
-    // DBM.setVariable(aVariable.getName(), aVariable.getType(), newValue);
-
-
-    Variable* aVariable = static_cast<Variable*>(op1.getIdentifier());
+    Variable* aVariable = dynamic_cast<Variable*>(op1.getIdentifier());
     TypeE variableType = aVariable->getType();
 
-    int newValue = 0;
-    // TODO: include UI
-    //newValue = UI.popRead();
+    int newValue;
+    if (variableType == INT)
+        newValue = errorControl->getUserInput(op1.getIdentifier()->getName());
+    else
+    {
+        QString newVarName = op1.getIdentifier()->getName() + "[" + QString::number(op1.getIndex()) + "]";
+        newValue = errorControl->getUserInput(newVarName);
+    }
 
     // if we set value to a int
-    if (variableType == TypeE::INT){
+    if (variableType == TypeE::INT)
+    {
         aVariable->setValue(newValue, 0);
     }
-    // if we set value to an array
-    else if (variableType == TypeE::ARRAY){
-        // for loop to set value to every vector?
-        aVariable->setValue(newValue, 0);
-    }
-    else{
-        qDebug() << "ERROR";
+    // if we set value to an array element
+    else
+    {
+        aVariable->setValue(newValue, op1.getIndex());
     }
 
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+    return new ReturnValue(NO_ERROR);
 }
 
 ResultState ReadStmt::checkVariable(QString& operand, Operand& op, bool checkLiteral)

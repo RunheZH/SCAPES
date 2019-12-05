@@ -41,9 +41,7 @@ ResultState DeclIntStmt::compile()
 ReturnValue* DeclIntStmt::run()
 {
     qDebug() << "DeclIntStmt.run()";
-
-    op1.getIdentifier()->addToDB();
-
-    return new ReturnValue(NO_ERROR, NO_JUMP, NO_CMP);
+    // new int has already been added to ids, do nothing
+    return new ReturnValue(NO_ERROR);
 }
 
