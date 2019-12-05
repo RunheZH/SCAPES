@@ -1,0 +1,63 @@
+# declare two integers, with variable name "int_a" and "int_b"
+dci int_a
+dci int_b
+
+# declare an array with variable name "array" and with max size 3
+dca array 3
+
+# read/get input from user as the value of "int_a"
+rdi int_a
+
+# Label 1: let the user input the value of "int_b", keep asking until "int_a" and "int_b" are not equal
+L1: prt "please input the second integer again"
+
+# read/get input from user as the value of "int_b"
+rdi int_b
+
+# compare the value of "int_a" and "int_b"
+cmp int_a int_b
+
+# jump to L1 when "int_a" and "int_b" are equal
+prt "(jeq) Jump to Label 1, since two inputs are equal"
+jeq L1
+
+# jump to L2 when "int_a" is smaller than "int_b"
+prt "(jls) Jump to Label 2, since first input is smaller"
+jls L2
+
+# jump to L3 when "int_a" is bigger than "int_b"
+prt "(jmr) Jump to Label 3, since first input is larger"
+jmr L3
+
+# Label 2: store the integer "int_a" as the first element of the "array"
+# then store the integer "int_b" as the second element of the "array"
+L2: mov int_a array[0]
+mov int_b array[1]
+# unconditional jump to Label 4
+prt "(jmp) Unconditionally jumped to Label 4"
+jmp L4
+
+# Label 3: store the integer "int_b" as the first element of the "array"
+# then store the integer "int_a" as the second element of the "array"
+L3: mov int_b array[0]
+mov int_a array[1]
+# unconditional jump to Label 4
+prt "(jmp) Unconditionally jumped to Label 4"
+jmp L4
+
+# Label 4: store "int_a" as the third element of the "array"
+L4: mov int_a array[2]
+# add "int_a" to the third element of the "array"
+# then the third element of the "array" is the sum of the first two elements
+add int_b array[2]
+
+# print all the variables and array
+prt "Variable int_a with value:"
+prt int_a
+prt "Variable int_b with value:"
+prt int_b
+prt "Variable array with value:"
+prt array
+
+# end the program
+end
