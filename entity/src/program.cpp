@@ -143,8 +143,7 @@ ResultState Program::run()
         // has reached 'end'
         if (isEndStmt(it.value())) break;
 
-        // TODO: jmr, jls, jeq
-
+        this->jumpToLineNum = it.key();
         runResult = it.value()->run();
         if (runResult->getResultState() != NO_ERROR)
         {
@@ -155,12 +154,22 @@ ResultState Program::run()
         if (runResult->getJumpToLine() != NO_JUMP) // NO_ERROR
         {
             // jump to the given line
-            it = this->statements.find(runResult->getJumpToLine());
+            if (dynamic_cast<JLessStmt*>(it.value()) && this->cmpResult == -1)
+                this->jumpToLineNum = runResult->getJumpToLine();
+            else if (dynamic_cast<JEqStmt*>(it.value()) && this->cmpResult == 0)
+                this->jumpToLineNum = runResult->getJumpToLine();
+            else if (dynamic_cast<JMoreStmt*>(it.value()) && this->cmpResult == 1)
+                this->jumpToLineNum = runResult->getJumpToLine();
+            else if (dynamic_cast<JumpStmt*>(it.value()))
+                this->jumpToLineNum = runResult->getJumpToLine();
+            // TODO: remove qDebug()
+            qDebug() << "jump to ..." << this->jumpToLineNum;
         }
         if (runResult->getCompareResult() != NO_CMP)
         {
             this->cmpResult = runResult->getCompareResult();
         }
+        it = this->statements.find(this->jumpToLineNum);
         delete runResult; // avoid memory leak
     }
     return NO_ERROR;
