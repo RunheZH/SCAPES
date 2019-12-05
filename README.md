@@ -18,6 +18,8 @@ ALTERNATIVE PROCESS:
 4. type make
 5. type ./SCAPES
 
+Description:
+This SCAPES software allowed the user to create, load, save, compile, and run a program that was written by SCAPES language.  The strategy pattern is used for handling different kinds of statements. Each statement's behavior could be modified easily. It means that only one class needs to be edit. It is not necessary to understand other's statement in this situation.
 
 Test-Program:
 largeNumberPrint - allow user to input two numbers, and the program will print the large number.
