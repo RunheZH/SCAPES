@@ -1,0 +1,162 @@
+prt "<---------------- Declared an integer with variable name 'secretNum ---------------->"
+dci secretNum
+mov 10 secretNum
+
+prt "<---------------- Declared two integers with variable name 'guess' and 'numChances' ---------------->"
+dci guess
+dci numChances
+
+# store numbers in an array
+dca arr 5
+
+L11: prt "A NEW GAME STARTED!"
+# initialize the array
+mov -1 arr[0]
+mov -1 arr[1]
+mov -1 arr[2]
+mov -1 arr[3]
+mov -1 arr[4]
+
+# initialize the value of numChances as 5
+prt "You have 5 chances to guess the correct number"
+mov 5 numChances
+
+
+# ------ Label 1 ------
+# printing how many chances remaining
+L1: prt "The number of chances remaining is below"
+prt numChances
+
+# if only one chance remaining, jump to L8
+cmp numChances 1
+jeq L8
+
+# if only two chances remaining, jump to L7
+cmp numChances 3
+jls L7
+
+# if only three chances remaining, jump to L6
+jeq L6
+
+# if only four chances remaining, jump to L5
+cmp numChances 4
+jeq L5
+
+# only five chances remaining, jump to L3
+jmr L3
+
+
+# ------ Label 3 ------
+# let user input the first guess
+L3: prt "<---------------- Jumped to Label 3: numChances > 3 && not == 4 , there are five chances remaining ---------------->"
+prt "Please enter your guess: "
+rdi guess
+mov guess arr[0] 
+add -1 numChances
+# jump to L9 for comparison
+prt "<---------------- Jumped to Label 9: comparing the guess and secret number after reading the guessed integer... ---------------->"
+jmp L9
+
+# ------ Label 5 ------
+# let user input the second guess
+L5: prt "<---------------- Jumped to Label 5: numChances == 4, means there are four chances remaining ---------------->"
+prt "Please enter your guess: "
+rdi guess
+mov guess arr[1] 
+add -1 numChances
+# jump to L9 for comparison
+prt "<---------------- Jumped to Label 9: comparing the guess and secret number after reading the guessed integer... ---------------->"
+jmp L9
+
+# ------ Label 6 ------
+# let user input the third guess
+L6: prt "<---------------- Jumped to Label 6: numChances == 3, means there are three chances remaining ---------------->"
+prt "Please enter your guess: "
+rdi guess
+mov guess arr[2]
+add -1 numChances
+# jump to L9 for comparison
+prt "<---------------- Jumped to Label 9: comparing the guess and secret number after reading the guessed integer... ---------------->"
+jmp L9
+
+# ------ Label 7 ------
+# let user input the fourth guess
+L7: prt "<---------------- Jumped to Label 7: numChances < 3 && != 1, means there are two chances remaining ---------------->" 
+prt "Please enter your guess: "
+rdi guess 
+mov guess arr[3]
+add -1 numChances
+# jump to L9 for comparison
+prt "<---------------- Jumped to Label 9: comparing the guess and secret number after reading the guessed integer... ---------------->"
+jmp L9
+
+# ------ Label 8 ------
+# let user input the fifth guess
+L8: prt "<---------------- Jumped to Label 8: numChances == 1, means there is only one chance remaining ---------------->"
+prt "Please enter your guess: "
+rdi guess 
+mov guess arr[4] 
+add -1 numChances
+# jump to L9 for comparison
+prt "<---------------- Jumped to Label 9: comparing the guess and secret number after reading the guessed integer... ---------------->"
+jmp L9
+
+# ------ Label 9 ------
+# compare the guess and the secret number
+# if they guess correctly: notify user the guess is correct
+# if they guess wrong: notify user the guess is wrong, and continue asking if there's still chances left
+L9: cmp guess secretNum
+# jump to Label 12 if guess == secretNum
+jeq L12
+
+prt "SORRY, WRONG GUESS..."
+cmp numChances 0
+# jump to Label 10 if there is no more chances to guess
+jeq L10
+
+# jump to Label 1 otherwise, let user can continue guessing since there still some chances left
+prt "<---------------- Jumped to Label 1: printing the remaining chances, since there still some chances left ---------------->"
+jmr L1
+
+# ------ Label 12 ------
+# notify user the guess is correct
+L12: prt "<---------------- Jumped to Label 12: guess == secretNum, tell user they win ---------------->"
+prt "CONGRADULATION, YOU WIN!!!"
+prt "<---------------- Jumped to Label 13: ask user if they want to restart this game again or no ---------------->"
+jmp L13
+
+# ------ Label 10 ------
+# notify user they don't have chance to guess any more
+L10: prt "<---------------- Jumped to Label 10: numChances == 0, there is no chance left ---------------->"
+prt "SORRY, YOU FAILED... You've used all of your chances"
+
+# ------ Label 13 ------
+# ask user if they want to restart this game again or not
+L13: prt "WOULD YOU LIKE TO TRY AGAIN? (PRESS 1 for YES, any other number to QUIT)"
+dci option
+rdi option
+prt "Your option was ..."
+prt option
+cmp option 1
+
+# when user input 1, jump to Label 11 to restart the game
+prt "<---------------- If input 1: ---------------->"
+prt "<---------------- Jumped to Label 11: restart the game ---------------->"
+jeq L11
+
+# when user input numbers other than 1, printing all the variables, and end the program
+prt "<---------------- Else: ---------------->"
+prt "<---------------- Jumped to Label 11: restart the game ---------------->"
+prt "Your guesses were..."
+prt arr[0]
+prt arr[1]
+prt arr[2]
+prt arr[3]
+prt arr[4]
+
+prt "The secret number is ..."
+prt secretNum
+
+prt "Your last guess was ..."
+prt guess
+end
